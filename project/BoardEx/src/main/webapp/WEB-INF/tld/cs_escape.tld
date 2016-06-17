@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<taglib xmlns="http://java.sun.com/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
+    version="2.1">
+	<tlib-version>1.0</tlib-version>
+	<short-name>cs_escape</short-name>
+
+	<function>
+		<description>
+			<![CDATA[
+			줄바꿈(\n)을 <br/> 태그로 치환한다.
+			]]>
+		</description>
+		<name>replaceLineToBr</name>
+		<function-class>com.cosquare.cstl.functions.Escape</function-class>
+		<function-signature>java.lang.String replaceLineToBr(java.lang.String)</function-signature>
+		<example>
+			<![CDATA[
+			${cs_escape:replaceLineToBr(content)}
+			]]>
+		</example>
+	</function>
+
+	<function>
+		<description>
+			<![CDATA[
+			줄바꿈(\n)을 제거한다.
+			]]>
+		</description>
+		<name>removeLine</name>
+		<function-class>com.cosquare.cstl.functions.Escape</function-class>
+		<function-signature>java.lang.String removeLine(java.lang.String)</function-signature>
+		<example>
+			<![CDATA[
+			${cs_escape:removeLine(content)}
+			]]>
+		</example>
+	</function>
+
+	<function>
+		<description>
+			<![CDATA[
+			특수문자로 변환된 문자열을 제거한다. (개행문자 포함)
+			제거되는 문자열 : \n &amp; &apos; &quot; &lt; &gt; &amp;lsquo; &amp;rsquo; &amp;middot;
+			]]>
+		</description>
+		<name>removeAllEscString</name>
+		<function-class>com.cosquare.cstl.functions.Escape</function-class>
+		<function-signature>java.lang.String removeAllEscString(java.lang.String)</function-signature>
+		<example>
+			${cs_escape:removeAllEscString(content)}
+		</example>
+	</function>
+
+	<function>
+		<description>
+			<![CDATA[
+			특수문자로 변환된 문자열을 제거한다. (개행문자 제외)
+			제거되는 문자열 : &amp; &apos; &quot; &lt; &gt; &amp;lsquo; &amp;rsquo; &amp;middot;
+			]]>
+		</description>
+		<name>removeAllEscStringExceptLine</name>
+		<function-class>com.cosquare.cstl.functions.Escape</function-class>
+		<function-signature>java.lang.String removeAllEscStringExceptLine(java.lang.String, boolean)</function-signature>
+		<example>
+			${cs_escape:removeAllEscStringExceptLine(content,false)}
+		</example>
+	</function>
+</taglib> 

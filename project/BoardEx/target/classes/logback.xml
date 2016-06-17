@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- configuration file for LogBack (slf4J implementation) See here for more details: http://gordondickens.com/wordpress/2013/03/27/sawing-through-the-java-loggers/ -->
+<configuration scan="true" scanPeriod="30 seconds">
+
+	<contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+		<resetJUL>true</resetJUL>
+	</contextListener>
+
+	<!-- To enable JMX Management -->
+	<jmxConfigurator />
+
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%-5level %logger{0} - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="file" class="ch.qos.logback.core.FileAppender">
+		<file>/usr/local/tomcat/logs/ump.congnavi.com/ump.congnavi.com.out</file>
+		<encoder>
+			<pattern>
+				%-5level %d{HH:mm:ss.SSS} [%thread] %logger[%method:%line] - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<!--<logger name="org.hibernate" level="debug"/> -->
+	<!-- Uncomment and add your logger here: <logger name="org.springframework.samples.service.service" level="debug"/> -->
+
+	<!-- Application Loggers -->
+	<logger name="com.test">
+		<level value="debug" />
+	</logger>
+
+	<!-- 3rdparty Loggers -->
+	<logger name="org.springframework.core">
+		<level value="info" />
+	</logger>
+
+	<logger name="org.springframework.beans">
+		<level value="info" />
+	</logger>
+
+	<logger name="org.springframework.context">
+		<level value="info" />
+	</logger>
+
+	<logger name="org.springframework.web">
+		<level value="info" />
+	</logger>
+
+
+	<!-- Root Logger -->
+	<root>
+		<priority value="warn" />
+		<appender-ref ref="console" />
+		<appender-ref ref="file" />
+	</root>
+
+</configuration>
