@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<!-- Encryptor Environment Config -->
+	<bean id="encryptorConfig" class="org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig">
+		<property name="algorithm" value="PBEWithMD5AndDES" />
+		<property name="passwordEnvName" value="APP_ENCRYPTION_PASSWORD" />
+	</bean>
+
+	<!-- Encryptor Config -->
+	<bean id="encryptor" class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor">
+		<property name="config" ref="encryptorConfig" />
+		<property name="password" value="ENC(A3jGiQAwxwiuByi6jiaiPw==)" />
+	</bean>
+
+	<!-- Encryptor Placeholder Config -->
+	<bean id="propertyConfigurer" class="org.jasypt.spring31.properties.EncryptablePropertyPlaceholderConfigurer">
+		<constructor-arg ref="encryptor" />
+		<property name="locations">
+			<list>
+				<value>classpath:/conf/property/db.properties</value>
+			</list>
+		</property>
+		<property name="order" value="1"/>
+		<property name="ignoreUnresolvablePlaceholders" value="true"/>
+	</bean>
+
+	<!-- 데이터 소스 설정 -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${db.driver}" />
+		<property name="url" value="${db.url}" />
+		<property name="username" value="${db.username}" />
+		<property name="password" value="${db.password}" />
+		<property name="defaultAutoCommit" value="false" />
+		<property name="validationQuery" value="select 1 from dual" />
+		<property name="testWhileIdle" value="true" />
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+	</bean>
+
+</beans>

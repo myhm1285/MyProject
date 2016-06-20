@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<settings>
+		<setting name="logImpl" value="SLF4J" />
+		<!-- DB컬럼과 VO 프라퍼티를 자동 맵핑하기 위한 설정 (언더바를 카멜표기법에 맞게 변환) -->
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+	</settings>
+
+	<typeAliases>
+		<!-- CommentVO -->
+		<typeAlias alias="CommentVO" type="com.test.board.boards.vo.CommentVO" />
+		<!-- AccountVO -->
+		<typeAlias alias="PostVO" type="com.test.board.boards.vo.PostVO" />
+		<!-- AccountVO -->
+		<typeAlias alias="AccountVO" type="com.test.board.manage.vo.AccountVO" />
+		<!-- BoardVO -->
+		<typeAlias alias="BoardVO" type="com.test.board.manage.vo.BoardVO" />
+		
+	</typeAliases>
+</configuration>
