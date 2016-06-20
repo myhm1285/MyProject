@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.board.manage.service.impl.BoardMapper">
+	<resultMap id="boardResult" type="BoardVO" />
+
+	<!-- 게시판 목록 조회 -->
+	<select id="selectBoardList" parameterType="BoardVO" resultMap="boardResult">
+		<![CDATA[
+		/* board_SQL.selectBoardList */
+		SELECT
+			B.IDX, B.NAME, B.ORDER, B. POST_CNT, B.IS_USE,
+			B.IS_DEL, B.NOTE,
+			DATE_FORMAT(B.WRITE_DT, '%Y-%m-%d %H:%i') AS WRITE_DT,
+			DATE_FORMAT(B.MODIFY_DT, '%Y-%m-%d %H:%i') AS MODIFY_DT
+		FROM
+			BOARD AS B
+		WHERE
+			1=1
+		ORDER BY
+			B.ORDER ASC
+		]]>
+	</select>
+
+	<!-- 게시판 목록 총 갯수 -->
+	<select id="selectBoardListTotalCnt" parameterType="BoardVO" resultType="int">
+		<![CDATA[
+		/* board_SQL.selectBoardListTotalCnt */
+		SELECT
+			COUNT(*)
+		FROM
+			BOARD AS B
+		]]>
+		</if>
+	</select>
+
+	<!-- 게시판 등록 -->
+	<insert id="insertBoard" parameterType="BoardVO">
+		<![CDATA[
+		/* board_SQL.insertBoard */
+		INSERT INTO BOARD
+		(
+			NAME, ORDER, NOTE
+		)
+		VALUES
+		(
+			#{name}, #{order}, #{note, jdbcType=VARCHAR}
+		)
+		]]>
+	</insert>
+	
+	<!-- 게시판 수정 -->
+	<update id="updateBoard" parameterType="BoardVO">
+		<![CDATA[
+		/* board_SQL.updateBoard */
+		UPDATE
+			BOARD
+		SET
+			NAME = #{name},
+			ORDER = #{order},
+			IS_USE = #{isUse},
+			NOTE = #{note, jdbcType=VARCHAR},
+			MODIFY_DT = NOW()
+		WHERE
+			IDX = #{idx}
+		]]>
+	</update>
+	
+	<!-- 게시판 삭제 -->
+	<update id="deleteBoard" parameterType="BoardVO">
+		<![CDATA[
+		/* board_SQL.deleteBoard */
+		UPDATE
+			BOARD
+		SET
+			IS_DEL = 'Y',
+			MODIFY_DT = NOW()
+		WHERE
+			IDX = #{idx}
+		]]>
+	</update>
+
+</mapper>
