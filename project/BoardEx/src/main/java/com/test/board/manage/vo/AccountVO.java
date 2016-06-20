@@ -11,6 +11,9 @@ import com.test.board.common.vo.BaseVO;
  */
 public class AccountVO extends BaseVO {
 
+	/** 일련번호 */
+	private int idx;
+
 	/** 로그인ID */
 	private String accId;
 
@@ -32,11 +35,11 @@ public class AccountVO extends BaseVO {
 	/** 사용자이미지 */
 	private String userImg;
 
-	/** 삭제여부 */
-	private String isDel;
-
 	/** 권한 */
 	private String right;
+
+	/** 삭제여부 */
+	private String isDel;
 
 	/** 가입일시 */
 	private String joinDt;
@@ -49,6 +52,24 @@ public class AccountVO extends BaseVO {
 
 	/** 메모 */
 	private String note;
+
+	/** 수정일시 */
+	private String modifyDt;
+
+	/**
+	 * @return the idx
+	 */
+	public int getIdx() {
+		return idx;
+	}
+
+	/**
+	 * @param idx
+	 *            the idx to set
+	 */
+	public void setIdx(int idx) {
+		this.idx = idx;
+	}
 
 	/**
 	 * @return the accId
@@ -156,21 +177,6 @@ public class AccountVO extends BaseVO {
 	}
 
 	/**
-	 * @return the isDel
-	 */
-	public String getIsDel() {
-		return isDel;
-	}
-
-	/**
-	 * @param isDel
-	 *            the isDel to set
-	 */
-	public void setIsDel(String isDel) {
-		this.isDel = isDel;
-	}
-
-	/**
 	 * @return the right
 	 */
 	public String getRight() {
@@ -183,6 +189,21 @@ public class AccountVO extends BaseVO {
 	 */
 	public void setRight(String right) {
 		this.right = right;
+	}
+
+	/**
+	 * @return the isDel
+	 */
+	public String getIsDel() {
+		return isDel;
+	}
+
+	/**
+	 * @param isDel
+	 *            the isDel to set
+	 */
+	public void setIsDel(String isDel) {
+		this.isDel = isDel;
 	}
 
 	/**
@@ -243,6 +264,21 @@ public class AccountVO extends BaseVO {
 	 */
 	public void setNote(String note) {
 		this.note = note;
+	}
+
+	/**
+	 * @return the modifyDt
+	 */
+	public String getModifyDt() {
+		return modifyDt;
+	}
+
+	/**
+	 * @param modifyDt
+	 *            the modifyDt to set
+	 */
+	public void setModifyDt(String modifyDt) {
+		this.modifyDt = modifyDt;
 	}
 
 }
