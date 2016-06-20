@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.springframework.stereotype.Service;
+
 import com.test.board.manage.service.AccountService;
 import com.test.board.manage.vo.AccountVO;
 
@@ -14,6 +16,7 @@ import com.test.board.manage.vo.AccountVO;
  * @since 2016. 6. 17.
  * @version 1.0
  */
+@Service("accountService")
 public class AccountServiceImpl implements AccountService {
 
 	/**

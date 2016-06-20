@@ -30,7 +30,6 @@
 		FROM
 			BOARD AS B
 		]]>
-		</if>
 	</select>
 
 	<!-- 게시판 등록 -->

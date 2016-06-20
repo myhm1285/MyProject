@@ -9,7 +9,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.test.board.manage.service.impl.AccountMapper;
+import com.test.board.manage.service.AccountService;
 import com.test.board.manage.vo.AccountVO;
 import com.test.board.util.BoardUtil;
 import com.test.board.util.PropertyUtil;
@@ -28,7 +28,7 @@ public class AccountController {
 
 	/** 계정 Service */
 	@Resource(name = "accountService")
-	private AccountMapper accountService;
+	private AccountService accountService;
 
 	/**
 	 * 계정 목록 조회

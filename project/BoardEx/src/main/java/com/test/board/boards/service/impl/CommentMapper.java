@@ -13,7 +13,7 @@ import com.test.board.boards.vo.CommentVO;
  * @since 2016. 6. 20.
  * @version 1.0
  */
-@Repository("commentMappper")
+@Repository("commentMapper")
 public interface CommentMapper {
 
 	/**

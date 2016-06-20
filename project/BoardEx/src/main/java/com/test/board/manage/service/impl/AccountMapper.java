@@ -13,7 +13,7 @@ import com.test.board.manage.vo.AccountVO;
  * @since 2016. 6. 17.
  * @version 1.0
  */
-@Repository("accountMappper")
+@Repository("accountMapper")
 public interface AccountMapper {
 
 	/**

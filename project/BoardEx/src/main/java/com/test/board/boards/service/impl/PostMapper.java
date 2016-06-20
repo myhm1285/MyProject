@@ -13,7 +13,7 @@ import com.test.board.boards.vo.PostVO;
  * @since 2016. 6. 17.
  * @version 1.0
  */
-@Repository("postMappper")
+@Repository("postMapper")
 public interface PostMapper {
 
 	/**

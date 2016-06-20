@@ -13,7 +13,7 @@ import com.test.board.manage.vo.BoardVO;
  * @since 2016. 6. 17.
  * @version 1.0
  */
-@Repository("boardMappper")
+@Repository("boardMapper")
 public interface BoardMapper {
 
 	/**
