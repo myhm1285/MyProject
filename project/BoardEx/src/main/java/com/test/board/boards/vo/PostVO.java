@@ -1,5 +1,7 @@
 package com.test.board.boards.vo;
 
+import com.test.board.common.vo.BaseVO;
+
 /**
  * 게시글 VO
  *
@@ -7,7 +9,7 @@ package com.test.board.boards.vo;
  * @since 2016. 6. 17.
  * @version 1.0
  */
-public class PostVO extends PostSearchVO {
+public class PostVO extends BaseVO {
 
 	/** 일련번호 */
 	private int idx;
@@ -24,8 +26,8 @@ public class PostVO extends PostSearchVO {
 	/** 내용 */
 	private String content;
 
-	/** 글쓴이IDX */
-	private String writerIdx;
+	/** 글쓴이ID */
+	private String writerId;
 
 	/** 글쓴이 이름 */
 	private String writerName;
@@ -48,7 +50,6 @@ public class PostVO extends PostSearchVO {
 	/**
 	 * @return the idx
 	 */
-
 	public int getIdx() {
 		return idx;
 	}
@@ -57,7 +58,6 @@ public class PostVO extends PostSearchVO {
 	 * @param idx
 	 *            the idx to set
 	 */
-
 	public void setIdx(int idx) {
 		this.idx = idx;
 	}
@@ -65,7 +65,6 @@ public class PostVO extends PostSearchVO {
 	/**
 	 * @return the boardIdx
 	 */
-
 	public int getBoardIdx() {
 		return boardIdx;
 	}
@@ -74,7 +73,6 @@ public class PostVO extends PostSearchVO {
 	 * @param boardIdx
 	 *            the boardIdx to set
 	 */
-
 	public void setBoardIdx(int boardIdx) {
 		this.boardIdx = boardIdx;
 	}
@@ -82,7 +80,6 @@ public class PostVO extends PostSearchVO {
 	/**
 	 * @return the boardName
 	 */
-
 	public String getBoardName() {
 		return boardName;
 	}
@@ -91,7 +88,6 @@ public class PostVO extends PostSearchVO {
 	 * @param boardName
 	 *            the boardName to set
 	 */
-
 	public void setBoardName(String boardName) {
 		this.boardName = boardName;
 	}
@@ -99,7 +95,6 @@ public class PostVO extends PostSearchVO {
 	/**
 	 * @return the title
 	 */
-
 	public String getTitle() {
 		return title;
 	}
@@ -108,7 +103,6 @@ public class PostVO extends PostSearchVO {
 	 * @param title
 	 *            the title to set
 	 */
-
 	public void setTitle(String title) {
 		this.title = title;
 	}
@@ -116,7 +110,6 @@ public class PostVO extends PostSearchVO {
 	/**
 	 * @return the content
 	 */
-
 	public String getContent() {
 		return content;
 	}
@@ -125,32 +118,28 @@ public class PostVO extends PostSearchVO {
 	 * @param content
 	 *            the content to set
 	 */
-
 	public void setContent(String content) {
 		this.content = content;
 	}
 
 	/**
-	 * @return the writerIdx
+	 * @return the writerId
 	 */
-
-	public String getWriterIdx() {
-		return writerIdx;
+	public String getWriterId() {
+		return writerId;
 	}
 
 	/**
-	 * @param writerIdx
-	 *            the writerIdx to set
+	 * @param writerId
+	 *            the writerId to set
 	 */
-
-	public void setWriterIdx(String writerIdx) {
-		this.writerIdx = writerIdx;
+	public void setWriterId(String writerId) {
+		this.writerId = writerId;
 	}
 
 	/**
 	 * @return the writerName
 	 */
-
 	public String getWriterName() {
 		return writerName;
 	}
@@ -159,7 +148,6 @@ public class PostVO extends PostSearchVO {
 	 * @param writerName
 	 *            the writerName to set
 	 */
-
 	public void setWriterName(String writerName) {
 		this.writerName = writerName;
 	}
@@ -167,7 +155,6 @@ public class PostVO extends PostSearchVO {
 	/**
 	 * @return the commentCnt
 	 */
-
 	public int getCommentCnt() {
 		return commentCnt;
 	}
@@ -176,7 +163,6 @@ public class PostVO extends PostSearchVO {
 	 * @param commentCnt
 	 *            the commentCnt to set
 	 */
-
 	public void setCommentCnt(int commentCnt) {
 		this.commentCnt = commentCnt;
 	}
@@ -184,7 +170,6 @@ public class PostVO extends PostSearchVO {
 	/**
 	 * @return the isDel
 	 */
-
 	public String getIsDel() {
 		return isDel;
 	}
@@ -193,7 +178,6 @@ public class PostVO extends PostSearchVO {
 	 * @param isDel
 	 *            the isDel to set
 	 */
-
 	public void setIsDel(String isDel) {
 		this.isDel = isDel;
 	}
@@ -201,7 +185,6 @@ public class PostVO extends PostSearchVO {
 	/**
 	 * @return the writeDt
 	 */
-
 	public String getWriteDt() {
 		return writeDt;
 	}
@@ -210,7 +193,6 @@ public class PostVO extends PostSearchVO {
 	 * @param writeDt
 	 *            the writeDt to set
 	 */
-
 	public void setWriteDt(String writeDt) {
 		this.writeDt = writeDt;
 	}
@@ -218,7 +200,6 @@ public class PostVO extends PostSearchVO {
 	/**
 	 * @return the modifydt
 	 */
-
 	public String getModifydt() {
 		return modifydt;
 	}
@@ -227,7 +208,6 @@ public class PostVO extends PostSearchVO {
 	 * @param modifydt
 	 *            the modifydt to set
 	 */
-
 	public void setModifydt(String modifydt) {
 		this.modifydt = modifydt;
 	}
@@ -235,7 +215,6 @@ public class PostVO extends PostSearchVO {
 	/**
 	 * @return the note
 	 */
-
 	public String getNote() {
 		return note;
 	}
@@ -244,7 +223,6 @@ public class PostVO extends PostSearchVO {
 	 * @param note
 	 *            the note to set
 	 */
-
 	public void setNote(String note) {
 		this.note = note;
 	}

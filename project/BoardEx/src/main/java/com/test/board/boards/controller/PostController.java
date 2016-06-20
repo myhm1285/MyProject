@@ -48,10 +48,11 @@ public class PostController {
 		postVO.setCntPerPage(PropertyUtil.getPropertyInt("board", "board.board.boardList.cntPerPage", 10));
 
 		// 1. 총 게시물 수
-		postVO.setTotalCnt(postService.selectPostListTotalCnt(postVO));
+		// postVO.setTotalCnt(postService.selectPostListTotalCnt(postVO));
+		postVO.setTotalCnt(0);
 
 		// 2. 목록
-		model.addAttribute(postService.selectPostList(postVO));
+		// model.addAttribute(postService.selectPostList(postVO));
 
 		// 3. 페이징
 		model.addAttribute("paging", BoardUtil.getPaging(postVO.getTotalCnt(), postVO.getPg(), postVO.getCntPerPage()));
