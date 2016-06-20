@@ -20,8 +20,8 @@ public class CommentVO extends BaseVO {
 	/** 내용 */
 	private String content;
 
-	/** 글쓴이IDX */
-	private String writerIdx;
+	/** 글쓴이ID */
+	private String writerId;
 
 	/** 글쓴이 이름 */
 	private String writerName;
@@ -78,18 +78,18 @@ public class CommentVO extends BaseVO {
 	}
 
 	/**
-	 * @return the writerIdx
+	 * @return the writerId
 	 */
-	public String getWriterIdx() {
-		return writerIdx;
+	public String getWriterId() {
+		return writerId;
 	}
 
 	/**
-	 * @param writerIdx
-	 *            the writerIdx to set
+	 * @param writerId
+	 *            the writerId to set
 	 */
-	public void setWriterIdx(String writerIdx) {
-		this.writerIdx = writerIdx;
+	public void setWriterId(String writerId) {
+		this.writerId = writerId;
 	}
 
 	/**

@@ -9,14 +9,8 @@
 	</settings>
 
 	<typeAliases>
-		<!-- CommentVO -->
-		<typeAlias alias="CommentVO" type="com.test.board.boards.vo.CommentVO" />
-		<!-- AccountVO -->
-		<typeAlias alias="PostVO" type="com.test.board.boards.vo.PostVO" />
-		<!-- AccountVO -->
-		<typeAlias alias="AccountVO" type="com.test.board.manage.vo.AccountVO" />
-		<!-- BoardVO -->
-		<typeAlias alias="BoardVO" type="com.test.board.manage.vo.BoardVO" />
+		<!-- Send -->
+		<typeAlias alias="BoardVO" type="com.test.board.board.vo.BoardVO" />
 		
 	</typeAliases>
 </configuration>
