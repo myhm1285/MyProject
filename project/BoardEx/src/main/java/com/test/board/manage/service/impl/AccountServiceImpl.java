@@ -31,10 +31,9 @@ public class AccountServiceImpl implements AccountService {
 	 * @param accountVO
 	 *            조회할 정보가 담긴 AccountVO
 	 * @return List<AccountVO>
-	 * @throws Exception
 	 */
 	@Override
-	public List<AccountVO> selectAccountList(AccountVO accountVO) throws Exception {
+	public List<AccountVO> selectAccountList(AccountVO accountVO) {
 		return accountDAO.selectAccountList(accountVO);
 	}
 
@@ -44,10 +43,9 @@ public class AccountServiceImpl implements AccountService {
 	 * @param accountVO
 	 *            조회할 정보가 담긴 AccountVO
 	 * @return 목록 총 개수
-	 * @throws Exception
 	 */
 	@Override
-	public int selectAccountListTotalCnt(AccountVO accountVO) throws Exception {
+	public int selectAccountListTotalCnt(AccountVO accountVO) {
 		return accountDAO.selectAccountListTotalCnt(accountVO);
 	}
 
@@ -57,10 +55,9 @@ public class AccountServiceImpl implements AccountService {
 	 * @param accountVO
 	 *            조회할 정보가 담긴 AccountVO
 	 * @return AccountVO
-	 * @throws Exception
 	 */
 	@Override
-	public AccountVO selectAccount(AccountVO accountVO) throws Exception {
+	public AccountVO selectAccount(AccountVO accountVO) {
 		return accountDAO.selectAccount(accountVO);
 	}
 
@@ -69,10 +66,9 @@ public class AccountServiceImpl implements AccountService {
 	 * 
 	 * @param accountVO
 	 *            등록할 정보가 담긴 AccountVO
-	 * @throws Exception
 	 */
 	@Override
-	public void insertAccount(AccountVO accountVO) throws Exception {
+	public void insertAccount(AccountVO accountVO) {
 		accountDAO.insertAccount(accountVO);
 	}
 
@@ -81,10 +77,9 @@ public class AccountServiceImpl implements AccountService {
 	 * 
 	 * @param accountVO
 	 *            수정할 정보가 담긴 AccountVO
-	 * @throws Exception
 	 */
 	@Override
-	public void updateAccount(AccountVO accountVO) throws Exception {
+	public void updateAccount(AccountVO accountVO) {
 		accountDAO.updateAccount(accountVO);
 	}
 
@@ -93,10 +88,9 @@ public class AccountServiceImpl implements AccountService {
 	 * 
 	 * @param accountVO
 	 *            삭제할 정보가 담긴 AccountVO
-	 * @throws Exception
 	 */
 	@Override
-	public void deleteAccount(AccountVO accountVO) throws Exception {
+	public void deleteAccount(AccountVO accountVO) {
 		accountDAO.deleteAccount(accountVO);
 	}
 
