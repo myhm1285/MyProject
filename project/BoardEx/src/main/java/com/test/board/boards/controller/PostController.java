@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.test.board.boards.service.PostService;
 import com.test.board.boards.vo.PostVO;
@@ -48,11 +49,11 @@ public class PostController {
 	 *            ModelMap
 	 * @param postVO
 	 *            조회할 정보가 담긴 PostVO
+	 * 
 	 * @return "/boards/post_list"
-	 * @throws Exception
 	 */
 	@RequestMapping(value = "/{boardName}", method = RequestMethod.GET)
-	public String postList(@PathVariable("boardName") String boardName, ModelMap model, @ModelAttribute("searchVO") PostVO postVO) throws Exception {
+	public String postList(@PathVariable("boardName") String boardName, ModelMap model, @ModelAttribute("searchVO") PostVO postVO) {
 
 		// 0. 조건 세팅
 		postVO.setBoardIdx(this.getBoardIdx(boardName));
@@ -81,12 +82,12 @@ public class PostController {
 	 *            ModelMap
 	 * @param postVO
 	 *            조회할 정보가 담긴 PostVO
+	 * 
 	 * @return "/boards/board_view"
-	 * @throws Exception
 	 */
 	@RequestMapping(value = { "/{boardName}/{idx}", "/{idx}" }, method = RequestMethod.GET)
 	public String postView(@PathVariable("boardName") String boardName, @PathVariable("idx") int idx, ModelMap model,
-			@ModelAttribute("searchVO") PostVO postVO) throws Exception {
+			@ModelAttribute("searchVO") PostVO postVO) {
 
 		// 0. 조건 세팅
 		postVO.setBoardIdx(this.getBoardIdx(boardName));
@@ -110,11 +111,35 @@ public class PostController {
 	 *            ModelMap
 	 * @param postVO
 	 *            조회할 정보가 담긴 PostVO
+	 * 
 	 * @return "/boards/board_write"
-	 * @throws Exception
 	 */
 	@RequestMapping(value = "/{boardName}/new", method = RequestMethod.GET)
-	public String postWrite(@PathVariable("boardName") String boardName, ModelMap model, @ModelAttribute("searchVO") PostVO postVO) throws Exception {
+	public String postWrite(@PathVariable("boardName") String boardName, ModelMap model, @ModelAttribute("searchVO") PostVO postVO) {
+
+		// 0. 조건 세팅
+		postVO.setBoardIdx(this.getBoardIdx(boardName));
+
+		return "/boards/board_write";
+	}
+
+	/**
+	 * 게시글 수정 화면 조회
+	 * 
+	 * @param boardName
+	 *            게시판 이름
+	 * @param idx
+	 *            게시글 일련번호
+	 * @param model
+	 *            ModelMap
+	 * @param postVO
+	 *            조회할 정보가 담긴 PostVO
+	 * 
+	 * @return "/boards/board_write"
+	 */
+	@RequestMapping(value = "/{boardName}/{idx}/modify", method = RequestMethod.GET)
+	public String postModify(@PathVariable("boardName") String boardName, @PathVariable("idx") int idx, ModelMap model,
+			@ModelAttribute("searchVO") PostVO postVO) {
 
 		// 0. 조건 세팅
 		postVO.setBoardIdx(this.getBoardIdx(boardName));
@@ -130,45 +155,28 @@ public class PostController {
 	 * @param model
 	 *            ModelMap
 	 * @param postVO
-	 *            조회할 정보가 담긴 PostVO
-	 * @return "redirect:/{boardName}"
-	 * @throws Exception
+	 *            등록할 정보가 담긴 PostVO
+	 * 
+	 * @return 성공이면 Y, 실패이면 N
 	 */
 	@RequestMapping(value = "/{boardName}", method = RequestMethod.PUT)
+	@ResponseBody
 	public String postWriteProc(@PathVariable("boardName") String boardName, ModelMap model, @ModelAttribute("searchVO") PostVO postVO)
 			throws Exception {
 
-		// 0. 조건 세팅
-		postVO.setBoardIdx(this.getBoardIdx(boardName));
+		try {
+			// 0. 조건 세팅
+			postVO.setBoardIdx(this.getBoardIdx(boardName));
 
-		// 1. 등록
-		postService.insertPost(postVO);
+			// 1. 등록
+			postService.insertPost(postVO);
 
-		return "redirect:/" + boardName;
-	}
+		} catch (Exception e) {
+			LOGGER.debug("Exception : {}", e.getLocalizedMessage());
+			return "N";
+		}
 
-	/**
-	 * 게시글 수정 화면 조회
-	 * 
-	 * @param boardName
-	 *            게시판 이름
-	 * @param idx
-	 *            게시글 일련번호
-	 * @param model
-	 *            ModelMap
-	 * @param postVO
-	 *            조회할 정보가 담긴 PostVO
-	 * @return "/boards/board_write"
-	 * @throws Exception
-	 */
-	@RequestMapping(value = "/{boardName}/{idx}/modify", method = RequestMethod.GET)
-	public String postModify(@PathVariable("boardName") String boardName, @PathVariable("idx") int idx, ModelMap model,
-			@ModelAttribute("searchVO") PostVO postVO) throws Exception {
-
-		// 0. 조건 세팅
-		postVO.setBoardIdx(this.getBoardIdx(boardName));
-
-		return "/boards/board_write";
+		return "Y";
 	}
 
 	/**
@@ -181,21 +189,63 @@ public class PostController {
 	 * @param model
 	 *            ModelMap
 	 * @param postVO
-	 *            조회할 정보가 담긴 PostVO
-	 * @return "redirect:/{boardName}"
-	 * @throws Exception
+	 *            수정할 정보가 담긴 PostVO
+	 * 
+	 * @return 성공이면 Y, 실패이면 N
 	 */
 	@RequestMapping(value = "/{boardName}/{idx}", method = RequestMethod.POST)
+	@ResponseBody
 	public String postModifyProc(@PathVariable("boardName") String boardName, @PathVariable("idx") int idx, ModelMap model,
-			@ModelAttribute("searchVO") PostVO postVO) throws Exception {
+			@ModelAttribute("searchVO") PostVO postVO) {
 
-		// 0. 조건 세팅
-		postVO.setBoardIdx(this.getBoardIdx(boardName));
+		try {
+			// 0. 조건 세팅
+			postVO.setBoardIdx(this.getBoardIdx(boardName));
 
-		// 1. 수정
-		postService.updatePost(postVO);
+			// 1. 수정
+			postService.updatePost(postVO);
 
-		return "redirect:/" + boardName;
+		} catch (Exception e) {
+			LOGGER.debug("Exception : {}", e.getLocalizedMessage());
+			return "N";
+		}
+
+		return "Y";
+	}
+
+	/**
+	 * 게시글 삭제
+	 * 
+	 * @param boardName
+	 *            게시판 이름
+	 * @param idx
+	 *            게시글 일련번호
+	 * @param model
+	 *            ModelMap
+	 * @param postVO
+	 *            삭제할 정보가 담긴 PostVO
+	 * 
+	 * @return 성공이면 Y, 실패이면 N
+	 */
+	@RequestMapping(value = "/{boardName}/{idx}", method = RequestMethod.DELETE)
+	@ResponseBody
+	public String postDeleteProc(@PathVariable("boardName") String boardName, @PathVariable("idx") int idx, ModelMap model,
+			@ModelAttribute("searchVO") PostVO postVO) {
+
+		try {
+
+			// 0. 조건 세팅
+			postVO.setBoardIdx(this.getBoardIdx(boardName));
+
+			// 1. 삭제
+			postService.deletePost(postVO);
+
+		} catch (Exception e) {
+			LOGGER.debug("Exception : {}", e.getLocalizedMessage());
+			return "N";
+		}
+
+		return "Y";
 	}
 
 	/**
@@ -204,9 +254,8 @@ public class PostController {
 	 * @param boardName
 	 *            게시판 이름
 	 * @return 게시판 일련번호
-	 * @throws Exception
 	 */
-	private int getBoardIdx(String boardName) throws Exception {
+	private int getBoardIdx(String boardName) {
 		BoardVO boardVO = new BoardVO();
 		boardVO.setName(boardName);
 		boardVO = boardService.selectBoard(boardVO);
