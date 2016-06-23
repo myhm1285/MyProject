@@ -8,8 +8,8 @@
 		<![CDATA[
 		/* board_SQL.selectBoardList */
 		SELECT
-			B.IDX, B.NAME, B.ORDER, B. POST_CNT, B.IS_USE,
-			B.IS_DEL, B.NOTE,
+			B.IDX, B.NAME, B.ORDER, B.POST_CNT, B.RIGHT,
+			B.IS_OPEN, B.IS_DEL, B.NOTE,
 			DATE_FORMAT(B.WRITE_DT, '%Y-%m-%d %H:%i') AS WRITE_DT,
 			DATE_FORMAT(B.MODIFY_DT, '%Y-%m-%d %H:%i') AS MODIFY_DT
 		FROM
@@ -31,6 +31,23 @@
 			BOARD AS B
 		]]>
 	</select>
+	
+	<!-- 게시판 조회 -->
+	<select id="selectBoard" parameterType="BoardVO" resultMap="boardResult">
+		<![CDATA[
+		/* board_SQL.selectBoard */
+		SELECT
+			B.IDX, B.NAME, B.ORDER, B.POST_CNT, B.RIGHT,
+			B.IS_OPEN, B.IS_DEL, B.NOTE,
+			DATE_FORMAT(B.WRITE_DT, '%Y-%m-%d %H:%i') AS WRITE_DT,
+			DATE_FORMAT(B.MODIFY_DT, '%Y-%m-%d %H:%i') AS MODIFY_DT
+		FROM
+			BOARD AS B
+		WHERE
+			B.NAME = #{name}
+		LIMIT 1
+		]]>
+	</select>
 
 	<!-- 게시판 등록 -->
 	<insert id="insertBoard" parameterType="BoardVO">
@@ -38,11 +55,11 @@
 		/* board_SQL.insertBoard */
 		INSERT INTO BOARD
 		(
-			NAME, ORDER, NOTE
+			NAME, ORDER, RIGHT, NOTE
 		)
 		VALUES
 		(
-			#{name}, #{order}, #{note, jdbcType=VARCHAR}
+			#{name}, #{order}, #{right}, #{note, jdbcType=VARCHAR}
 		)
 		]]>
 	</insert>
@@ -56,7 +73,8 @@
 		SET
 			NAME = #{name},
 			ORDER = #{order},
-			IS_USE = #{isUse},
+			RIGHT = #{right},
+			IS_OPEN = #{isOpen},
 			NOTE = #{note, jdbcType=VARCHAR},
 			MODIFY_DT = NOW()
 		WHERE

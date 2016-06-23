@@ -19,7 +19,7 @@
 			LEFT OUTER JOIN ACCOUNT AS A
 			ON (P.WRITER_IDX = A.IDX)
 		WHERE
-			P.BOARD_IDX = #{boardIdx}
+			B.BOARD_IDX = #{boardIdx}
 			AND B.IS_DEL = 'N'
 			AND P.IS_DEL = 'N'
 		]]>
