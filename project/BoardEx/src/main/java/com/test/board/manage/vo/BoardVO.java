@@ -23,8 +23,11 @@ public class BoardVO extends BaseVO {
 	/** 게시물 개수 */
 	private int postCnt;
 
-	/** 사용여부 */
-	private String isUse;
+	/** 권한 */
+	private String right;
+
+	/** 공개여부 */
+	private String isOpen;
 
 	/** 삭제여부 */
 	private String isDel;
@@ -99,18 +102,33 @@ public class BoardVO extends BaseVO {
 	}
 
 	/**
-	 * @return the isUse
+	 * @return the right
 	 */
-	public String getIsUse() {
-		return isUse;
+	public String getRight() {
+		return right;
 	}
 
 	/**
-	 * @param isUse
-	 *            the isUse to set
+	 * @param right
+	 *            the right to set
 	 */
-	public void setIsUse(String isUse) {
-		this.isUse = isUse;
+	public void setRight(String right) {
+		this.right = right;
+	}
+
+	/**
+	 * @return the isOpen
+	 */
+	public String getIsOpen() {
+		return isOpen;
+	}
+
+	/**
+	 * @param isOpen
+	 *            the isOpen to set
+	 */
+	public void setIsOpen(String isOpen) {
+		this.isOpen = isOpen;
 	}
 
 	/**
