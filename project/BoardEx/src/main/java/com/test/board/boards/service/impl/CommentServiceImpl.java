@@ -32,10 +32,9 @@ public class CommentServiceImpl implements CommentService {
 	 * @param commentVO
 	 *            조회할 정보가 담긴 CommentVO
 	 * @return List<CommentVO>
-	 * @throws Exception
 	 */
 	@Override
-	public List<CommentVO> selectCommentList(CommentVO commentVO) throws Exception {
+	public List<CommentVO> selectCommentList(CommentVO commentVO) {
 
 		// 게시물 시작 번호
 		int listNo = BoardUtil.getListNo(commentVO.getTotalCnt(), commentVO.getPg(), commentVO.getCntPerPage());
@@ -57,10 +56,9 @@ public class CommentServiceImpl implements CommentService {
 	 * @param commentVO
 	 *            조회할 정보가 담긴 CommentVO
 	 * @return 목록 총 개수
-	 * @throws Exception
 	 */
 	@Override
-	public int selectCommentListTotalCnt(CommentVO commentVO) throws Exception {
+	public int selectCommentListTotalCnt(CommentVO commentVO) {
 		return commentDAO.selectCommentListTotalCnt(commentVO);
 	}
 
@@ -70,10 +68,9 @@ public class CommentServiceImpl implements CommentService {
 	 * @param commentVO
 	 *            조회할 정보가 담긴 CommentVO
 	 * @return CommentVO
-	 * @throws Exception
 	 */
 	@Override
-	public CommentVO selectComment(CommentVO commentVO) throws Exception {
+	public CommentVO selectComment(CommentVO commentVO) {
 		return commentDAO.selectComment(commentVO);
 	}
 
@@ -82,10 +79,9 @@ public class CommentServiceImpl implements CommentService {
 	 * 
 	 * @param commentVO
 	 *            등록할 정보가 담긴 CommentVO
-	 * @throws Exception
 	 */
 	@Override
-	public void insertComment(CommentVO commentVO) throws Exception {
+	public void insertComment(CommentVO commentVO) {
 		commentDAO.insertComment(commentVO);
 	}
 
@@ -94,10 +90,9 @@ public class CommentServiceImpl implements CommentService {
 	 * 
 	 * @param commentVO
 	 *            삭제할 정보가 담긴 CommentVO
-	 * @throws Exception
 	 */
 	@Override
-	public void deleteComment(CommentVO commentVO) throws Exception {
+	public void deleteComment(CommentVO commentVO) {
 		commentDAO.deleteComment(commentVO);
 	}
 }

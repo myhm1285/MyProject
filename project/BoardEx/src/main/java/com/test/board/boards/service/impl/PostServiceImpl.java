@@ -32,10 +32,9 @@ public class PostServiceImpl implements PostService {
 	 * @param postVO
 	 *            조회할 정보가 담긴 PostVO
 	 * @return List<PostVO>
-	 * @throws Exception
 	 */
 	@Override
-	public List<PostVO> selectPostList(PostVO postVO) throws Exception {
+	public List<PostVO> selectPostList(PostVO postVO) {
 
 		// 게시물 시작 번호
 		int listNo = BoardUtil.getListNo(postVO.getTotalCnt(), postVO.getPg(), postVO.getCntPerPage());
@@ -57,10 +56,9 @@ public class PostServiceImpl implements PostService {
 	 * @param postVO
 	 *            조회할 정보가 담긴 PostVO
 	 * @return 목록 총 개수
-	 * @throws Exception
 	 */
 	@Override
-	public int selectPostListTotalCnt(PostVO postVO) throws Exception {
+	public int selectPostListTotalCnt(PostVO postVO) {
 		return postDAO.selectPostListTotalCnt(postVO);
 	}
 
@@ -70,10 +68,9 @@ public class PostServiceImpl implements PostService {
 	 * @param postVO
 	 *            조회할 정보가 담긴 PostVO
 	 * @return PostVO
-	 * @throws Exception
 	 */
 	@Override
-	public PostVO selectPost(PostVO postVO) throws Exception {
+	public PostVO selectPost(PostVO postVO) {
 		return postDAO.selectPost(postVO);
 	}
 
@@ -82,10 +79,9 @@ public class PostServiceImpl implements PostService {
 	 * 
 	 * @param postVO
 	 *            등록할 정보가 담긴 PostVO
-	 * @throws Exception
 	 */
 	@Override
-	public void insertPost(PostVO postVO) throws Exception {
+	public void insertPost(PostVO postVO) {
 		postDAO.insertPost(postVO);
 	}
 
@@ -94,10 +90,9 @@ public class PostServiceImpl implements PostService {
 	 * 
 	 * @param postVO
 	 *            수정할 정보가 담긴 PostVO
-	 * @throws Exception
 	 */
 	@Override
-	public void updatePost(PostVO postVO) throws Exception {
+	public void updatePost(PostVO postVO) {
 		postDAO.updatePost(postVO);
 	}
 
@@ -106,10 +101,9 @@ public class PostServiceImpl implements PostService {
 	 * 
 	 * @param postVO
 	 *            삭제할 정보가 담긴 PostVO
-	 * @throws Exception
 	 */
 	@Override
-	public void deletePost(PostVO postVO) throws Exception {
+	public void deletePost(PostVO postVO) {
 		postDAO.deletePost(postVO);
 	}
 }

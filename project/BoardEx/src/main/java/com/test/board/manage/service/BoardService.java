@@ -19,9 +19,17 @@ public interface BoardService {
 	 * @param boardVO
 	 *            조회할 정보가 담긴 BoardVO
 	 * @return List<BoardVO>
-	 * @throws Exception
 	 */
-	public List<BoardVO> selectBoardList(BoardVO boardVO) throws Exception;
+	public List<BoardVO> selectBoardList(BoardVO boardVO);
+
+	/**
+	 * 게시판 목록 총 개수 조회
+	 * 
+	 * @param boardVO
+	 *            조회할 정보가 담긴 BoardVO
+	 * @return 목록 총 개수
+	 */
+	public int selectBoardListTotalCnt(BoardVO boardVO);
 
 	/**
 	 * 게시판 조회
@@ -29,8 +37,31 @@ public interface BoardService {
 	 * @param boardVO
 	 *            조회할 정보가 담긴 BoardVO
 	 * @return BoardVO
-	 * @throws Exception
 	 */
-	public BoardVO selectBoard(BoardVO boardVO) throws Exception;
+	public BoardVO selectBoard(BoardVO boardVO);
+
+	/**
+	 * 게시판 등록
+	 * 
+	 * @param boardVO
+	 *            등록할 정보가 담긴 BoardVO
+	 */
+	public void insertBoard(BoardVO boardVO);
+
+	/**
+	 * 게시판 수정
+	 * 
+	 * @param boardVO
+	 *            수정할 정보가 담긴 BoardVO
+	 */
+	public void updateBoard(BoardVO boardVO);
+
+	/**
+	 * 게시판 삭제
+	 * 
+	 * @param boardVO
+	 *            삭제할 정보가 담긴 BoardVO
+	 */
+	public void deleteBoard(BoardVO boardVO);
 
 }

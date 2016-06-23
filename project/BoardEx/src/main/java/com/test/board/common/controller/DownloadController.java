@@ -41,10 +41,9 @@ public class DownloadController {
 	 * @param session
 	 *            HttpSession
 	 * @return downloadView
-	 * @throws Exception
 	 */
 	@RequestMapping(value = "/common/download.do")
-	public ModelAndView download(ModelMap model, @ModelAttribute("downloadVO") DownloadVO downloadVO, HttpSession session) throws Exception {
+	public ModelAndView download(ModelMap model, @ModelAttribute("downloadVO") DownloadVO downloadVO, HttpSession session) {
 
 		LOGGER.debug("{}", downloadVO.toString());
 
