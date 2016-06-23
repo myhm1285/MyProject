@@ -51,4 +51,17 @@ public class BoardServiceImpl implements BoardService {
 		return resultVOList;
 	}
 
+	/**
+	 * 게시판 조회
+	 * 
+	 * @param boardVO
+	 *            조회할 정보가 담긴 BoardVO
+	 * @return BoardVO
+	 * @throws Exception
+	 */
+	@Override
+	public BoardVO selectBoard(BoardVO boardVO) throws Exception {
+		return boardDAO.selectBoard(boardVO);
+	}
+
 }

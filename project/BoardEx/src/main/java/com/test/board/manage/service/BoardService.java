@@ -23,4 +23,14 @@ public interface BoardService {
 	 */
 	public List<BoardVO> selectBoardList(BoardVO boardVO) throws Exception;
 
+	/**
+	 * 게시판 조회
+	 * 
+	 * @param boardVO
+	 *            조회할 정보가 담긴 BoardVO
+	 * @return BoardVO
+	 * @throws Exception
+	 */
+	public BoardVO selectBoard(BoardVO boardVO) throws Exception;
+
 }
