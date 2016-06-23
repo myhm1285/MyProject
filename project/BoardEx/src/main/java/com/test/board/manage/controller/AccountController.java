@@ -42,7 +42,6 @@ public class AccountController {
 	 *            ModelMap
 	 * @param accountVO
 	 *            조회할 정보가 담긴 accountVO
-	 * 
 	 * @return "/account/account_list"
 	 */
 	@RequestMapping(value = "/account", method = RequestMethod.GET)
@@ -70,7 +69,6 @@ public class AccountController {
 	 *            ModelMap
 	 * @param accountVO
 	 *            조회할 정보가 담긴 accountVO
-	 * 
 	 * @return "/account/account_write"
 	 */
 	@RequestMapping(value = "/account/new", method = RequestMethod.GET)
@@ -88,7 +86,6 @@ public class AccountController {
 	 *            ModelMap
 	 * @param accountVO
 	 *            조회할 정보가 담긴 accountVO
-	 * 
 	 * @return "/account/account_write"
 	 */
 	@RequestMapping(value = "/account/{idx}/edit", method = RequestMethod.GET)
@@ -111,7 +108,6 @@ public class AccountController {
 	 *            ModelMap
 	 * @param accountVO
 	 *            조회할 정보가 담긴 accountVO
-	 * 
 	 * @return 성공이면 Y, 실패이면 N
 	 */
 	@RequestMapping(value = "/account", method = RequestMethod.PUT)
@@ -139,7 +135,6 @@ public class AccountController {
 	 *            ModelMap
 	 * @param accountVO
 	 *            수정할 정보가 담긴 accountVO
-	 * 
 	 * @return 성공이면 Y, 실패이면 N
 	 */
 	@RequestMapping(value = "/account/{idx}", method = RequestMethod.POST)
@@ -170,7 +165,6 @@ public class AccountController {
 	 *            ModelMap
 	 * @param accountVO
 	 *            삭제할 정보가 담긴 accountVO
-	 * 
 	 * @return 성공이면 Y, 실패이면 N
 	 */
 	@RequestMapping(value = "/account/{idx}", method = RequestMethod.DELETE)

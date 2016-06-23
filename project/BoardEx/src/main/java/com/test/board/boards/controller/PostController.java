@@ -49,7 +49,6 @@ public class PostController {
 	 *            ModelMap
 	 * @param postVO
 	 *            조회할 정보가 담긴 PostVO
-	 * 
 	 * @return "/boards/post_list"
 	 */
 	@RequestMapping(value = "/{boardName}", method = RequestMethod.GET)
@@ -82,7 +81,6 @@ public class PostController {
 	 *            ModelMap
 	 * @param postVO
 	 *            조회할 정보가 담긴 PostVO
-	 * 
 	 * @return "/boards/board_view"
 	 */
 	@RequestMapping(value = { "/{boardName}/{idx}", "/{idx}" }, method = RequestMethod.GET)
@@ -111,7 +109,6 @@ public class PostController {
 	 *            ModelMap
 	 * @param postVO
 	 *            조회할 정보가 담긴 PostVO
-	 * 
 	 * @return "/boards/board_write"
 	 */
 	@RequestMapping(value = "/{boardName}/new", method = RequestMethod.GET)
@@ -134,7 +131,6 @@ public class PostController {
 	 *            ModelMap
 	 * @param postVO
 	 *            조회할 정보가 담긴 PostVO
-	 * 
 	 * @return "/boards/board_write"
 	 */
 	@RequestMapping(value = "/{boardName}/{idx}/modify", method = RequestMethod.GET)
@@ -156,7 +152,6 @@ public class PostController {
 	 *            ModelMap
 	 * @param postVO
 	 *            등록할 정보가 담긴 PostVO
-	 * 
 	 * @return 성공이면 Y, 실패이면 N
 	 */
 	@RequestMapping(value = "/{boardName}", method = RequestMethod.PUT)
@@ -190,7 +185,6 @@ public class PostController {
 	 *            ModelMap
 	 * @param postVO
 	 *            수정할 정보가 담긴 PostVO
-	 * 
 	 * @return 성공이면 Y, 실패이면 N
 	 */
 	@RequestMapping(value = "/{boardName}/{idx}", method = RequestMethod.POST)
@@ -224,7 +218,6 @@ public class PostController {
 	 *            ModelMap
 	 * @param postVO
 	 *            삭제할 정보가 담긴 PostVO
-	 * 
 	 * @return 성공이면 Y, 실패이면 N
 	 */
 	@RequestMapping(value = "/{boardName}/{idx}", method = RequestMethod.DELETE)
