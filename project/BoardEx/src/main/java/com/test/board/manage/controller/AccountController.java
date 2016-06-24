@@ -25,7 +25,7 @@ import com.test.board.util.PropertyUtil;
  * @version 1.0
  */
 @Controller
-@RequestMapping(value = "/setting")
+@RequestMapping(value = "/manage/account")
 public class AccountController {
 
 	/** LOGGER */
@@ -41,16 +41,16 @@ public class AccountController {
 	 * @param model
 	 *            ModelMap
 	 * @param accountVO
-	 *            조회할 정보가 담긴 accountVO
-	 * @return "/account/account_list"
+	 *            조회할 정보가 담긴 AccountVO
+	 * @return "/manage/account_list"
 	 */
-	@RequestMapping(value = "/account", method = RequestMethod.GET)
+	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String accountList(ModelMap model, @ModelAttribute("searchVO") AccountVO accountVO) {
 
 		// 0. 조건 세팅
 		accountVO.setCntPerPage(PropertyUtil.getPropertyInt("account", "account.account.accountList.cntPerPage", 10));
 
-		// 1. 총 게시물 수
+		// 1. 총 계정 수
 		accountVO.setTotalCnt(accountService.selectAccountListTotalCnt(accountVO));
 
 		// 2. 목록
@@ -59,7 +59,7 @@ public class AccountController {
 		// 3. 페이징
 		model.addAttribute("paging", BoardUtil.getPaging(accountVO.getTotalCnt(), accountVO.getPg(), accountVO.getCntPerPage()));
 
-		return "/account/account_list";
+		return "/manage/account_list";
 	}
 
 	/**
@@ -68,13 +68,13 @@ public class AccountController {
 	 * @param model
 	 *            ModelMap
 	 * @param accountVO
-	 *            조회할 정보가 담긴 accountVO
-	 * @return "/account/account_write"
+	 *            조회할 정보가 담긴 AccountVO
+	 * @return "/manage/account_write"
 	 */
-	@RequestMapping(value = "/account/new", method = RequestMethod.GET)
+	@RequestMapping(value = "/new", method = RequestMethod.GET)
 	public String accountWrite(ModelMap model, @ModelAttribute("searchVO") AccountVO accountVO) {
 
-		return "/account/account_write";
+		return "/manage/account_write";
 	}
 
 	/**
@@ -85,10 +85,10 @@ public class AccountController {
 	 * @param model
 	 *            ModelMap
 	 * @param accountVO
-	 *            조회할 정보가 담긴 accountVO
-	 * @return "/account/account_write"
+	 *            조회할 정보가 담긴 AccountVO
+	 * @return "/manage/account_write"
 	 */
-	@RequestMapping(value = "/account/{idx}/edit", method = RequestMethod.GET)
+	@RequestMapping(value = "/{idx}/edit", method = RequestMethod.GET)
 	public String accountModify(@PathVariable("idx") int idx, ModelMap model, @ModelAttribute("searchVO") AccountVO accountVO) {
 
 		// 조회
@@ -98,7 +98,7 @@ public class AccountController {
 		}
 		model.addAttribute(resultVO);
 
-		return "/account/account_write";
+		return "/manage/account_write";
 	}
 
 	/**
@@ -107,10 +107,10 @@ public class AccountController {
 	 * @param model
 	 *            ModelMap
 	 * @param accountVO
-	 *            조회할 정보가 담긴 accountVO
+	 *            조회할 정보가 담긴 AccountVO
 	 * @return 성공이면 Y, 실패이면 N
 	 */
-	@RequestMapping(value = "/account", method = RequestMethod.PUT)
+	@RequestMapping(value = "", method = RequestMethod.PUT)
 	@ResponseBody
 	public String accountWriteProc(@PathVariable("idx") int idx, ModelMap model, @ModelAttribute("searchVO") AccountVO accountVO) {
 
@@ -134,10 +134,10 @@ public class AccountController {
 	 * @param model
 	 *            ModelMap
 	 * @param accountVO
-	 *            수정할 정보가 담긴 accountVO
+	 *            수정할 정보가 담긴 AccountVO
 	 * @return 성공이면 Y, 실패이면 N
 	 */
-	@RequestMapping(value = "/account/{idx}", method = RequestMethod.POST)
+	@RequestMapping(value = "/{idx}", method = RequestMethod.POST)
 	@ResponseBody
 	public String accountModifyProc(@PathVariable("idx") int idx, ModelMap model, @ModelAttribute("searchVO") AccountVO accountVO) {
 
@@ -164,10 +164,10 @@ public class AccountController {
 	 * @param model
 	 *            ModelMap
 	 * @param accountVO
-	 *            삭제할 정보가 담긴 accountVO
+	 *            삭제할 정보가 담긴 AccountVO
 	 * @return 성공이면 Y, 실패이면 N
 	 */
-	@RequestMapping(value = "/account/{idx}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/{idx}", method = RequestMethod.DELETE)
 	@ResponseBody
 	public String accountDeleteProc(@PathVariable("idx") int idx, ModelMap model, @ModelAttribute("searchVO") AccountVO accountVO) {
 

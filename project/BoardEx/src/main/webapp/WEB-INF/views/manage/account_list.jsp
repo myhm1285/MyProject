@@ -9,23 +9,23 @@
 function pageMove(pg) {
   var f = document.procForm;
   f.pg.value = pg;
-  f.action = "/board/boardList.do.do";
+  f.action = "/manage/board";
   f.submit();
 }
 // 검색
 function searchClick() {
   var f = document.procForm;
   f.pg.value = 1;
-  f.action = "/board/boardList.do.do";
+  f.action = "/manage/board";
   f.submit();
 }
 // 초기화
 function searchResetClick() {
-  location.href = "/board/boardList.do.do";
+  location.href = "/manage/board";
 }
 // 등록
 function writeClick() {
-  location.href = "/board/boardWrite.do";
+  location.href = "/manage/board/new";
 }
 // 엔터처리
 function enterEvent(e) {
@@ -34,8 +34,8 @@ function enterEvent(e) {
   }
 }
 // OS 타입 검색
-function searchOsType(osType) {
-  $("input[name='searchOsType']").val(osType);
+function searchSnsType(osType) {
+  $("input[name='searchSnsType']").val(osType);
   searchClick();
 }
 // 푸시 요청 상태 검색
@@ -53,7 +53,7 @@ function searchMsgContent() {
 <body>
   <form name="procForm" method="post">
     <input type="hidden" name="pg" value="1"/>
-    <input type="hidden" name="searchOsType" value=""/>
+    <input type="hidden" name="searchSnsType" value=""/>
     <input type="hidden" name="searchPushReqSts" value=""/>
     
     <jsp:include page="/WEB-INF/views/include/top.jsp"/>
@@ -79,29 +79,19 @@ function searchMsgContent() {
                 <div class="panel panel-default">
                   <div class="panel-heading">
                     <div class="btn-group" style="margin:5px;">
-                        <button type="button" class="btn btn-default">OS 타입</button>
+                        <button type="button" class="btn btn-default">SNS</button>
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                           <span class="caret"></span>
                           <span class="sr-only">Toggle Dropdown</span>
                         </button>
                         <ul class="dropdown-menu" role="menu">
-                          <li><a href="javascript:searchOsType('')">전체</a></li>
+                          <li><a href="javascript:searchSnsType('')">전체</a></li>
                           <li class="divider"></li>
-                          <li class=""><a href="javascript:searchOsType('A')">안드로이드</a></li>
-                          <li class=""><a href="javascript:searchOsType('I')">IOS</a></li>
-                        </ul>
-                    </div>
-                    <div class="btn-group" style="margin:5px;">
-                        <button type="button" class="btn btn-default">푸시 요청 상태</button>
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                          <span class="caret"></span>
-                          <span class="sr-only">Toggle Dropdown</span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu">
-                          <li><a href="javascript:searchPushReqSts('')">전체</a></li>
-                          <li class="divider"></li>
-                          <li class=""><a href="javascript:searchPushReqSts('Y')">요청</a></li>
-                          <li class=""><a href="javascript:searchPushReqSts('N')">미요청</a></li>
+                          <li class=""><a href="javascript:searchSnsType('-')">-</a></li>
+                          <li class=""><a href="javascript:searchSnsType('T')">Twitter</a></li>
+                          <li class=""><a href="javascript:searchSnsType('F')">Facebook</a></li>
+                          <li class=""><a href="javascript:searchSnsType('I')">Instagram</a></li>
+                          <li class=""><a href="javascript:searchSnsType('K')">Kakaotalk</a></li>
                         </ul>
                     </div>
                     <div class="input-group" style="max-width:300px;margin:5px;">
@@ -134,7 +124,7 @@ function searchMsgContent() {
                     <tbody>
                       <tr>
                       <td class="text-center">1</td>
-                      <td><a href="/board/boardView.do?sendIdx=1">메시지테스트1</a></td>
+                      <td><a href="/manage/boardView?sendIdx=1">메시지테스트1</a></td>
                       <td class="text-center">안드로이드</td>
                       <td class="text-center">2016-05-31</td>
                       <td class="text-center"><span class="label label-success">요청</span></td>
@@ -142,7 +132,7 @@ function searchMsgContent() {
                       </tr>
                       <tr>
                       <td class="text-center">2</td>
-                      <td><a href="/board/boardView.do?sendIdx=2">메시지테스트2</a></td>
+                      <td><a href="/manage/boardView?sendIdx=2">메시지테스트2</a></td>
                       <td class="text-center">아이폰</td>
                       <td class="text-center">2016-05-31</td>
                       <td class="text-center"><span class="label label-danger">미요청</span></td>
@@ -150,7 +140,7 @@ function searchMsgContent() {
                       </tr>
                       <tr>
                       <td class="text-center">3</td>
-                      <td><a href="/board/boardView.do?sendIdx=1">메시지테스트1</a></td>
+                      <td><a href="/manage/boardView?sendIdx=1">메시지테스트1</a></td>
                       <td class="text-center">안드로이드</td>
                       <td class="text-center">2016-05-31</td>
                       <td class="text-center"><span class="label label-success">요청</span></td>
@@ -158,7 +148,7 @@ function searchMsgContent() {
                       </tr>
                       <tr>
                       <td class="text-center">4</td>
-                      <td><a href="/board/boardView.do?sendIdx=2">메시지테스트2</a></td>
+                      <td><a href="/manage/boardView?sendIdx=2">메시지테스트2</a></td>
                       <td class="text-center">아이폰</td>
                       <td class="text-center">2016-05-31</td>
                       <td class="text-center"><span class="label label-danger">미요청</span></td>
@@ -166,7 +156,7 @@ function searchMsgContent() {
                       </tr>
                       <tr>
                       <td class="text-center">5</td>
-                      <td><a href="/board/boardView.do?sendIdx=1">메시지테스트1</a></td>
+                      <td><a href="/manage/boardView?sendIdx=1">메시지테스트1</a></td>
                       <td class="text-center">안드로이드</td>
                       <td class="text-center">2016-05-31</td>
                       <td class="text-center"><span class="label label-success">요청</span></td>
@@ -174,7 +164,7 @@ function searchMsgContent() {
                       </tr>
                       <tr>
                       <td class="text-center">6</td>
-                      <td><a href="/board/boardView.do?sendIdx=2">메시지테스트2</a></td>
+                      <td><a href="/manage/boardView?sendIdx=2">메시지테스트2</a></td>
                       <td class="text-center">아이폰</td>
                       <td class="text-center">2016-05-31</td>
                       <td class="text-center"><span class="label label-danger">미요청</span></td>
@@ -182,7 +172,7 @@ function searchMsgContent() {
                       </tr>
                       <tr>
                       <td class="text-center">7</td>
-                      <td><a href="/board/boardView.do?sendIdx=1">메시지테스트1</a></td>
+                      <td><a href="/manage/boardView?sendIdx=1">메시지테스트1</a></td>
                       <td class="text-center">안드로이드</td>
                       <td class="text-center">2016-05-31</td>
                       <td class="text-center"><span class="label label-success">요청</span></td>
@@ -190,7 +180,7 @@ function searchMsgContent() {
                       </tr>
                       <tr>
                       <td class="text-center">8</td>
-                      <td><a href="/board/boardView.do?sendIdx=2">메시지테스트2</a></td>
+                      <td><a href="/manage/boardView?sendIdx=2">메시지테스트2</a></td>
                       <td class="text-center">아이폰</td>
                       <td class="text-center">2016-05-31</td>
                       <td class="text-center"><span class="label label-danger">미요청</span></td>
@@ -198,7 +188,7 @@ function searchMsgContent() {
                       </tr>
                       <tr>
                       <td class="text-center">9</td>
-                      <td><a href="/board/boardView.do?sendIdx=1">메시지테스트1</a></td>
+                      <td><a href="/manage/boardView?sendIdx=1">메시지테스트1</a></td>
                       <td class="text-center">안드로이드</td>
                       <td class="text-center">2016-05-31</td>
                       <td class="text-center"><span class="label label-success">요청</span></td>
@@ -206,7 +196,7 @@ function searchMsgContent() {
                       </tr>
                       <tr>
                       <td class="text-center">10</td>
-                      <td><a href="/board/boardView.do?sendIdx=2">메시지테스트2</a></td>
+                      <td><a href="/manage/boardView?sendIdx=2">메시지테스트2</a></td>
                       <td class="text-center">아이폰</td>
                       <td class="text-center">2016-05-31</td>
                       <td class="text-center"><span class="label label-danger">미요청</span></td>

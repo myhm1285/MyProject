@@ -2,6 +2,7 @@ package com.test.board.manage.controller;
 
 import javax.annotation.Resource;
 
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -14,8 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.test.board.manage.service.BoardService;
 import com.test.board.manage.vo.BoardVO;
-import com.test.board.util.BoardUtil;
-import com.test.board.util.PropertyUtil;
 
 /**
  * 게시판 Controller
@@ -25,7 +24,7 @@ import com.test.board.util.PropertyUtil;
  * @version 1.0
  */
 @Controller
-@RequestMapping(value = "/setting")
+@RequestMapping(value = "/manage/board")
 public class BoardController {
 
 	/** LOGGER */
@@ -41,25 +40,36 @@ public class BoardController {
 	 * @param model
 	 *            ModelMap
 	 * @param boardVO
-	 *            조회할 정보가 담긴 boardVO
-	 * @return "/board/board_list"
+	 *            조회할 정보가 담긴 BoardVO
+	 * @return "/manage/board_list"
 	 */
-	@RequestMapping(value = "/board", method = RequestMethod.GET)
+	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String boardList(ModelMap model, @ModelAttribute("searchVO") BoardVO boardVO) {
 
-		// 0. 조건 세팅
-		boardVO.setCntPerPage(PropertyUtil.getPropertyInt("board", "board.board.boardList.cntPerPage", 10));
+		return "/manage/board_list";
+	}
 
-		// 1. 총 게시물 수
-		boardVO.setTotalCnt(boardService.selectBoardListTotalCnt(boardVO));
+	/**
+	 * 게시판 목록 조회 (Ajax)
+	 * 
+	 * @param boardVO
+	 *            조회할 정보가 담긴 BoardVO
+	 * @return jsonObj
+	 */
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "/ajax", method = RequestMethod.GET)
+	@ResponseBody
+	public JSONObject boardListAjax(@ModelAttribute("searchVO") BoardVO boardVO) {
+
+		JSONObject jsonObj = new JSONObject();
+
+		// 1. 총 게시판 수
+		jsonObj.put("boardListTotalCnt", boardService.selectBoardListTotalCnt(boardVO));
 
 		// 2. 목록
-		model.addAttribute(boardService.selectBoardList(boardVO));
+		jsonObj.put("boardVOList", boardService.selectBoardList(boardVO));
 
-		// 3. 페이징
-		model.addAttribute("paging", BoardUtil.getPaging(boardVO.getTotalCnt(), boardVO.getPg(), boardVO.getCntPerPage()));
-
-		return "/board/board_list";
+		return jsonObj;
 	}
 
 	/**
@@ -68,13 +78,13 @@ public class BoardController {
 	 * @param model
 	 *            ModelMap
 	 * @param boardVO
-	 *            조회할 정보가 담긴 boardVO
-	 * @return "/board/board_write"
+	 *            조회할 정보가 담긴 BoardVO
+	 * @return "/manage/board_write"
 	 */
-	@RequestMapping(value = "/board/new", method = RequestMethod.GET)
+	@RequestMapping(value = "/new", method = RequestMethod.GET)
 	public String boardWrite(ModelMap model, @ModelAttribute("searchVO") BoardVO boardVO) {
 
-		return "/board/board_write";
+		return "/manage/board_write";
 	}
 
 	/**
@@ -85,21 +95,21 @@ public class BoardController {
 	 * @param model
 	 *            ModelMap
 	 * @param boardVO
-	 *            조회할 정보가 담긴 boardVO
+	 *            조회할 정보가 담긴 BoardVO
 	 * 
-	 * @return "/board/board_write"
+	 * @return "/manage/board_write"
 	 */
-	@RequestMapping(value = "/board/{idx}/edit", method = RequestMethod.GET)
+	@RequestMapping(value = "/{idx}/edit", method = RequestMethod.GET)
 	public String boardModify(@PathVariable("idx") int idx, ModelMap model, @ModelAttribute("searchVO") BoardVO boardVO) {
 
 		// 조회
 		BoardVO resultVO = boardService.selectBoard(boardVO);
 		if (resultVO == null) {
-			return "redirect:/board";
+			return "/common/404";
 		}
 		model.addAttribute(resultVO);
 
-		return "/board/board_write";
+		return "/manage/board_write";
 	}
 
 	/**
@@ -108,10 +118,10 @@ public class BoardController {
 	 * @param model
 	 *            ModelMap
 	 * @param boardVO
-	 *            조회할 정보가 담긴 boardVO
+	 *            조회할 정보가 담긴 BoardVO
 	 * @return 성공이면 Y, 실패이면 N
 	 */
-	@RequestMapping(value = "/board", method = RequestMethod.PUT)
+	@RequestMapping(value = "", method = RequestMethod.PUT)
 	@ResponseBody
 	public String boardWriteProc(@PathVariable("idx") int idx, ModelMap model, @ModelAttribute("searchVO") BoardVO boardVO) {
 
@@ -135,10 +145,10 @@ public class BoardController {
 	 * @param model
 	 *            ModelMap
 	 * @param boardVO
-	 *            수정할 정보가 담긴 boardVO
+	 *            수정할 정보가 담긴 BoardVO
 	 * @return 성공이면 Y, 실패이면 N
 	 */
-	@RequestMapping(value = "/board/{idx}", method = RequestMethod.POST)
+	@RequestMapping(value = "/{idx}", method = RequestMethod.POST)
 	@ResponseBody
 	public String boardModifyProc(@PathVariable("idx") int idx, ModelMap model, @ModelAttribute("searchVO") BoardVO boardVO) {
 
@@ -165,10 +175,10 @@ public class BoardController {
 	 * @param model
 	 *            ModelMap
 	 * @param boardVO
-	 *            삭제할 정보가 담긴 boardVO
+	 *            삭제할 정보가 담긴 BoardVO
 	 * @return 성공이면 Y, 실패이면 N
 	 */
-	@RequestMapping(value = "/board/{idx}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/{idx}", method = RequestMethod.DELETE)
 	@ResponseBody
 	public String boardDeleteProc(@PathVariable("idx") int idx, ModelMap model, @ModelAttribute("searchVO") BoardVO boardVO) {
 

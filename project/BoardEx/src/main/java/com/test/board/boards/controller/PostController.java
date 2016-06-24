@@ -55,10 +55,14 @@ public class PostController {
 	public String postList(@PathVariable("boardName") String boardName, ModelMap model, @ModelAttribute("searchVO") PostVO postVO) {
 
 		// 0. 조건 세팅
-		postVO.setBoardIdx(this.getBoardIdx(boardName));
+		int boardIdx = this.getBoardIdx(boardName);
+		if (boardIdx == 0) {
+			return "/common/404";
+		}
+		postVO.setBoardIdx(boardIdx);
 		postVO.setCntPerPage(PropertyUtil.getPropertyInt("board", "board.post.postList.cntPerPage", 10));
 
-		// 1. 총 게시물 수
+		// 1. 총 게시글 수
 		postVO.setTotalCnt(postService.selectPostListTotalCnt(postVO));
 
 		// 2. 목록
@@ -83,17 +87,21 @@ public class PostController {
 	 *            조회할 정보가 담긴 PostVO
 	 * @return "/boards/board_view"
 	 */
-	@RequestMapping(value = { "/{boardName}/{idx}", "/{idx}" }, method = RequestMethod.GET)
+	@RequestMapping(value = "/{boardName}/{idx}", method = RequestMethod.GET)
 	public String postView(@PathVariable("boardName") String boardName, @PathVariable("idx") int idx, ModelMap model,
 			@ModelAttribute("searchVO") PostVO postVO) {
 
 		// 0. 조건 세팅
-		postVO.setBoardIdx(this.getBoardIdx(boardName));
+		int boardIdx = this.getBoardIdx(boardName);
+		if (boardIdx == 0) {
+			return "/common/404";
+		}
+		postVO.setBoardIdx(boardIdx);
 
 		// 1. 조회
 		PostVO resultVO = postService.selectPost(postVO);
 		if (resultVO == null) {
-			return "redirect:/" + boardName;
+			return "/common/404";
 		}
 		model.addAttribute(resultVO);
 
@@ -115,7 +123,11 @@ public class PostController {
 	public String postWrite(@PathVariable("boardName") String boardName, ModelMap model, @ModelAttribute("searchVO") PostVO postVO) {
 
 		// 0. 조건 세팅
-		postVO.setBoardIdx(this.getBoardIdx(boardName));
+		int boardIdx = this.getBoardIdx(boardName);
+		if (boardIdx == 0) {
+			return "/common/404";
+		}
+		postVO.setBoardIdx(boardIdx);
 
 		return "/boards/board_write";
 	}
@@ -138,7 +150,18 @@ public class PostController {
 			@ModelAttribute("searchVO") PostVO postVO) {
 
 		// 0. 조건 세팅
-		postVO.setBoardIdx(this.getBoardIdx(boardName));
+		int boardIdx = this.getBoardIdx(boardName);
+		if (boardIdx == 0) {
+			return "/common/404";
+		}
+		postVO.setBoardIdx(boardIdx);
+
+		// 1. 조회
+		PostVO resultVO = postService.selectPost(postVO);
+		if (resultVO == null) {
+			return "/common/404";
+		}
+		model.addAttribute(resultVO);
 
 		return "/boards/board_write";
 	}
@@ -161,7 +184,11 @@ public class PostController {
 
 		try {
 			// 0. 조건 세팅
-			postVO.setBoardIdx(this.getBoardIdx(boardName));
+			int boardIdx = this.getBoardIdx(boardName);
+			if (boardIdx == 0) {
+				return "/common/404";
+			}
+			postVO.setBoardIdx(boardIdx);
 
 			// 1. 등록
 			postService.insertPost(postVO);
@@ -194,7 +221,11 @@ public class PostController {
 
 		try {
 			// 0. 조건 세팅
-			postVO.setBoardIdx(this.getBoardIdx(boardName));
+			int boardIdx = this.getBoardIdx(boardName);
+			if (boardIdx == 0) {
+				return "/common/404";
+			}
+			postVO.setBoardIdx(boardIdx);
 
 			// 1. 수정
 			postService.updatePost(postVO);
@@ -226,9 +257,12 @@ public class PostController {
 			@ModelAttribute("searchVO") PostVO postVO) {
 
 		try {
-
 			// 0. 조건 세팅
-			postVO.setBoardIdx(this.getBoardIdx(boardName));
+			int boardIdx = this.getBoardIdx(boardName);
+			if (boardIdx == 0) {
+				return "/common/404";
+			}
+			postVO.setBoardIdx(boardIdx);
 
 			// 1. 삭제
 			postService.deletePost(postVO);
@@ -252,6 +286,10 @@ public class PostController {
 		BoardVO boardVO = new BoardVO();
 		boardVO.setName(boardName);
 		boardVO = boardService.selectBoard(boardVO);
+
+		if (boardVO == null) {
+			return 0;
+		}
 
 		return boardVO.getIdx();
 	}

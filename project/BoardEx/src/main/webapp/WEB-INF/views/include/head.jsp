@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="/css/ionicons.min.css" />
 <link rel="stylesheet" href="/css/ie10-viewport-bug-workaround.css" />
 <link rel="stylesheet" href="/css/common.css" />
-<script type="text/javascript" src="/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="/js/jquery-2.2.4.min.js"></script>
 <script type="text/javascript" src="/js/jquery-ui-1.11.4.min.js"></script>
 <script type="text/javascript" src="/js/datepicker.js"></script>
 <script type="text/javascript" src="/js/bootstrap.min.js"></script>
@@ -22,10 +22,3 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
-
-<script type="text/javascript">
-//로그아웃
-function logoutClick() {
-	top.location.href = "/login/loginProc.do";
-}
-</script>

@@ -2,8 +2,6 @@ package com.test.board.manage.vo;
 
 import java.io.Serializable;
 
-import com.test.board.common.vo.BaseVO;
-
 /**
  * 계정 VO
  *
@@ -11,7 +9,7 @@ import com.test.board.common.vo.BaseVO;
  * @since 2016. 6. 17.
  * @version 1.0
  */
-public class AccountVO extends BaseVO implements Serializable {
+public class AccountVO extends AccountSearchVO implements Serializable {
 
 	/**
 	 * serialVersionUID

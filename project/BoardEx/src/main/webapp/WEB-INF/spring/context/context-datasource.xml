@@ -11,7 +11,7 @@
 	<!-- Encryptor Config -->
 	<bean id="encryptor" class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor">
 		<property name="config" ref="encryptorConfig" />
-		<property name="password" value="ENC(A3jGiQAwxwiuByi6jiaiPw==)" />
+		<property name="password" value="ENC(hdy3E36B2t4khnZCnQf0Bw==)" />
 	</bean>
 
 	<!-- Encryptor Placeholder Config -->

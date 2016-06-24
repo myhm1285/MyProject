@@ -36,7 +36,7 @@
 		</if>
 		<![CDATA[
 		ORDER BY
-			P.JOIN_DT ASC
+			A.JOIN_DT ASC
 		LIMIT #{startRownum}, #{cntPerPage}
 		]]>
 	</select>
