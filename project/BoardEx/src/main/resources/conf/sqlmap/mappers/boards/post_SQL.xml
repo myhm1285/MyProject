@@ -19,10 +19,14 @@
 			LEFT OUTER JOIN ACCOUNT AS A
 			ON (P.WRITER_IDX = A.IDX)
 		WHERE
-			B.BOARD_IDX = #{boardIdx}
-			AND B.IS_DEL = 'N'
+			B.IS_DEL = 'N'
 			AND P.IS_DEL = 'N'
 		]]>
+		<if test='boardIdx != 0'>
+    	<![CDATA[
+			AND P.BOARD_IDX = #{boardIdx}
+		]]>
+		</if>
 		<if test='searchTitle != null and searchTitle != ""'>
     	<![CDATA[
 			AND P.TITLE LIKE CONCAT('%',#{searchTitle},'%')
@@ -53,10 +57,14 @@
 			LEFT OUTER JOIN ACCOUNT AS A
 			ON (P.WRITER_IDX = A.IDX)
 		WHERE
-			P.BOARD_IDX = #{boardIdx}
-			AND B.IS_DEL = 'N'
+			B.IS_DEL = 'N'
 			AND P.IS_DEL = 'N'
 		]]>
+		<if test='boardIdx != 0'>
+    	<![CDATA[
+			AND P.BOARD_IDX = #{boardIdx}
+		]]>
+		</if>
 		<if test='searchTitle != null and searchTitle != ""'>
     	<![CDATA[
 			AND P.TITLE LIKE CONCAT('%',#{searchTitle},'%')

@@ -8,11 +8,11 @@ public class DBConnection {
 		try {
 			// 서울메트로 운영 DB URL
 			// standard encrypt (기존)
-			String dbUrl = encryptor.encrypt("jdbc:mariadb://192.168.10.113:12007/mydb");
+			String dbUrl = encryptor.encrypt("jdbc:mariadb://52.78.146.78:3306/mydb");
 			System.out.println("URL : " + dbUrl);
-			String dbId = encryptor.encrypt("cs");
+			String dbId = encryptor.encrypt("test");
 			System.out.println("ID : " + dbId);
-			String dbPw = encryptor.encrypt("cscosquare");
+			String dbPw = encryptor.encrypt("test1234");
 			System.out.println("PWD : " + dbPw);
 		} catch (Exception e) {
 			e.printStackTrace();

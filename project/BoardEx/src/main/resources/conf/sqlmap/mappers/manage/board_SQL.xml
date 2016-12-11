@@ -8,7 +8,7 @@
 		<![CDATA[
 		/* board_SQL.selectBoardList */
 		SELECT
-			B.IDX, B.NAME, B.ORDER, B.POST_CNT, B.RIGHT,
+			B.IDX, B.NAME, B.ORDER, B.POST_CNT, B.PAGE_CNT,
 			B.IS_OPEN, B.IS_DEL, B.NOTE,
 			DATE_FORMAT(B.WRITE_DT, '%Y-%m-%d %H:%i') AS WRITE_DT,
 			DATE_FORMAT(B.MODIFY_DT, '%Y-%m-%d %H:%i') AS MODIFY_DT
@@ -37,7 +37,7 @@
 		<![CDATA[
 		/* board_SQL.selectBoard */
 		SELECT
-			B.IDX, B.NAME, B.ORDER, B.POST_CNT, B.RIGHT,
+			B.IDX, B.NAME, B.ORDER, B.POST_CNT, B.PAGE_CNT,
 			B.IS_OPEN, B.IS_DEL, B.NOTE,
 			DATE_FORMAT(B.WRITE_DT, '%Y-%m-%d %H:%i') AS WRITE_DT,
 			DATE_FORMAT(B.MODIFY_DT, '%Y-%m-%d %H:%i') AS MODIFY_DT
@@ -55,11 +55,11 @@
 		/* board_SQL.insertBoard */
 		INSERT INTO BOARD
 		(
-			NAME, ORDER, RIGHT, NOTE
+			NAME, ORDER, PAGE_CNT, IS_OPEN, NOTE
 		)
 		VALUES
 		(
-			#{name}, #{order}, #{right}, #{note, jdbcType=VARCHAR}
+			#{name}, #{order}, #{pageCnt}, #{isOpen}, #{note, jdbcType=VARCHAR}
 		)
 		]]>
 	</insert>
@@ -73,7 +73,7 @@
 		SET
 			NAME = #{name},
 			ORDER = #{order},
-			RIGHT = #{right},
+			PAGE_CNT = #{pageCnt},
 			IS_OPEN = #{isOpen},
 			NOTE = #{note, jdbcType=VARCHAR},
 			MODIFY_DT = NOW()

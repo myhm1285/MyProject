@@ -20,17 +20,17 @@ public class BoardVO extends BaseVO {
 	/** 순서 */
 	private int order;
 
-	/** 게시물 개수 */
-	private int postCnt;
-
-	/** 권한 */
-	private String right;
+	/** 페이지당 게시물 개수 */
+	private int pageCnt;
 
 	/** 공개여부 */
 	private String isOpen;
 
 	/** 삭제여부 */
 	private String isDel;
+
+	/** 게시물 개수 */
+	private int postCnt;
 
 	/** 등록일시 */
 	private String writeDt;
@@ -87,33 +87,18 @@ public class BoardVO extends BaseVO {
 	}
 
 	/**
-	 * @return the postCnt
+	 * @return the pageCnt
 	 */
-	public int getPostCnt() {
-		return postCnt;
+	public int getPageCnt() {
+		return pageCnt;
 	}
 
 	/**
-	 * @param postCnt
-	 *            the postCnt to set
+	 * @param pageCnt
+	 *            the pageCnt to set
 	 */
-	public void setPostCnt(int postCnt) {
-		this.postCnt = postCnt;
-	}
-
-	/**
-	 * @return the right
-	 */
-	public String getRight() {
-		return right;
-	}
-
-	/**
-	 * @param right
-	 *            the right to set
-	 */
-	public void setRight(String right) {
-		this.right = right;
+	public void setPageCnt(int pageCnt) {
+		this.pageCnt = pageCnt;
 	}
 
 	/**
@@ -144,6 +129,21 @@ public class BoardVO extends BaseVO {
 	 */
 	public void setIsDel(String isDel) {
 		this.isDel = isDel;
+	}
+
+	/**
+	 * @return the postCnt
+	 */
+	public int getPostCnt() {
+		return postCnt;
+	}
+
+	/**
+	 * @param postCnt
+	 *            the postCnt to set
+	 */
+	public void setPostCnt(int postCnt) {
+		this.postCnt = postCnt;
 	}
 
 	/**

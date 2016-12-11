@@ -51,6 +51,34 @@ public class PostController {
 	 *            조회할 정보가 담긴 PostVO
 	 * @return "/boards/post_list"
 	 */
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public String allPostList(ModelMap model, @ModelAttribute("searchVO") PostVO postVO) {
+
+		postVO.setCntPerPage(PropertyUtil.getPropertyInt("board", "board.post.postList.cntPerPage", 10));
+
+		// 1. 총 게시글 수
+		postVO.setTotalCnt(postService.selectPostListTotalCnt(postVO));
+
+		// 2. 목록
+		model.addAttribute(postService.selectPostList(postVO));
+
+		// 3. 페이징
+		model.addAttribute("paging", BoardUtil.getPaging(postVO.getTotalCnt(), postVO.getPg(), postVO.getCntPerPage()));
+
+		return "/boards/post_list";
+	}
+
+	/**
+	 * 게시글 목록 조회
+	 * 
+	 * @param boardName
+	 *            게시판 이름
+	 * @param model
+	 *            ModelMap
+	 * @param postVO
+	 *            조회할 정보가 담긴 PostVO
+	 * @return "/boards/post_list"
+	 */
 	@RequestMapping(value = "/{boardName}", method = RequestMethod.GET)
 	public String postList(@PathVariable("boardName") String boardName, ModelMap model, @ModelAttribute("searchVO") PostVO postVO) {
 

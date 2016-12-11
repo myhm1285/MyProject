@@ -42,7 +42,7 @@ public class DownloadController {
 	 *            HttpSession
 	 * @return downloadView
 	 */
-	@RequestMapping(value = "/common/download.do")
+	@RequestMapping(value = "/common/download")
 	public ModelAndView download(ModelMap model, @ModelAttribute("downloadVO") DownloadVO downloadVO, HttpSession session) {
 
 		LOGGER.debug("{}", downloadVO.toString());

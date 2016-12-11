@@ -1,0 +1,111 @@
+package com.test.board.common.service;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.ModelAndView;
+
+/**
+ * 서버의 AOP 처리를 위한 Aspect 클래스
+ *
+ * @author hmyoo
+ * @since 2016. 11. 28.
+ * @version 1.0
+ */
+@Aspect
+@Component
+public class CommonAspect {
+
+	@Autowired
+	HttpSession session;
+
+	@Autowired
+	HttpServletRequest request;
+
+	/*
+	 * 컨트롤러 메소드 프인트컷
+	 * 
+	 * 모든 2차 패키지 (ex : web > admin(1차) > basic(2차))의 컨트롤러 패키지안의 모든 클래스의 형태에 관계 없이 ModelAndView를 리턴한다면 포인트컷으로 잡는다.
+	 */
+	@Pointcut("execution(public org.springframework.web.servlet.ModelAndView com.test.board.*.controller..*(..))")
+	private void controllerMethod() {
+	}
+
+	/*
+	 * 익셉션 로그인 어노테이션 포인트컷
+	 * 
+	 * 모든 @ExceptionLogin 어노테이션을 포인트컷으로 잡는다.
+	 */
+	//@Pointcut("@annotation(com.bangbang.web.aop.ExceptLogin)")
+	private void exceptLogin() {
+	}
+
+	//@Pointcut("@annotation(com.bangbang.web.aop.BoardLogicModel)")
+	private void boardLogic() {
+	}
+
+	/*
+	 * 컨트롤러 메소드 프인트컷와 익셉션 로그인 어노테이션 포인트컷를 모두 만족하는 메소드 즉, 디스패처에 의해 컨트롤러 로직을 타면서 로그인확인을 필수적으로 해야 하는경우에 위빙을 건다.
+	 */
+	//@Around("controllerMethod() && !exceptLogin()")
+	public ModelAndView mustLoginFunction(ProceedingJoinPoint joinPoint) throws Throwable {
+
+		// // 부여된 세션으로 부터 로그인 객체를 얻는다.
+		// LoginInfoVo loginInfo = (LoginInfoVo) this.session.getAttribute("loginInfo");
+		//
+		// // 세션에 정보가 있다면 메뉴와 헤드를 셋팅한다.
+		// if (loginInfo != null) {
+		// /*
+		// * joinPoint를 기점으로 실제컨트롤러의 실행시점을 구분 실행 후 반환되는 ModelAndView를 가로챈다.
+		// */
+		// ModelAndView mav = (ModelAndView) joinPoint.proceed();
+		// List<MenuInfoVo> menus = this.aspectService.selectMenuListByGrant(loginInfo.getUserId());
+		//
+		// // left 셋팅영역
+		// mav.addObject(menus);
+		//
+		// // top 셋팅영역
+		// TopInfoVo top = defines.getAdminTop();
+		// top.setLoginUserName(loginInfo.getUserName());
+		// top.setLogoUrl((String) this.session.getAttribute("opinnigPage"));
+		// mav.addObject(top);
+		// return mav;
+		// }
+		// // 세션정보가 없다면 로그인페이지로 보낸다.
+		// else {
+		// ModelAndView mav = new ModelAndView(defines.getLoginPage());
+		// return mav;
+		// }
+		return null;
+	}
+
+	/*
+	 * 게시판용 컨트롤러를 처리한다.
+	 */
+	//@Around("boardLogic()")
+	public ModelAndView boardProcessing(ProceedingJoinPoint joinPoint) throws Throwable {
+
+		// BaseVO base = (BaseVO) joinPoint.getArgs()[0];
+		// /*
+		// * joinPoint를 기점으로 실제컨트롤러의 실행시점을 구분 실행 후 반환되는 ModelAndView를 가로챈다.
+		// */
+		// ModelAndView mav = (ModelAndView) joinPoint.proceed();
+		//
+		// String uri = request.getRequestURI();
+		//
+		// PagingBean pagingInfo = PagingUtil.setPagingInfo(base.getTotalCnt(), base.getPageNo(), base.getCntPerPage());
+		// pagingInfo.setTargetUri(uri);
+		//
+		// mav.addObject(pagingInfo);
+		//
+		// return mav;
+		return null;
+	}
+
+}
