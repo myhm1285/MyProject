@@ -73,6 +73,17 @@ public class BoardServiceImpl implements BoardService {
 	public BoardVO selectBoard(BoardVO boardVO) {
 		return boardDAO.selectBoard(boardVO);
 	}
+	
+	/**
+	 * 이름으로 게시판 조회
+	 * 
+	 * @param boardVO
+	 *            조회할 정보가 담긴 BoardVO
+	 * @return BoardVO
+	 */
+	public BoardVO selectBoardForName(BoardVO boardVO) {
+		return boardDAO.selectBoardForName(boardVO);
+	}
 
 	/**
 	 * 게시판 등록

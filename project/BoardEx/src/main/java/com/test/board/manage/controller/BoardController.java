@@ -74,43 +74,53 @@ public class BoardController {
 	}
 
 	/**
-	 * 게시판 등록 화면 조회
-	 * 
-	 * @param model
-	 *            ModelMap
-	 * @param boardVO
-	 *            조회할 정보가 담긴 BoardVO
-	 * @return "/manage/board_write"
-	 */
-	@RequestMapping(value = "/new", method = RequestMethod.GET)
-	public String boardWrite(ModelMap model, @ModelAttribute("searchVO") BoardVO boardVO) {
-
-		return "/manage/board_write";
-	}
-
-	/**
-	 * 게시판 수정 화면 조회
+	 * 게시판 상세 조회
 	 * 
 	 * @param idx
 	 *            게시판 일련번호
-	 * @param model
-	 *            ModelMap
 	 * @param boardVO
 	 *            조회할 정보가 담긴 BoardVO
-	 * 
-	 * @return "/manage/board_write"
+	 * @return jsonObj
 	 */
-	@RequestMapping(value = "/{idx}/edit", method = RequestMethod.GET)
-	public String boardModify(@PathVariable("idx") int idx, ModelMap model, @ModelAttribute("searchVO") BoardVO boardVO) {
+	@SuppressWarnings("unchecked")
+	@ResponseBody
+	@RequestMapping(value = "/{idx}", method = RequestMethod.GET)
+	public JSONObject boardView(@PathVariable("idx") int idx, BoardVO boardVO) {
 
-		// 조회
-		BoardVO resultVO = boardService.selectBoard(boardVO);
-		if (resultVO == null) {
-			return "/common/404";
-		}
-		model.addAttribute(resultVO);
+		JSONObject jsonObj = new JSONObject();
 
-		return "/manage/board_write";
+		// 0. 조건 세팅
+		boardVO.setIdx(idx);
+
+		// 1. 게시판 상세 조회
+		jsonObj.put("boardVO", boardService.selectBoard(boardVO));
+
+		return jsonObj;
+	}
+
+	/**
+	 * 게시판 이름 중복 조회
+	 * 
+	 * @param idx
+	 *            게시판 일련번호
+	 * @param boardVO
+	 *            조회할 정보가 담긴 BoardVO
+	 * @return 중복이면 Y, 아니면 N
+	 */
+	@SuppressWarnings("unchecked")
+	@ResponseBody
+	@RequestMapping(value = "/find/{name}", method = RequestMethod.GET)
+	public JSONObject boardModify(@PathVariable("name") String name, BoardVO boardVO) {
+
+		JSONObject jsonObj = new JSONObject();
+
+		// 0. 조건 세팅
+		boardVO.setName(name);
+
+		// 1. 이름으로 게시판 조회
+		jsonObj.put("boardVO", boardService.selectBoardForName(boardVO));
+
+		return jsonObj;
 	}
 
 	/**
@@ -122,9 +132,9 @@ public class BoardController {
 	 *            조회할 정보가 담긴 BoardVO
 	 * @return 성공이면 Y, 실패이면 N
 	 */
-	@RequestMapping(value = "", method = RequestMethod.PUT)
+	@RequestMapping(value = "", method = RequestMethod.POST)
 	@ResponseBody
-	public String boardWriteProc(@PathVariable("idx") int idx, ModelMap model, @RequestBody BoardVO boardVO) {
+	public String boardWriteProc(ModelMap model, @RequestBody BoardVO boardVO) {
 
 		try {
 			// 1. 등록
@@ -149,9 +159,9 @@ public class BoardController {
 	 *            수정할 정보가 담긴 BoardVO
 	 * @return 성공이면 Y, 실패이면 N
 	 */
-	@RequestMapping(value = "/{idx}", method = RequestMethod.POST)
+	@RequestMapping(value = "/{idx}", method = RequestMethod.PUT)
 	@ResponseBody
-	public String boardModifyProc(@PathVariable("idx") int idx, ModelMap model, @ModelAttribute("searchVO") BoardVO boardVO) {
+	public String boardModifyProc(@PathVariable("idx") int idx, ModelMap model, @RequestBody BoardVO boardVO) {
 
 		try {
 			// 0. 조건 세팅

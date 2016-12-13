@@ -27,7 +27,7 @@
   <div class="container">
     <div class="cover">
       <p class="lead"><a href="/index.jsp"><img src="/images/common/logo_UMP.png" alt="UMP" /></a></p>
-      <p class="lead"><b>해당 페이지 또는 파일을 찾을 수가 없습니다.</b></p>
+      <p class="lead"><b>[404] 해당 페이지 또는 파일을 찾을 수가 없습니다.</b></p>
       <p class="lead">
         <a href="javascript:history.back();" class="btn btn-lg btn-default">이전 페이지로 돌아가기</a>
       </p>

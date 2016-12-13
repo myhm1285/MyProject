@@ -27,7 +27,7 @@
   <div class="container">
     <div class="cover">
       <p class="lead"><a href="/index.jsp"><img src="/images/common/logo_UMP.png" alt="UMP" /></a></p>
-      <p class="lead"><b>해당 페이지에 대한 권한이 없습니다.</b></p>
+      <p class="lead"><b>[403] 해당 페이지에 대한 권한이 없습니다.</b></p>
       <p class="lead">
         <a href="javascript:history.back();" class="btn btn-lg btn-default">이전 페이지로 돌아가기</a>
       </p>

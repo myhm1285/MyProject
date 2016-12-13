@@ -27,7 +27,7 @@
   <div class="container">
     <div class="cover">
       <p class="lead"><a href="/index.jsp"><img src="/images/common/logo_UMP.png" alt="UMP" /></a></p>
-      <p class="lead"><b>시스템 오류가 발생했습니다. 관리자에게 문의하시기 바랍니다.</b></p>
+      <p class="lead"><b>[error] 시스템 오류가 발생했습니다. 관리자에게 문의하시기 바랍니다.</b></p>
       <p class="lead">
         <a href="javascript:history.back();" class="btn btn-lg btn-default">이전 페이지로 돌아가기</a>
       </p>

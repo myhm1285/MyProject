@@ -26,36 +26,130 @@ function loadBoardList() {
         		boardListHtml += "<br/> " + boardVO.note;
         		boardListHtml += "</td>";
         		boardListHtml += "<td class=\"text-center\">"+ boardVO.postCnt + " 개</td>";
-        		boardListHtml += "<td class=\"text-center\"><button type=\"button\" class=\"btn btn-default\" onclick=\"javascript:modifyClick('" + boardVO.idx + "')\">편집</button></td>";
+        		boardListHtml += "<td class=\"text-center\"><button type=\"button\" class=\"btn btn-default\" onclick=\"javascript:loadBoardView('" + boardVO.idx + "')\">편집</button></td>";
         		boardListHtml += "</tr>";
         	});
        		$("table[name='boardListTable'] tbody").html(boardListHtml);
         }
       });
 }
-
+//게시판 상세 조회
+function loadBoardView(idx) {
+	var form = $("#boardModifyForm");
+	
+	$.ajax({
+        type: "GET",
+        url: "/manage/board/"+idx,
+        success:function(result) {
+        	var boardVO = result.boardVO;
+        	$(form).find("input[name='idx']").val(boardVO.idx);
+        	$(form).find("input[name='isCheckName']").val("N");
+        	$(form).find("input[name='name']").val(boardVO.name);
+        	$(form).find("textarea[name='note']").val(boardVO.note);
+        	$(form).find("select[name='pageCnt'] option[value='" + boardVO.pageCnt + "']").prop("selected",true);
+        	$(form).find("select[name='isOpen'] option[value='" + boardVO.isOpen + "']").prop("selected",true);
+        	$(form).find("label[name='postCnt']").text(boardVO.postCnt);
+        	$(form).find("label[name='writeDt']").text(boardVO.writeDt);
+        	$(form).find("label[name='modifyDt']").text(boardVO.modifyDt);
+        }
+	});
+}
+//게시판 중복 조회
+function checkBoardName(name) {
+	$.ajax({
+        type: "GET",
+        url: "/manage/board/find/"+name,
+        success:function(result) {
+			// 중복아님
+        	if(result == "N"){
+				alert("사용하실 수 있는 이름입니다.");        		
+        		$(form).find("input[name='isCheckName']").val("N");
+			}
+			// 중복
+			else {
+				alert("이미 사용중인 이름입니다. 새로운 이름을 입력해 주세요.");
+			}
+        }
+	});
+}
 // 등록
 function boardWriteClick() {
 	var form = $("#boardWriteForm");
 	var params = {
 		"name":$(form).find("input[name='name']").val(),
 		"note":$(form).find("textarea[name='note']").val(),
-		"pageCnt":$(form).find("select[name='pageCnt']").val(),
-		"isOpen":$(form).find("select[name='isOpen']").val()
+		"pageCnt":$(form).find("select[name='pageCnt'] option:selected").val(),
+		"isOpen":$(form).find("select[name='isOpen'] option:selected").val()
 	};
 	$.ajax({
-		type:"put",
-		dataType:"json",
+		type:"post",
 		url:"/manage/board",
-		param:JSON.stringify(params),
 		contentType:"application/json; charset=utf-8",
+		data:JSON.stringify(params),
 		success:function(result){
-			alert("게시판이 추가되었습니다.");
-			alert(result);
-			//loadBoardList();
+			if(result == "Y"){
+				alert("게시판이 추가되었습니다.");
+				
+				// 초기화
+				$(form).find("input, textarea, label").val("");
+				$(form).find("input[name='isCheckName']").val("N");
+				$(form).find("select option[value='']").prop("selected",true);
+				
+				// 게시판 목록 로드
+				loadBoardList();
+			} else {
+				alert("게시판 추가에 실패하였습니다.");
+			}
 		},
 		error:function(result){
 			alert("게시판 추가에 실패하였습니다.");
+		}
+	});
+}
+// 수정
+function boardModifyClick() {
+	var form = $("#boardModifyForm");
+	var params = {
+		"name":$(form).find("input[name='name']").val(),
+		"note":$(form).find("textarea[name='note']").val(),
+		"pageCnt":$(form).find("select[name='pageCnt'] option:selected").val(),
+		"isOpen":$(form).find("select[name='isOpen'] option:selected").val()
+	};
+	$.ajax({
+		type:"put",
+		url:"/manage/board/"+$(form).find("input[name='idx']").val(),
+		contentType:"application/json; charset=utf-8",
+		data:JSON.stringify(params),
+		success:function(result){
+			if(result == "Y"){
+				alert("게시판 정보가 수정되었습니다.");
+				loadBoardList();
+			} else {
+				alert("게시판 정보 수정에 실패하였습니다.");
+			}
+		},
+		error:function(result){
+			alert("게시판 정보 수정에 실패하였습니다.");
+		}
+	});
+}
+// 삭제
+function boardDeleteClick() {
+	var form = $("#boardModifyForm");
+	$.ajax({
+		type:"delete",
+		url:"/manage/board/"+$(form).find("input[name='idx']").val(),
+		contentType:"application/json; charset=utf-8",
+		success:function(result){
+			if(result == "Y"){
+				alert("게시판가 삭제되었습니다.");
+				loadBoardList();
+			} else {
+				alert("게시판 삭제에 실패하였습니다.");
+			}
+		},
+		error:function(result){
+			alert("게시판 삭제에 실패하였습니다.");
 		}
 	});
 }
@@ -100,46 +194,6 @@ function boardWriteClick() {
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                      <td class="text-center hidden-xs">1</td>
-                      <td>
-                        <span class="label label-primary">ON</span>
-                        <label name="name">메시지테스트1</label>
-                        <br/>테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트
-                      </td>
-                      <td class="text-center">100 개</td>
-                      <td class="text-center"><button type="button" class="btn btn-default">편집</button></td>
-                      </tr>
-                      <tr>
-                      <td class="text-center hidden-xs">2</td>
-                      <td>
-                        <span class="label label-primary">ON</span>
-                        <label name="name">메시지테스트1</label>
-                        <br/>테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트
-                      </td>
-                      <td class="text-center">100 개</td>
-                      <td class="text-center"><button type="button" class="btn btn-default">편집</button></td>
-                      </tr>
-                      <tr>
-                      <td class="text-center hidden-xs">3</td>
-                      <td>
-                        <span class="label label-primary">ON</span>
-                        <label name="name">메시지테스트1</label>
-                        <br/>테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트
-                      </td>
-                      <td class="text-center">100 개</td>
-                      <td class="text-center"><button type="button" class="btn btn-default">편집</button></td>
-                      </tr>
-                      <tr>
-                      <td class="text-center hidden-xs">-</td>
-                      <td>
-                        <span class="label label-danger">OFF</span>
-                        <label name="name">메시지테스트1</label>
-                        <br/>테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트(사용안함)
-                      </td>
-                      <td class="text-center">2000 개</td>
-                      <td class="text-center"><button type="button" class="btn btn-default">편집</button></td>
-                      </tr>
                     </tbody>
                     </table>
                   </div><!-- /box-body -->
@@ -147,13 +201,19 @@ function boardWriteClick() {
               </div>
             </div>
           </div>
-          <form name="boardWriteForm" id="boardWriteForm" method="put">
+          <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+          <input type="hidden" name="isCheckName" value="N" />
           <div class="content">
             <div class="row">
               <div class="col-xs-12">
+              <form id="boardWriteForm" data-toggle="validator" method="post">
                 <div class="panel panel-default">
-                  <div class="panel-heading">등록</div>
-                  <input type="hidden" name="idx" />
+                  <div class="panel-heading" role="tab" id="headingOne">
+                    <h4 class="panel-title">
+                      <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">등록</a>
+                    </h4>
+                  </div>
+                  <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                   <div class="box-body table-responsive no-padding">
                     <table class="table table-hover">
                     <colgroup>
@@ -166,7 +226,7 @@ function boardWriteClick() {
                       <td>
                         <div class="col-lg-8" style="padding:0px;">
                           <div class="input-group">
-                            <input name="name" class="form-control" value="" placeholder="유일한 이름을 입력하세요." />
+                            <input name="name" class="form-control" value="" placeholder="유일한 이름을 입력하세요." required/>
                             <span class="input-group-btn">
                             <button type="button" class="btn btn-primary">중복체크</button>
                             </span>
@@ -177,14 +237,14 @@ function boardWriteClick() {
                       <tr>
                       <th class="text-center">설명</th>
                       <td>
-                        <textarea name="note" class="form-control" rows="3"></textarea>
+                        <textarea name="note" class="form-control" rows="3" required></textarea>
                       </td>
                       </tr>
                       <tr>
                       <th class="text-center" name="pageCnt">페이지당<br/>글수</th>
                       <td>
                         <div class="col-md-4 col-xs-6" style="padding:0px;">
-                          <select name="pageCnt" class="form-control">
+                          <select name="pageCnt" class="form-control" min="5">
                             <option value="">선택</option>
                             <option value="5">5</option>
                             <option value="10">10</option>
@@ -211,21 +271,22 @@ function boardWriteClick() {
                   <div class="panel-footer">
                     <div class="text-center">
                       <button type="button" class="btn btn-primary" onclick="javascript:boardWriteClick()">등록</button>
-                      <button type="button" class="btn btn-primary">취소</button>
                     </div>
                   </div>
+                  </div><!-- /collapseOne -->
                 </div>
-              </div><!-- /col -->
-            </div><!-- /row -->
-          </div><!-- /content -->
-          </form>
-          <form name="boardModifyForm" method="post">
-          <div class="content">
-            <div class="row">
-              <div class="col-xs-12">
+              </form>
+              <form id="boardModifyForm" data-toggle="validator" method="put">
+                <input type="hidden" name="isCheckName" value="N" />
+                <input type="hidden" name="idx" value="0" />
                 <div class="panel panel-default">
-                  <div class="panel-heading">조회 및 수정</div>
-                  <input type="hidden" name="idx" />
+                  <div class="panel-heading" role="tab" id="headingTwo">
+                    <h4 class="panel-title">
+                      <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">조회 및 수정</a>
+                    </h4>
+                    <a data-toggle="collapse" data-parent="#accordion" href="#modifyTab" aria-expanded="false" aria-controls="modifyTab">조회 및 수정</a>
+                  </div>
+                  <div id="modifyTab" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="modifyTabTitle">
                   <div class="box-body table-responsive no-padding">
                     <table class="table table-hover">
                     <colgroup>
@@ -300,16 +361,17 @@ function boardWriteClick() {
                   </div><!-- /box-body -->
                   <div class="panel-footer">
                     <div class="text-center">
-                      <button type="button" class="btn btn-primary">수정</button>
-                      <button type="button" class="btn btn-primary">삭제</button>
-                      <button type="button" class="btn btn-primary">취소</button>
+                      <button type="button" class="btn btn-primary" onclick="javascript:boardModifyClick()">수정</button>
+                      <button type="button" class="btn btn-danger" onclick="javascript:boardDeleteClick()">삭제</button>
                     </div>
                   </div>
+                  </div><!-- /collapseOne -->
                 </div>
               </div><!-- /col -->
             </div><!-- /row -->
           </div><!-- /content -->
           </form>
+        </div>
         </div><!-- /col-xs-12 col-sm-9 -->
       </div><!-- /row -->
     </div><!-- /container -->

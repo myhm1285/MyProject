@@ -39,6 +39,15 @@ public interface BoardService {
 	 * @return BoardVO
 	 */
 	public BoardVO selectBoard(BoardVO boardVO);
+	
+	/**
+	 * 이름으로 게시판 조회
+	 * 
+	 * @param boardVO
+	 *            조회할 정보가 담긴 BoardVO
+	 * @return BoardVO
+	 */
+	public BoardVO selectBoardForName(BoardVO boardVO);
 
 	/**
 	 * 게시판 등록
