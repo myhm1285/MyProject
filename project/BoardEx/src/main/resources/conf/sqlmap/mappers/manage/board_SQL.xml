@@ -74,9 +74,9 @@
 			NAME, `ORDER`, PAGE_CNT, IS_OPEN, NOTE
 		)
 		SELECT
-		(
 			#{name}, MAX(`ORDER`) + 1, #{pageCnt}, #{isOpen}, #{note, jdbcType=VARCHAR}
-		)
+		FROM
+			BOARD
 		]]>
 	</insert>
 	
@@ -88,7 +88,6 @@
 			BOARD
 		SET
 			NAME = #{name},
-			ORDER = #{order},
 			PAGE_CNT = #{pageCnt},
 			IS_OPEN = #{isOpen},
 			NOTE = #{note, jdbcType=VARCHAR},

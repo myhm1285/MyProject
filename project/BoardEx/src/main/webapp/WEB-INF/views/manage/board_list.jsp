@@ -7,7 +7,14 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	$.ajaxSetup({async:false});
+	
+    $(".panel-heading a").click(function(){
+        $(this).find(".glyphicon").toggleClass("glyphicon-chevron-up");
+        $(this).find(".glyphicon").toggleClass("glyphicon-chevron-down");
+    });
+    
 	loadBoardList();
+
 });
 // 게시판 목록 조회
 function loadBoardList() {
@@ -36,6 +43,9 @@ function loadBoardList() {
 //게시판 상세 조회
 function loadBoardView(idx) {
 	var form = $("#boardModifyForm");
+	
+	$("#collapseOne").collapse("hide");
+	$("#collapseTwo").collapse("show");
 	
 	$.ajax({
         type: "GET",
@@ -124,6 +134,7 @@ function boardModifyClick() {
 			if(result == "Y"){
 				alert("게시판 정보가 수정되었습니다.");
 				loadBoardList();
+				loadBoardView($(form).find("input[name='idx']").val());
 			} else {
 				alert("게시판 정보 수정에 실패하였습니다.");
 			}
@@ -178,7 +189,7 @@ function boardDeleteClick() {
                 <div class="panel panel-default">
                   <div class="panel-heading">목록</div>
                   <div class="box-body table-responsive no-padding">
-                    <table name="boardListTable" class="table table-hover">
+                    <table name="boardListTable" class="table table-hover" style="margin-bottom:0px;">
                     <colgroup>
                       <col width="10%" />
                       <col />
@@ -201,21 +212,21 @@ function boardDeleteClick() {
               </div>
             </div>
           </div>
-          <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-          <input type="hidden" name="isCheckName" value="N" />
           <div class="content">
             <div class="row">
               <div class="col-xs-12">
-              <form id="boardWriteForm" data-toggle="validator" method="post">
+                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="false">
                 <div class="panel panel-default">
                   <div class="panel-heading" role="tab" id="headingOne">
-                    <h4 class="panel-title">
-                      <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">등록</a>
-                    </h4>
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                       등록<span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="margin:5px; 0px;"></span>
+                    </a>
                   </div>
-                  <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                  <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                   <div class="box-body table-responsive no-padding">
-                    <table class="table table-hover">
+                  <form id="boardWriteForm" data-toggle="validator" role="form">
+                  <input type="hidden" name="isCheckName" value="N" />
+                    <table class="table table-hover" style="margin-bottom:0px;">
                     <colgroup>
                       <col width="15%" />
                       <col />
@@ -267,6 +278,7 @@ function boardDeleteClick() {
                       </tr>
                     </tbody>
                     </table>
+                    </form>
                   </div><!-- /box-body -->
                   <div class="panel-footer">
                     <div class="text-center">
@@ -275,19 +287,17 @@ function boardDeleteClick() {
                   </div>
                   </div><!-- /collapseOne -->
                 </div>
-              </form>
-              <form id="boardModifyForm" data-toggle="validator" method="put">
-                <input type="hidden" name="isCheckName" value="N" />
-                <input type="hidden" name="idx" value="0" />
                 <div class="panel panel-default">
                   <div class="panel-heading" role="tab" id="headingTwo">
-                    <h4 class="panel-title">
-                      <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">조회 및 수정</a>
-                    </h4>
-                    <a data-toggle="collapse" data-parent="#accordion" href="#modifyTab" aria-expanded="false" aria-controls="modifyTab">조회 및 수정</a>
+                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                      조회 및 수정<span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="margin:5px; 0px;"></span>
+                    </a>
                   </div>
-                  <div id="modifyTab" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="modifyTabTitle">
+                  <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
                   <div class="box-body table-responsive no-padding">
+                  <form id="boardModifyForm" data-toggle="validator" method="put">
+                  <input type="hidden" name="isCheckName" value="N" />
+                  <input type="hidden" name="idx" value="0" />
                     <table class="table table-hover">
                     <colgroup>
                       <col width="15%" />
@@ -358,6 +368,7 @@ function boardDeleteClick() {
                       </tr>
                     </tbody>
                     </table>
+                    </form>
                   </div><!-- /box-body -->
                   <div class="panel-footer">
                     <div class="text-center">
@@ -365,13 +376,12 @@ function boardDeleteClick() {
                       <button type="button" class="btn btn-danger" onclick="javascript:boardDeleteClick()">삭제</button>
                     </div>
                   </div>
-                  </div><!-- /collapseOne -->
+                  </div><!-- /collapseTwo -->
+                </div>
                 </div>
               </div><!-- /col -->
             </div><!-- /row -->
           </div><!-- /content -->
-          </form>
-        </div>
         </div><!-- /col-xs-12 col-sm-9 -->
       </div><!-- /row -->
     </div><!-- /container -->
