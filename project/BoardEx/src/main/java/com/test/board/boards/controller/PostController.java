@@ -313,7 +313,7 @@ public class PostController {
 	private int getBoardIdx(String boardName) {
 		BoardVO boardVO = new BoardVO();
 		boardVO.setName(boardName);
-		boardVO = boardService.selectBoard(boardVO);
+		boardVO = boardService.selectBoardForName(boardVO);
 
 		if (boardVO == null) {
 			return 0;

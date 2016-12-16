@@ -15,7 +15,7 @@
 		FROM
 			BOARD AS B
 		WHERE
-			1=1
+			B.IS_DEL = 'N'
 		ORDER BY
 			B.ORDER ASC
 		]]>
@@ -29,6 +29,8 @@
 			COUNT(*)
 		FROM
 			BOARD AS B
+		WHERE
+			B.IS_DEL = 'N'
 		]]>
 	</select>
 	
@@ -45,6 +47,7 @@
 			BOARD AS B
 		WHERE
 			B.IDX = #{idx}
+			AND B.IS_DEL = 'N'
 		LIMIT 1
 		]]>
 	</select>
@@ -62,6 +65,7 @@
 			BOARD AS B
 		WHERE
 			B.NAME = #{name}
+			AND B.IS_DEL = 'N'
 		]]>
 	</select>
 

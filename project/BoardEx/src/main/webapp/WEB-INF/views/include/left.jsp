@@ -7,7 +7,7 @@
       <h4 class="list-group-item-heading" data-toggle="collapse" href="#collapse1" aria-expanded="false" aria-controls="collapse1"><i class="fa fa-tv" style="margin-right:10px"></i><span>BOARD</span><i class="fa fa-angle-left pull-right"></i></h4>
       <p class="list-group-item-text collapse ${cs_uri:contains(pageContext.request,'/board/')?'in':''}" id="collapse1">
         <c:forEach var="boardVO" items="${sessionScope.boardVOList}" varStatus="status">
-        <a href="/board/${boardVO.name}" class="${cs_uri:contains(pageContext.request,'/board/'+boardVO.name)?'active':''}"><i class="fa fa-caret-right" style="margin-right:10px"></i>${boardVO.name} (${boardVO.postCnt})</a>
+        <a href="/board/${boardVO.name}" class="${cs_uri:contains(pageContext.request,'/board/'+boardVO.name)?'active':''}"><i class="fa fa-caret-right" style="margin-right:10px"></i>${boardVO.name} (${boardVO.postCnt})111111</a>
         </c:forEach>
       </p>
     </li>

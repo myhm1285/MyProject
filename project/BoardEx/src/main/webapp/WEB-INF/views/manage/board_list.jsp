@@ -9,6 +9,9 @@ $(document).ready(function(){
 	$.ajaxSetup({async:false});
 	
     $(".panel-heading a").click(function(){
+    	
+    	$("#collapseTwo").collapse("hide");
+    	
         $(this).find(".glyphicon").toggleClass("glyphicon-chevron-up");
         $(this).find(".glyphicon").toggleClass("glyphicon-chevron-down");
     });
@@ -44,7 +47,9 @@ function loadBoardList() {
 function loadBoardView(idx) {
 	var form = $("#boardModifyForm");
 	
-	$("#collapseOne").collapse("hide");
+	if($("#collapseOne").hasClass("in")){
+		closeClick("write");
+	}
 	$("#collapseTwo").collapse("show");
 	
 	$.ajax({
@@ -99,12 +104,8 @@ function boardWriteClick() {
 		success:function(result){
 			if(result == "Y"){
 				alert("게시판이 추가되었습니다.");
-				
 				// 초기화
-				$(form).find("input, textarea, label").val("");
-				$(form).find("input[name='isCheckName']").val("N");
-				$(form).find("select option[value='']").prop("selected",true);
-				
+				closeClick("write");
 				// 게시판 목록 로드
 				loadBoardList();
 			} else {
@@ -133,8 +134,9 @@ function boardModifyClick() {
 		success:function(result){
 			if(result == "Y"){
 				alert("게시판 정보가 수정되었습니다.");
+				// 초기화
+				closeClick("modify");
 				loadBoardList();
-				loadBoardView($(form).find("input[name='idx']").val());
 			} else {
 				alert("게시판 정보 수정에 실패하였습니다.");
 			}
@@ -154,6 +156,9 @@ function boardDeleteClick() {
 		success:function(result){
 			if(result == "Y"){
 				alert("게시판가 삭제되었습니다.");
+				
+				// 초기화
+				closeClick("modify");
 				loadBoardList();
 			} else {
 				alert("게시판 삭제에 실패하였습니다.");
@@ -163,6 +168,30 @@ function boardDeleteClick() {
 			alert("게시판 삭제에 실패하였습니다.");
 		}
 	});
+}
+// 닫기
+function closeClick(func) {
+	if(func == "write"){
+		init($("#boardWriteForm"));
+		
+		$(".panel-heading a").find(".glyphicon").toggleClass("glyphicon-chevron-up");
+        $(".panel-heading a").find(".glyphicon").toggleClass("glyphicon-chevron-down");
+		
+        $("#collapseOne").collapse("hide");
+	} else if(func == "modify"){
+		init($("#boardModifyForm"));
+		
+		$("#collapseTwo").collapse("hide");
+		
+	}
+}
+// 초기화
+function init(form) {
+	$(form).find("input, textarea").val("");
+	$(form).find("label").text("");
+	$(form).find("input[name='isCheckName']").val("N");
+	$(form).find("select[name='pageCnt'] option[value='']").prop("selected",true);
+	$(form).find("select[name='isOpen'] option[value='Y']").prop("selected",true);
 }
 </script>
 </head>
@@ -215,10 +244,10 @@ function boardDeleteClick() {
           <div class="content">
             <div class="row">
               <div class="col-xs-12">
-                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="false">
+                <div class="panel-group" role="tablist" aria-multiselectable="false">
                 <div class="panel panel-default">
                   <div class="panel-heading" role="tab" id="headingOne">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                    <a data-toggle="collapse" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                        등록<span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="margin:5px; 0px;"></span>
                     </a>
                   </div>
@@ -283,22 +312,21 @@ function boardDeleteClick() {
                   <div class="panel-footer">
                     <div class="text-center">
                       <button type="button" class="btn btn-primary" onclick="javascript:boardWriteClick()">등록</button>
+                      <button type="button" class="btn btn-default" onclick="javascript:closeClick('write')">닫기</button>
                     </div>
                   </div>
                   </div><!-- /collapseOne -->
                 </div>
                 <div class="panel panel-default">
                   <div class="panel-heading" role="tab" id="headingTwo">
-                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                      조회 및 수정<span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="margin:5px; 0px;"></span>
-                    </a>
+                    조회 및 수정
                   </div>
                   <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
                   <div class="box-body table-responsive no-padding">
                   <form id="boardModifyForm" data-toggle="validator" method="put">
                   <input type="hidden" name="isCheckName" value="N" />
                   <input type="hidden" name="idx" value="0" />
-                    <table class="table table-hover">
+                    <table class="table table-hover"  style="margin-bottom:0px;">
                     <colgroup>
                       <col width="15%" />
                       <col />
@@ -372,8 +400,9 @@ function boardDeleteClick() {
                   </div><!-- /box-body -->
                   <div class="panel-footer">
                     <div class="text-center">
-                      <button type="button" class="btn btn-primary" onclick="javascript:boardModifyClick()">수정</button>
-                      <button type="button" class="btn btn-danger" onclick="javascript:boardDeleteClick()">삭제</button>
+                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modifyModal">수정</button>
+                      <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">삭제</button>
+                      <button type="button" class="btn btn-default" onclick="javascript:closeClick('modify')">닫기</button>
                     </div>
                   </div>
                   </div><!-- /collapseTwo -->
@@ -385,5 +414,6 @@ function boardDeleteClick() {
         </div><!-- /col-xs-12 col-sm-9 -->
       </div><!-- /row -->
     </div><!-- /container -->
+    <jsp:include page="/WEB-INF/views/include/bottom.jsp"/>
 </body>
 </html>
