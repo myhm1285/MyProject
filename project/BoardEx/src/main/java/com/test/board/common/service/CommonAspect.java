@@ -1,5 +1,9 @@
 package com.test.board.common.service;
 
+import java.net.URLDecoder;
+import java.util.List;
+
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -9,7 +13,11 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.test.board.manage.service.BoardService;
+import com.test.board.manage.vo.BoardVO;
 
 /**
  * 서버의 AOP 처리를 위한 Aspect 클래스
@@ -28,12 +36,17 @@ public class CommonAspect {
 	@Autowired
 	HttpServletRequest request;
 
+	/** 게시판 Service */
+	@Resource(name = "boardService")
+	private BoardService boardService;
+
 	/*
 	 * 컨트롤러 메소드 프인트컷
 	 * 
 	 * 모든 2차 패키지 (ex : web > admin(1차) > basic(2차))의 컨트롤러 패키지안의 모든 클래스의 형태에 관계 없이 ModelAndView를 리턴한다면 포인트컷으로 잡는다.
 	 */
-	@Pointcut("execution(public org.springframework.web.servlet.ModelAndView com.test.board.*.controller..*(..))")
+	// @Pointcut("execution(public org.springframework.web.servlet.ModelAndView com.test.board.*.controller..*(..))")
+	@Pointcut("execution(public String com.test.board.*.controller..*(org.springframework.ui.ModelMap, ..))")
 	private void controllerMethod() {
 	}
 
@@ -42,19 +55,29 @@ public class CommonAspect {
 	 * 
 	 * 모든 @ExceptionLogin 어노테이션을 포인트컷으로 잡는다.
 	 */
-	//@Pointcut("@annotation(com.bangbang.web.aop.ExceptLogin)")
+	// @Pointcut("@annotation(com.bangbang.web.aop.ExceptLogin)")
 	private void exceptLogin() {
 	}
 
-	//@Pointcut("@annotation(com.bangbang.web.aop.BoardLogicModel)")
+	// @Pointcut("@annotation(com.bangbang.web.aop.BoardLogicModel)")
 	private void boardLogic() {
 	}
 
 	/*
 	 * 컨트롤러 메소드 프인트컷와 익셉션 로그인 어노테이션 포인트컷를 모두 만족하는 메소드 즉, 디스패처에 의해 컨트롤러 로직을 타면서 로그인확인을 필수적으로 해야 하는경우에 위빙을 건다.
 	 */
-	//@Around("controllerMethod() && !exceptLogin()")
-	public ModelAndView mustLoginFunction(ProceedingJoinPoint joinPoint) throws Throwable {
+	// @Around("controllerMethod() && !exceptLogin()")
+	@Around("controllerMethod()")
+	public String menuFunction(ProceedingJoinPoint joinPoint) throws Throwable {
+		ModelMap model = (ModelMap) joinPoint.getArgs()[0];
+		List<BoardVO> boardMenuVOList = boardService.selectBoardList(new BoardVO());
+		String requestUri = URLDecoder.decode(request.getRequestURI(), "UTF-8");
+		for (BoardVO boardMenuVO : boardMenuVOList) {
+			if (requestUri.equals("/boards/" + boardMenuVO.getName())) {
+				boardMenuVO.setMenuOn(true);
+			}
+		}
+		model.addAttribute("boardMenuVOList", boardMenuVOList);
 
 		// // 부여된 세션으로 부터 로그인 객체를 얻는다.
 		// LoginInfoVo loginInfo = (LoginInfoVo) this.session.getAttribute("loginInfo");
@@ -82,13 +105,13 @@ public class CommonAspect {
 		// ModelAndView mav = new ModelAndView(defines.getLoginPage());
 		// return mav;
 		// }
-		return null;
+		return (String) joinPoint.proceed();
 	}
 
 	/*
 	 * 게시판용 컨트롤러를 처리한다.
 	 */
-	//@Around("boardLogic()")
+	// @Around("boardLogic()")
 	public ModelAndView boardProcessing(ProceedingJoinPoint joinPoint) throws Throwable {
 
 		// BaseVO base = (BaseVO) joinPoint.getArgs()[0];

@@ -12,6 +12,9 @@ import org.apache.commons.lang.builder.ToStringStyle;
  */
 public class BaseVO {
 
+	/** 메뉴 On/Off */
+	private boolean menuOn;
+
 	/** 총 게시물 수 */
 	private int totalCnt;
 
@@ -35,6 +38,21 @@ public class BaseVO {
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+	}
+
+	/**
+	 * @return the menuOn
+	 */
+	public boolean isMenuOn() {
+		return menuOn;
+	}
+
+	/**
+	 * @param menuOn
+	 *            the menuOn to set
+	 */
+	public void setMenuOn(boolean menuOn) {
+		this.menuOn = menuOn;
 	}
 
 	/**

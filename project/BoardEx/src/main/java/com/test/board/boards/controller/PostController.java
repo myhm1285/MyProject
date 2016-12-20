@@ -27,7 +27,7 @@ import com.test.board.util.PropertyUtil;
  * @version 1.0
  */
 @Controller
-@RequestMapping(value = "/board")
+@RequestMapping(value = "/boards")
 public class PostController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(PostController.class);
@@ -80,7 +80,7 @@ public class PostController {
 	 * @return "/boards/post_list"
 	 */
 	@RequestMapping(value = "/{boardName}", method = RequestMethod.GET)
-	public String postList(@PathVariable("boardName") String boardName, ModelMap model, @ModelAttribute("searchVO") PostVO postVO) {
+	public String postList(ModelMap model, @PathVariable("boardName") String boardName, @ModelAttribute("searchVO") PostVO postVO) {
 
 		// 0. 조건 세팅
 		int boardIdx = this.getBoardIdx(boardName);
@@ -116,7 +116,7 @@ public class PostController {
 	 * @return "/boards/board_view"
 	 */
 	@RequestMapping(value = "/{boardName}/{idx}", method = RequestMethod.GET)
-	public String postView(@PathVariable("boardName") String boardName, @PathVariable("idx") int idx, ModelMap model,
+	public String postView(ModelMap model, @PathVariable("boardName") String boardName, @PathVariable("idx") int idx,
 			@ModelAttribute("searchVO") PostVO postVO) {
 
 		// 0. 조건 세팅
@@ -148,7 +148,7 @@ public class PostController {
 	 * @return "/boards/board_write"
 	 */
 	@RequestMapping(value = "/{boardName}/new", method = RequestMethod.GET)
-	public String postWrite(@PathVariable("boardName") String boardName, ModelMap model, @ModelAttribute("searchVO") PostVO postVO) {
+	public String postWrite(ModelMap model, @PathVariable("boardName") String boardName, @ModelAttribute("searchVO") PostVO postVO) {
 
 		// 0. 조건 세팅
 		int boardIdx = this.getBoardIdx(boardName);
@@ -174,7 +174,7 @@ public class PostController {
 	 * @return "/boards/board_write"
 	 */
 	@RequestMapping(value = "/{boardName}/{idx}/modify", method = RequestMethod.GET)
-	public String postModify(@PathVariable("boardName") String boardName, @PathVariable("idx") int idx, ModelMap model,
+	public String postModify(ModelMap model, @PathVariable("boardName") String boardName, @PathVariable("idx") int idx,
 			@ModelAttribute("searchVO") PostVO postVO) {
 
 		// 0. 조건 세팅
@@ -199,16 +199,13 @@ public class PostController {
 	 * 
 	 * @param boardName
 	 *            게시판 이름
-	 * @param model
-	 *            ModelMap
 	 * @param postVO
 	 *            등록할 정보가 담긴 PostVO
 	 * @return 성공이면 Y, 실패이면 N
 	 */
 	@RequestMapping(value = "/{boardName}", method = RequestMethod.PUT)
 	@ResponseBody
-	public String postWriteProc(@PathVariable("boardName") String boardName, ModelMap model, @ModelAttribute("searchVO") PostVO postVO)
-			throws Exception {
+	public String postWriteProc(@PathVariable("boardName") String boardName, @ModelAttribute("searchVO") PostVO postVO) throws Exception {
 
 		try {
 			// 0. 조건 세팅
@@ -236,15 +233,13 @@ public class PostController {
 	 *            게시판 이름
 	 * @param idx
 	 *            게시글 일련번호
-	 * @param model
-	 *            ModelMap
 	 * @param postVO
 	 *            수정할 정보가 담긴 PostVO
 	 * @return 성공이면 Y, 실패이면 N
 	 */
 	@RequestMapping(value = "/{boardName}/{idx}", method = RequestMethod.POST)
 	@ResponseBody
-	public String postModifyProc(@PathVariable("boardName") String boardName, @PathVariable("idx") int idx, ModelMap model,
+	public String postModifyProc(@PathVariable("boardName") String boardName, @PathVariable("idx") int idx,
 			@ModelAttribute("searchVO") PostVO postVO) {
 
 		try {
@@ -273,15 +268,13 @@ public class PostController {
 	 *            게시판 이름
 	 * @param idx
 	 *            게시글 일련번호
-	 * @param model
-	 *            ModelMap
 	 * @param postVO
 	 *            삭제할 정보가 담긴 PostVO
 	 * @return 성공이면 Y, 실패이면 N
 	 */
 	@RequestMapping(value = "/{boardName}/{idx}", method = RequestMethod.DELETE)
 	@ResponseBody
-	public String postDeleteProc(@PathVariable("boardName") String boardName, @PathVariable("idx") int idx, ModelMap model,
+	public String postDeleteProc(@PathVariable("boardName") String boardName, @PathVariable("idx") int idx,
 			@ModelAttribute("searchVO") PostVO postVO) {
 
 		try {
