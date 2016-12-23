@@ -16,6 +16,24 @@ $(document).ready(function(){
         $(this).find(".glyphicon").toggleClass("glyphicon-chevron-down");
     });
     
+    $("#confirmModal").on("show.bs.modal", function (event) {
+    	$("#modalType").val($(event.relatedTarget).data('type'));
+    	// 내용
+    	$(this).find(".modal-body").text($(event.relatedTarget).data('content'));
+    });
+   	// 버튼 이벤트
+   	$("#confirmModal").find(".modal-footer").find("button").eq(1).on("click",function(event){
+   		var type = $("#modalType").val();
+   		
+   		if (type == "write") {
+       		boardWriteClick();
+       	} else if (type == "modify") {
+       		boardModifyClick();
+       	} else if (type == "delete") {
+       		boardDeleteClick();
+       	}
+   	});
+    	
 	loadBoardList();
 
 });
@@ -193,6 +211,13 @@ function init(form) {
 	$(form).find("select[name='pageCnt'] option[value='']").prop("selected",true);
 	$(form).find("select[name='isOpen'] option[value='Y']").prop("selected",true);
 }
+
+//alert Modal
+function alert(message) {
+	$("#confirmModal").modal("hide");
+	$("#alertModal").find(".modal-body").text(message);
+	$("#alertModal").modal();
+}
 </script>
 </head>
 <body>
@@ -311,7 +336,7 @@ function init(form) {
                   </div><!-- /box-body -->
                   <div class="panel-footer">
                     <div class="text-center">
-                      <button type="button" class="btn btn-primary" onclick="javascript:boardWriteClick()">등록</button>
+                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmModal" data-type="write" data-content="등록하시겠습니까?">등록</button>
                       <button type="button" class="btn btn-default" onclick="javascript:closeClick('write')">닫기</button>
                     </div>
                   </div>
@@ -400,8 +425,8 @@ function init(form) {
                   </div><!-- /box-body -->
                   <div class="panel-footer">
                     <div class="text-center">
-                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modifyModal">수정</button>
-                      <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">삭제</button>
+                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmModal" data-type="modify" data-content="수정하시겠습니까?">수정</button>
+                      <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmModal" data-type="delete" data-content="삭제하시겠습니까?">삭제</button>
                       <button type="button" class="btn btn-default" onclick="javascript:closeClick('modify')">닫기</button>
                     </div>
                   </div>

@@ -17,6 +17,7 @@
 <script type="text/javascript" src="/js/datepicker.js"></script>
 <script type="text/javascript" src="/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="/js/validator.js"></script>
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>

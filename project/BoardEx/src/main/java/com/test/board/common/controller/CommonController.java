@@ -30,6 +30,6 @@ public class CommonController {
 	public String index(ModelMap model) {
 
 		LOGGER.debug("index");
-		return "redirect:/board/";
+		return "redirect:/boards/";
 	}
 }
