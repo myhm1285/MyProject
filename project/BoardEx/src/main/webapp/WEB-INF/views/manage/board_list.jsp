@@ -278,8 +278,7 @@ function alert(message) {
                   </div>
                   <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                   <div class="box-body table-responsive no-padding">
-                  <form id="boardWriteForm" data-toggle="validator" role="form">
-                  <input type="hidden" name="isCheckName" value="N" />
+                  <form id="boardWriteForm" role="form" data-toggle="validator">
                     <table class="table table-hover" style="margin-bottom:0px;">
                     <colgroup>
                       <col width="15%" />
@@ -289,20 +288,25 @@ function alert(message) {
                       <tr>
                       <th class="text-center">이름</th>
                       <td>
-                        <div class="col-lg-8" style="padding:0px;">
+                        <div class="form-group has-feedback col-lg-8" style="padding:0px;">
                           <div class="input-group">
                             <input name="name" class="form-control" value="" placeholder="유일한 이름을 입력하세요." required/>
                             <span class="input-group-btn">
                             <button type="button" class="btn btn-primary">중복체크</button>
+                            <input type="hidden" name="isCheckName" value="N" />
                             </span>
                           </div>
+                          <div class="help-block with-errors" id="nameHelpBlock">이름 입력 후 중복체크를 해 주세요.</div>
                         </div>
                       </td>
                       </tr>
                       <tr>
                       <th class="text-center">설명</th>
                       <td>
-                        <textarea name="note" class="form-control" rows="3" required></textarea>
+                        <div class="form-group has-feedback">
+                          <textarea name="note" class="form-control" rows="3" required></textarea>
+                          <div class="help-block with-errors"></div>
+                        </div>
                       </td>
                       </tr>
                       <tr>
@@ -310,9 +314,8 @@ function alert(message) {
                       <td>
                         <div class="col-md-4 col-xs-6" style="padding:0px;">
                           <select name="pageCnt" class="form-control" min="5">
-                            <option value="">선택</option>
                             <option value="5">5</option>
-                            <option value="10">10</option>
+                            <option value="10" selected>10</option>
                             <option value="20">20</option>
                             <option value="50">50</option>
                           </select>
@@ -322,7 +325,7 @@ function alert(message) {
                       <tr>
                       <th class="text-center">공개여부</th>
                       <td>
-                        <div class="col-md-4 col-xs-6" style="padding:0px;">
+                        <div class="form-group col-md-4 col-xs-6" style="padding:0px;">
                           <select name="isOpen" class="form-control">
                             <option value="Y">공개</option>
                             <option value="N">비공개</option>
@@ -332,14 +335,12 @@ function alert(message) {
                       </tr>
                     </tbody>
                     </table>
-                    </form>
-                  </div><!-- /box-body -->
-                  <div class="panel-footer">
-                    <div class="text-center">
-                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmModal" data-type="write" data-content="등록하시겠습니까?">등록</button>
+                    <div class="form-group text-center">
+                      <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#confirmModal" data-type="write" data-content="등록하시겠습니까?">등록</button>
                       <button type="button" class="btn btn-default" onclick="javascript:closeClick('write')">닫기</button>
                     </div>
-                  </div>
+                  </form>
+                  </div><!-- /box-body -->
                   </div><!-- /collapseOne -->
                 </div>
                 <div class="panel panel-default">
@@ -348,8 +349,7 @@ function alert(message) {
                   </div>
                   <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
                   <div class="box-body table-responsive no-padding">
-                  <form id="boardModifyForm" data-toggle="validator" method="put">
-                  <input type="hidden" name="isCheckName" value="N" />
+                  <form id="boardModifyForm" role="form" data-toggle="validator">
                   <input type="hidden" name="idx" value="0" />
                     <table class="table table-hover"  style="margin-bottom:0px;">
                     <colgroup>
@@ -365,6 +365,7 @@ function alert(message) {
                             <input name="name" class="form-control" value="" placeholder="유일한 이름을 입력하세요." />
                             <span class="input-group-btn">
                             <button type="button" class="btn btn-primary">중복체크</button>
+                            <input type="hidden" name="isCheckName" value="N" />
                             </span>
                           </div>
                         </div>
@@ -381,7 +382,6 @@ function alert(message) {
                       <td>
                         <div class="col-md-4 col-xs-6" style="padding:0px;">
                           <select name="pageCnt" class="form-control">
-                            <option value="">선택</option>
                             <option value="5">5</option>
                             <option value="10">10</option>
                             <option value="20">20</option>
