@@ -63,10 +63,18 @@ public class CommonAspect {
 	private void boardLogic() {
 	}
 
-	/*
-	 * 컨트롤러 메소드 프인트컷와 익셉션 로그인 어노테이션 포인트컷를 모두 만족하는 메소드 즉, 디스패처에 의해 컨트롤러 로직을 타면서 로그인확인을 필수적으로 해야 하는경우에 위빙을 건다.
+	@Pointcut("@annotation( com.test.board.boards.service.AdminMenu)")
+	private void adminMenu() {
+	}
+
+	/**
+	 * 컨트롤러 메소드 프인트컷을 만족하는 메소드<br/>
+	 * 메뉴의 게시판 목록을 불러온다
+	 * 
+	 * @param joinPoint
+	 * @return
+	 * @throws Throwable
 	 */
-	// @Around("controllerMethod() && !exceptLogin()")
 	@Around("controllerMethod()")
 	public String menuFunction(ProceedingJoinPoint joinPoint) throws Throwable {
 		ModelMap model = (ModelMap) joinPoint.getArgs()[0];
@@ -79,6 +87,44 @@ public class CommonAspect {
 		}
 		model.addAttribute("boardMenuVOList", boardMenuVOList);
 
+		// // 부여된 세션으로 부터 로그인 객체를 얻는다.
+		// LoginInfoVo loginInfo = (LoginInfoVo) this.session.getAttribute("loginInfo");
+		//
+		// // 세션에 정보가 있다면 메뉴와 헤드를 셋팅한다.
+		// if (loginInfo != null) {
+		// /*
+		// * joinPoint를 기점으로 실제컨트롤러의 실행시점을 구분 실행 후 반환되는 ModelAndView를 가로챈다.
+		// */
+		// ModelAndView mav = (ModelAndView) joinPoint.proceed();
+		// List<MenuInfoVo> menus = this.aspectService.selectMenuListByGrant(loginInfo.getUserId());
+		//
+		// // left 셋팅영역
+		// mav.addObject(menus);
+		//
+		// // top 셋팅영역
+		// TopInfoVo top = defines.getAdminTop();
+		// top.setLoginUserName(loginInfo.getUserName());
+		// top.setLogoUrl((String) this.session.getAttribute("opinnigPage"));
+		// mav.addObject(top);
+		// return mav;
+		// }
+		// // 세션정보가 없다면 로그인페이지로 보낸다.
+		// else {
+		// ModelAndView mav = new ModelAndView(defines.getLoginPage());
+		// return mav;
+		// }
+		return (String) joinPoint.proceed();
+	}
+
+	/**
+	 * 관리자 세션 체크
+	 * 
+	 * @param joinPoint
+	 * @return
+	 * @throws Throwable
+	 */
+	@Around("adminMenu()")
+	public String adminCheck(ProceedingJoinPoint joinPoint) throws Throwable {
 		// // 부여된 세션으로 부터 로그인 객체를 얻는다.
 		// LoginInfoVo loginInfo = (LoginInfoVo) this.session.getAttribute("loginInfo");
 		//

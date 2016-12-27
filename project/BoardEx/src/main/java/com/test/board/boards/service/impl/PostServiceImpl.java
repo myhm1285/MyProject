@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.test.board.boards.service.PostService;
+import com.test.board.boards.vo.CommentVO;
 import com.test.board.boards.vo.PostVO;
 import com.test.board.util.BoardUtil;
 
@@ -25,6 +26,12 @@ public class PostServiceImpl implements PostService {
 	 */
 	@Resource(name = "postMapper")
 	private PostMapper postDAO;
+
+	/**
+	 * 댓글 Mapper
+	 */
+	@Resource(name = "commentMapper")
+	private CommentMapper commentDAO;
 
 	/**
 	 * 게시글 목록 조회
@@ -48,6 +55,28 @@ public class PostServiceImpl implements PostService {
 		}
 
 		return resultVOList;
+	}
+
+	/**
+	 * 게시글 목록 조회 (내용 포함)
+	 * 
+	 * @param postVO
+	 *            조회할 정보가 담긴 PostVO
+	 * @return List<PostVO>
+	 */
+	@Override
+	public List<PostVO> selectPostViewList(PostVO postVO) {
+		List<PostVO> resultPostVOList = postDAO.selectPostViewList(postVO);
+
+		// 댓글 목록 조회
+		CommentVO commentVO = null;
+		for (PostVO resultPostVO : resultPostVOList) {
+			commentVO = new CommentVO();
+			commentVO.setPostIdx(resultPostVO.getIdx());
+
+			resultPostVO.setCommentVOList(commentDAO.selectCommentList(commentVO));
+		}
+		return resultPostVOList;
 	}
 
 	/**

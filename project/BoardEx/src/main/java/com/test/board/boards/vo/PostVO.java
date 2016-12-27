@@ -1,5 +1,7 @@
 package com.test.board.boards.vo;
 
+import java.util.List;
+
 /**
  * 게시글 VO
  *
@@ -44,6 +46,9 @@ public class PostVO extends PostSearchVO {
 
 	/** 메모 */
 	private String note;
+
+	/** 댓글 목록 */
+	private List<CommentVO> commentVOList;
 
 	/**
 	 * @return the idx
@@ -247,6 +252,21 @@ public class PostVO extends PostSearchVO {
 
 	public void setNote(String note) {
 		this.note = note;
+	}
+
+	/**
+	 * @return the commentVOList
+	 */
+	public List<CommentVO> getCommentVOList() {
+		return commentVOList;
+	}
+
+	/**
+	 * @param commentVOList
+	 *            the commentVOList to set
+	 */
+	public void setCommentVOList(List<CommentVO> commentVOList) {
+		this.commentVOList = commentVOList;
 	}
 
 }

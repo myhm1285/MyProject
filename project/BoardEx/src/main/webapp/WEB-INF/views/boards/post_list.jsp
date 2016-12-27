@@ -5,56 +5,53 @@
 <head>
 <jsp:include page="/WEB-INF/views/include/head.jsp" />
 <script type="text/javascript">
-//페이지이동
-function pageMove(pg) {
+$(document).ready(function(){
+	$.ajaxSetup({async:false});
+	
+	loadPostList();
+
+});
+//상세목록 페이지이동
+function viewListPageMove(pg) {
   var f = document.procForm;
   f.pg.value = pg;
   f.action = "/board/boardList.do.do";
   f.submit();
 }
-// 검색
-function searchClick() {
+//목록 페이지이동
+function listPageMove(pg) {
   var f = document.procForm;
-  f.pg.value = 1;
+  f.pg.value = pg;
   f.action = "/board/boardList.do.do";
   f.submit();
 }
-// 초기화
-function searchResetClick() {
-  location.href = "/board/boardList.do.do";
-}
-// 등록
-function writeClick() {
-  location.href = "/board/boardWrite.do";
-}
-// 엔터처리
-function enterEvent(e) {
-  if (e.keyCode == 13) {
-    searchClick();
-  }
-}
-// OS 타입 검색
-function searchOsType(osType) {
-  $("input[name='searchOsType']").val(osType);
-  searchClick();
-}
-// 푸시 요청 상태 검색
-function searchPushReqSts(pushReqSts) {
-  $("input[name='searchPushReqSts']").val(pushReqSts);
-  searchClick();
-}
-// 메시지 내용 검색
-function searchMsgContent() {
-  $("input[name='searchMsgContent']").val($("input[name='searchMsgContent']").val());
-  searchClick();
+//게시글 목록 조회
+function loadPostList() {
+	$.ajax({
+        type: "GET",
+        url: "/boards/" + "${boardVO.name}" + "/ajax",
+        success:function(result) {
+        	var postVOList = result.postVOList;
+        	var postListHtml = "";
+        	$.each(postVOList, function(idx, postVO){
+        		postListHtml += "<tr>";
+        		postListHtml += "<td class=\"text-center hidden-xs\">" + postVO.listNo + "</td>";
+        		postListHtml += "<td>";
+        		postListHtml += "<td><a href=\"/boards/${boardVO.name}/" + postVO.idx + "\">" + postVO.title + "</a>";
+        		postListHtml += "</td>";
+        		postListHtml += "<td class=\"text-center\">" +  postVO.writeDt + "</td>";
+        		postListHtml += "</tr>";
+        	});
+       		$("table[name='postListTable'] tbody").html(postListHtml);
+       		$("ul[name='listPaging']").html(result.listPaging);
+        }
+      });
 }
 </script>
 </head>
 <body>
   <form name="procForm" method="post">
     <input type="hidden" name="pg" value="1"/>
-    <input type="hidden" name="searchOsType" value=""/>
-    <input type="hidden" name="searchPushReqSts" value=""/>
     
     <jsp:include page="/WEB-INF/views/include/top.jsp"/>
     
@@ -66,51 +63,41 @@ function searchMsgContent() {
             <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
           </p>
           <div class="content-header">
-            <h1 class="page-header">게시판<small>목록</small></h1>
-            <ol class="breadcrumb pull-right">
-              <li><a href="#">HOME</a></li>
-              <li><a href="#">게시판</a></li>
-              <li class="active">게시판</li>
-            </ol>
+            <h3 class="page-header">${boardVO.name} (${boardVO.postCnt})</h3>
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="panel panel-default">
+                  <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover" name="postListTable">
+                    <colgroup>
+                      <col width="10%" />
+                      <col />
+                      <col width="15%" />
+                    </colgroup>
+                    <thead>
+                      <tr>
+                      <th class="text-center">No</th>
+                      <th class="text-center"></th>
+                      <th class="text-center"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                    </table>
+                  </div><!-- /box-body -->
+                </div>
+                <div class="clearfix text-center">
+                  <ul class="pagination pagination-sm no-margin" name="listPaging">
+                    ${paging}
+                  </ul>
+                </div>
+              </div><!-- /col -->
+            </div><!-- /row -->
           </div><!-- /content-header -->
           <div class="content">
             <div class="row">
               <div class="col-xs-12">
                 <div class="panel panel-default">
-                  <div class="panel-heading">
-                    <div class="btn-group" style="margin:5px;">
-                        <button type="button" class="btn btn-default">OS 타입</button>
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                          <span class="caret"></span>
-                          <span class="sr-only">Toggle Dropdown</span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu">
-                          <li><a href="javascript:searchOsType('')">전체</a></li>
-                          <li class="divider"></li>
-                          <li class=""><a href="javascript:searchOsType('A')">안드로이드</a></li>
-                          <li class=""><a href="javascript:searchOsType('I')">IOS</a></li>
-                        </ul>
-                    </div>
-                    <div class="btn-group" style="margin:5px;">
-                        <button type="button" class="btn btn-default">푸시 요청 상태</button>
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                          <span class="caret"></span>
-                          <span class="sr-only">Toggle Dropdown</span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu">
-                          <li><a href="javascript:searchPushReqSts('')">전체</a></li>
-                          <li class="divider"></li>
-                          <li class=""><a href="javascript:searchPushReqSts('Y')">요청</a></li>
-                          <li class=""><a href="javascript:searchPushReqSts('N')">미요청</a></li>
-                        </ul>
-                    </div>
-                    <div class="input-group" style="max-width:300px;margin:5px;">
-                      <input type="text" class="form-control" name="searchMsgContent" value="" placeholder="메시지 내용">
-                      <div class="input-group-btn">
-                           <button class="btn btn-default" onclick="javascript:searchClick()"><i class="fa fa-search"></i></button>
-                         </div>
-                    </div><!-- /input-group -->
-                  </div>
                   <div class="box-body table-responsive no-padding">
                     <table class="table table-hover">
                     <colgroup>

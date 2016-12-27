@@ -23,6 +23,15 @@ public interface PostService {
 	public List<PostVO> selectPostList(PostVO postVO);
 
 	/**
+	 * 게시글 목록 조회 (내용 포함)
+	 * 
+	 * @param postVO
+	 *            조회할 정보가 담긴 PostVO
+	 * @return List<PostVO>
+	 */
+	public List<PostVO> selectPostViewList(PostVO postVO);
+
+	/**
 	 * 게시글 목록 총 개수 조회
 	 * 
 	 * @param postVO

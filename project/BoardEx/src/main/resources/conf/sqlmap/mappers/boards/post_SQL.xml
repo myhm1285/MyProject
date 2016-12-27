@@ -8,8 +8,34 @@
 		<![CDATA[
 		/* post_SQL.selectPostList */
 		SELECT
-			P.IDX, P.BOARD_IDX, B.NAME AS BOARD_NAME, P.TITLE, P.CONTENT,
-			P.WRITER_IDX, A.ACC_NAME AS WRITER_NAME, P.COMMENT_CNT, P.IS_DEL, P.NOTE,
+			P.IDX, P.TITLE, DATE_FORMAT(P.WRITE_DT, '%Y-%m-%d %H:%i') AS WRITE_DT
+		FROM
+			POST AS P
+			LEFT OUTER JOIN BOARD AS B
+			ON (P.BOARD_IDX = B.IDX)
+		WHERE
+			B.IS_DEL = 'N'
+			AND P.IS_DEL = 'N'
+		]]>
+		<if test='boardIdx != 0'>
+    	<![CDATA[
+			AND P.BOARD_IDX = #{boardIdx}
+		]]>
+		</if>
+		<![CDATA[
+		ORDER BY
+			P.WRITE_DT DESC
+		LIMIT #{startRownum}, #{cntPerPage}
+		]]>
+	</select>
+	
+	<!-- 게시글 목록 조회 (내용 포함) -->
+	<select id="selectPostViewList" parameterType="PostVO" resultMap="postResult">
+		<![CDATA[
+		/* post_SQL.selectPostViewList */
+		SELECT
+			P.IDX, P.TITLE, P.CONTENT, A.ACC_NAME AS WRITER_NAME, P.COMMENT_CNT,
+			P.NOTE,
 			DATE_FORMAT(P.WRITE_DT, '%Y-%m-%d %H:%i') AS WRITE_DT,
 			DATE_FORMAT(P.MODIFY_DT, '%Y-%m-%d %H:%i') AS MODIFY_DT
 		FROM
@@ -26,16 +52,6 @@
     	<![CDATA[
 			AND P.BOARD_IDX = #{boardIdx}
 		]]>
-		</if>
-		<if test='searchTitle != null and searchTitle != ""'>
-    	<![CDATA[
-			AND P.TITLE LIKE CONCAT('%',#{searchTitle},'%')
-    	]]>
-		</if>
-		<if test='searchWriterName != null and searchWriterName != ""'>
-    	<![CDATA[
-			AND A.ACC_NAME LIKE CONCAT('%',#{searchWriterName},'%')
-    	]]>
 		</if>
 		<![CDATA[
 		ORDER BY
@@ -54,8 +70,6 @@
 			POST AS P
 			LEFT OUTER JOIN BOARD AS B
 			ON (P.BOARD_IDX = B.IDX)
-			LEFT OUTER JOIN ACCOUNT AS A
-			ON (P.WRITER_IDX = A.IDX)
 		WHERE
 			B.IS_DEL = 'N'
 			AND P.IS_DEL = 'N'
@@ -65,18 +79,8 @@
 			AND P.BOARD_IDX = #{boardIdx}
 		]]>
 		</if>
-		<if test='searchTitle != null and searchTitle != ""'>
-    	<![CDATA[
-			AND P.TITLE LIKE CONCAT('%',#{searchTitle},'%')
-    	]]>
-		</if>
-		<if test='searchWriterName != null and searchWriterName != ""'>
-    	<![CDATA[
-			AND A.ACC_NAME LIKE CONCAT('%',#{searchWriterName},'%')
-    	]]>
-		</if>
 	</select>
-
+	
 	<!-- 게시글 조회 -->
 	<select id="selectPost" parameterType="PostVO" resultMap="postResult">
 		<![CDATA[

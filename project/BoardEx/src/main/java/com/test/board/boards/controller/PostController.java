@@ -2,6 +2,7 @@ package com.test.board.boards.controller;
 
 import javax.annotation.Resource;
 
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -17,7 +18,6 @@ import com.test.board.boards.vo.PostVO;
 import com.test.board.manage.service.BoardService;
 import com.test.board.manage.vo.BoardVO;
 import com.test.board.util.BoardUtil;
-import com.test.board.util.PropertyUtil;
 
 /**
  * 게시글 Controller
@@ -51,25 +51,30 @@ public class PostController {
 	 *            조회할 정보가 담긴 PostVO
 	 * @return "/boards/post_list"
 	 */
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String allPostList(ModelMap model, @ModelAttribute("searchVO") PostVO postVO) {
 
-		postVO.setCntPerPage(PropertyUtil.getPropertyInt("board", "board.post.postList.cntPerPage", 10));
+		BoardVO boardVO = new BoardVO();
+		boardVO.setName("전체");
 
 		// 1. 총 게시글 수
 		postVO.setTotalCnt(postService.selectPostListTotalCnt(postVO));
+		boardVO.setPostCnt(postVO.getTotalCnt());
 
 		// 2. 목록
-		model.addAttribute(postService.selectPostList(postVO));
+		model.addAttribute(postService.selectPostViewList(postVO));
 
 		// 3. 페이징
 		model.addAttribute("paging", BoardUtil.getPaging(postVO.getTotalCnt(), postVO.getPg(), postVO.getCntPerPage()));
+
+		// 4. 게시판 정보
+		model.addAttribute(boardVO);
 
 		return "/boards/post_list";
 	}
 
 	/**
-	 * 게시글 목록 조회
+	 * 게시글 목록 조회 (내용 포함)
 	 * 
 	 * @param boardName
 	 *            게시판 이름
@@ -83,23 +88,64 @@ public class PostController {
 	public String postList(ModelMap model, @PathVariable("boardName") String boardName, @ModelAttribute("searchVO") PostVO postVO) {
 
 		// 0. 조건 세팅
-		int boardIdx = this.getBoardIdx(boardName);
-		if (boardIdx == 0) {
+		BoardVO boardVO = this.getBoardInfo(boardName);
+		if (boardVO == null) {
 			return "/common/404";
 		}
-		postVO.setBoardIdx(boardIdx);
-		postVO.setCntPerPage(PropertyUtil.getPropertyInt("board", "board.post.postList.cntPerPage", 10));
+		postVO.setBoardIdx(boardVO.getIdx());
+		postVO.setCntPerPage(boardVO.getPostCnt());
 
 		// 1. 총 게시글 수
 		postVO.setTotalCnt(postService.selectPostListTotalCnt(postVO));
 
 		// 2. 목록
-		model.addAttribute(postService.selectPostList(postVO));
+		model.addAttribute("postVOViewList", postService.selectPostViewList(postVO));
 
 		// 3. 페이징
-		model.addAttribute("paging", BoardUtil.getPaging(postVO.getTotalCnt(), postVO.getPg(), postVO.getCntPerPage()));
+		model.addAttribute("viewListPaging", BoardUtil.getPaging(postVO.getTotalCnt(), postVO.getPg(), postVO.getCntPerPage(), "viewListPageMove"));
+
+		// 4. 게시판 정보
+		model.addAttribute(boardVO);
 
 		return "/boards/post_list";
+	}
+
+	/**
+	 * 게시글 목록 조회 (Ajax)
+	 * 
+	 * @param boardName
+	 *            게시판 이름
+	 * @param model
+	 *            ModelMap
+	 * @param postVO
+	 *            조회할 정보가 담긴 PostVO
+	 * @return "/boards/post_list"
+	 */
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "/{boardName}/ajax", method = RequestMethod.GET)
+	@ResponseBody
+	public JSONObject postListAjax(JSONObject jsonObj, @PathVariable("boardName") String boardName, @ModelAttribute("searchVO") PostVO postVO) {
+
+		// 0. 조건 세팅
+		if (boardName != null) {
+			BoardVO boardVO = this.getBoardInfo(boardName);
+			if (boardVO == null) {
+				return null;
+			}
+			postVO.setBoardIdx(boardVO.getIdx());
+			postVO.setCntPerPage(boardVO.getPostCnt());
+		}
+
+		// 1. 총 게시글 수
+		postVO.setTotalCnt(postService.selectPostListTotalCnt(postVO));
+
+		// 2. 목록
+		jsonObj.put("postVOList", postService.selectPostList(postVO));
+
+		// 3. 페이징
+		jsonObj.put("listPaging", BoardUtil.getPaging(postVO.getTotalCnt(), postVO.getPg(), postVO.getCntPerPage(), "listPageMove"));
+
+		return jsonObj;
 	}
 
 	/**
@@ -119,12 +165,13 @@ public class PostController {
 	public String postView(ModelMap model, @PathVariable("boardName") String boardName, @PathVariable("idx") int idx,
 			@ModelAttribute("searchVO") PostVO postVO) {
 
-		// 0. 조건 세팅
-		int boardIdx = this.getBoardIdx(boardName);
-		if (boardIdx == 0) {
+		// 1. 게시판
+		BoardVO boardVO = this.getBoardInfo(boardName);
+		if (boardVO == null) {
 			return "/common/404";
 		}
-		postVO.setBoardIdx(boardIdx);
+		// 1. 조건 세팅
+		postVO.setBoardIdx(boardVO.getIdx());
 
 		// 1. 조회
 		PostVO resultVO = postService.selectPost(postVO);
@@ -151,11 +198,11 @@ public class PostController {
 	public String postWrite(ModelMap model, @PathVariable("boardName") String boardName, @ModelAttribute("searchVO") PostVO postVO) {
 
 		// 0. 조건 세팅
-		int boardIdx = this.getBoardIdx(boardName);
-		if (boardIdx == 0) {
+		BoardVO boardVO = this.getBoardInfo(boardName);
+		if (boardVO == null) {
 			return "/common/404";
 		}
-		postVO.setBoardIdx(boardIdx);
+		postVO.setBoardIdx(boardVO.getIdx());
 
 		return "/boards/board_write";
 	}
@@ -178,11 +225,11 @@ public class PostController {
 			@ModelAttribute("searchVO") PostVO postVO) {
 
 		// 0. 조건 세팅
-		int boardIdx = this.getBoardIdx(boardName);
-		if (boardIdx == 0) {
+		BoardVO boardVO = this.getBoardInfo(boardName);
+		if (boardVO == null) {
 			return "/common/404";
 		}
-		postVO.setBoardIdx(boardIdx);
+		postVO.setBoardIdx(boardVO.getIdx());
 
 		// 1. 조회
 		PostVO resultVO = postService.selectPost(postVO);
@@ -203,17 +250,17 @@ public class PostController {
 	 *            등록할 정보가 담긴 PostVO
 	 * @return 성공이면 Y, 실패이면 N
 	 */
-	@RequestMapping(value = "/{boardName}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/{boardName}", method = RequestMethod.POST)
 	@ResponseBody
 	public String postWriteProc(@PathVariable("boardName") String boardName, @ModelAttribute("searchVO") PostVO postVO) throws Exception {
 
 		try {
 			// 0. 조건 세팅
-			int boardIdx = this.getBoardIdx(boardName);
-			if (boardIdx == 0) {
-				return "/common/404";
+			BoardVO boardVO = this.getBoardInfo(boardName);
+			if (boardVO == null) {
+				return "N";
 			}
-			postVO.setBoardIdx(boardIdx);
+			postVO.setBoardIdx(boardVO.getIdx());
 
 			// 1. 등록
 			postService.insertPost(postVO);
@@ -237,18 +284,18 @@ public class PostController {
 	 *            수정할 정보가 담긴 PostVO
 	 * @return 성공이면 Y, 실패이면 N
 	 */
-	@RequestMapping(value = "/{boardName}/{idx}", method = RequestMethod.POST)
+	@RequestMapping(value = "/{boardName}/{idx}", method = RequestMethod.PUT)
 	@ResponseBody
 	public String postModifyProc(@PathVariable("boardName") String boardName, @PathVariable("idx") int idx,
 			@ModelAttribute("searchVO") PostVO postVO) {
 
 		try {
 			// 0. 조건 세팅
-			int boardIdx = this.getBoardIdx(boardName);
-			if (boardIdx == 0) {
-				return "/common/404";
+			BoardVO boardVO = this.getBoardInfo(boardName);
+			if (boardVO == null) {
+				return "N";
 			}
-			postVO.setBoardIdx(boardIdx);
+			postVO.setBoardIdx(boardVO.getIdx());
 
 			// 1. 수정
 			postService.updatePost(postVO);
@@ -279,11 +326,11 @@ public class PostController {
 
 		try {
 			// 0. 조건 세팅
-			int boardIdx = this.getBoardIdx(boardName);
-			if (boardIdx == 0) {
-				return "/common/404";
+			BoardVO boardVO = this.getBoardInfo(boardName);
+			if (boardVO == null) {
+				return "N";
 			}
-			postVO.setBoardIdx(boardIdx);
+			postVO.setBoardIdx(boardVO.getIdx());
 
 			// 1. 삭제
 			postService.deletePost(postVO);
@@ -297,22 +344,16 @@ public class PostController {
 	}
 
 	/**
-	 * 게시판 이름으로 일련번호를 찾는다.
+	 * 게시판 이름으로 게시판 정보를 찾는다.
 	 * 
 	 * @param boardName
 	 *            게시판 이름
-	 * @return 게시판 일련번호
+	 * @return 게시판 정보
 	 */
-	private int getBoardIdx(String boardName) {
+	private BoardVO getBoardInfo(String boardName) {
 		BoardVO boardVO = new BoardVO();
 		boardVO.setName(boardName);
-		boardVO = boardService.selectBoardForName(boardVO);
-
-		if (boardVO == null) {
-			return 0;
-		}
-
-		return boardVO.getIdx();
+		return boardService.selectBoardForName(boardVO);
 	}
 
 }
