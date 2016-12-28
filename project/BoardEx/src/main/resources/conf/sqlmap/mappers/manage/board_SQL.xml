@@ -34,6 +34,19 @@
 		]]>
 	</select>
 	
+	<!-- 모든 게시판 게시글 총 갯수 -->
+	<select id="selectBoardAllPostTotalCnt" resultType="int">
+		<![CDATA[
+		/* board_SQL.selectBoardListTotalCnt */
+		SELECT
+			SUM(POST_CNT)
+		FROM
+			BOARD AS B
+		WHERE
+			B.IS_DEL = 'N'
+		]]>
+	</select>
+	
 	<!-- 게시판 조회 -->
 	<select id="selectBoard" parameterType="BoardVO" resultMap="boardResult">
 		<![CDATA[

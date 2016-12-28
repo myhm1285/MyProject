@@ -123,7 +123,7 @@ public class BaseVO {
 	 */
 	public int getCntPerPage() {
 		if (cntPerPage <= 0) {
-			cntPerPage = 10;
+			cntPerPage = 5;
 		}
 		return cntPerPage;
 	}

@@ -58,14 +58,14 @@ public class PostController {
 		boardVO.setName("전체");
 
 		// 1. 총 게시글 수
-		postVO.setTotalCnt(postService.selectPostListTotalCnt(postVO));
+		postVO.setTotalCnt(boardService.selectBoardAllPostTotalCnt());
 		boardVO.setPostCnt(postVO.getTotalCnt());
 
 		// 2. 목록
-		model.addAttribute(postService.selectPostViewList(postVO));
+		model.addAttribute("postVOViewList", postService.selectPostViewList(postVO));
 
 		// 3. 페이징
-		model.addAttribute("paging", BoardUtil.getPaging(postVO.getTotalCnt(), postVO.getPg(), postVO.getCntPerPage()));
+		model.addAttribute("viewListPaging", BoardUtil.getPaging(postVO.getTotalCnt(), postVO.getPg(), postVO.getCntPerPage(), "viewListPageMove"));
 
 		// 4. 게시판 정보
 		model.addAttribute(boardVO);
@@ -93,18 +93,16 @@ public class PostController {
 			return "/common/404";
 		}
 		postVO.setBoardIdx(boardVO.getIdx());
-		postVO.setCntPerPage(boardVO.getPostCnt());
+		postVO.setCntPerPage(boardVO.getPageCnt());
+		postVO.setTotalCnt(boardVO.getPostCnt());
 
-		// 1. 총 게시글 수
-		postVO.setTotalCnt(postService.selectPostListTotalCnt(postVO));
-
-		// 2. 목록
+		// 1. 목록
 		model.addAttribute("postVOViewList", postService.selectPostViewList(postVO));
 
-		// 3. 페이징
+		// 2. 페이징
 		model.addAttribute("viewListPaging", BoardUtil.getPaging(postVO.getTotalCnt(), postVO.getPg(), postVO.getCntPerPage(), "viewListPageMove"));
 
-		// 4. 게시판 정보
+		// 3. 게시판 정보
 		model.addAttribute(boardVO);
 
 		return "/boards/post_list";
@@ -124,8 +122,10 @@ public class PostController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/{boardName}/ajax", method = RequestMethod.GET)
 	@ResponseBody
-	public JSONObject postListAjax(JSONObject jsonObj, @PathVariable("boardName") String boardName, @ModelAttribute("searchVO") PostVO postVO) {
+	public JSONObject postListAjax(@PathVariable("boardName") String boardName, @ModelAttribute("searchVO") PostVO postVO) {
 
+		JSONObject jsonObj = new JSONObject();
+		
 		// 0. 조건 세팅
 		if (boardName != null) {
 			BoardVO boardVO = this.getBoardInfo(boardName);
@@ -133,17 +133,14 @@ public class PostController {
 				return null;
 			}
 			postVO.setBoardIdx(boardVO.getIdx());
-			postVO.setCntPerPage(boardVO.getPostCnt());
+			postVO.setTotalCnt(boardVO.getPostCnt());
 		}
 
-		// 1. 총 게시글 수
-		postVO.setTotalCnt(postService.selectPostListTotalCnt(postVO));
-
-		// 2. 목록
+		// 1. 목록
 		jsonObj.put("postVOList", postService.selectPostList(postVO));
 
-		// 3. 페이징
-		jsonObj.put("listPaging", BoardUtil.getPaging(postVO.getTotalCnt(), postVO.getPg(), postVO.getCntPerPage(), "listPageMove"));
+		// 2. 페이징
+		jsonObj.put("listPaging", BoardUtil.getPaging(postVO.getTotalCnt(), postVO.getPg(), postVO.getCntPerPage(), "loadPostList"));
 
 		return jsonObj;
 	}

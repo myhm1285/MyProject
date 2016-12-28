@@ -8,7 +8,7 @@
 		<![CDATA[
 		/* post_SQL.selectPostList */
 		SELECT
-			P.IDX, P.TITLE, DATE_FORMAT(P.WRITE_DT, '%Y-%m-%d %H:%i') AS WRITE_DT
+			P.IDX, P.TITLE, DATE_FORMAT(P.WRITE_DT, '%Y-%m-%d') AS WRITE_DT
 		FROM
 			POST AS P
 			LEFT OUTER JOIN BOARD AS B
@@ -34,8 +34,8 @@
 		<![CDATA[
 		/* post_SQL.selectPostViewList */
 		SELECT
-			P.IDX, P.TITLE, P.CONTENT, A.ACC_NAME AS WRITER_NAME, P.COMMENT_CNT,
-			P.NOTE,
+			P.IDX, P.TITLE, B.NAME AS BOARD_NAME, P.CONTENT, A.ACC_NAME AS WRITER_NAME,
+			P.COMMENT_CNT, P.NOTE,
 			DATE_FORMAT(P.WRITE_DT, '%Y-%m-%d %H:%i') AS WRITE_DT,
 			DATE_FORMAT(P.MODIFY_DT, '%Y-%m-%d %H:%i') AS MODIFY_DT
 		FROM
@@ -60,27 +60,6 @@
 		]]>
 	</select>
 
-	<!-- 게시글 목록 총 갯수 -->
-	<select id="selectPostListTotalCnt" parameterType="PostVO" resultType="int">
-		<![CDATA[
-		/* post_SQL.selectPostListTotalCnt */
-		SELECT
-			COUNT(*)
-		FROM
-			POST AS P
-			LEFT OUTER JOIN BOARD AS B
-			ON (P.BOARD_IDX = B.IDX)
-		WHERE
-			B.IS_DEL = 'N'
-			AND P.IS_DEL = 'N'
-		]]>
-		<if test='boardIdx != 0'>
-    	<![CDATA[
-			AND P.BOARD_IDX = #{boardIdx}
-		]]>
-		</if>
-	</select>
-	
 	<!-- 게시글 조회 -->
 	<select id="selectPost" parameterType="PostVO" resultMap="postResult">
 		<![CDATA[

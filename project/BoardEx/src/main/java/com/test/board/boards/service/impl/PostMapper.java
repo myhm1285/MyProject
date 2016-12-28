@@ -35,15 +35,6 @@ public interface PostMapper {
 	public List<PostVO> selectPostViewList(PostVO postVO);
 
 	/**
-	 * 게시글 목록 총 개수 조회
-	 * 
-	 * @param postVO
-	 *            조회할 정보가 담긴 PostVO
-	 * @return 목록 총 개수
-	 */
-	public int selectPostListTotalCnt(PostVO postVO);
-
-	/**
 	 * 게시글 조회
 	 * 
 	 * @param postVO

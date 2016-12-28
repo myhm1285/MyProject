@@ -35,6 +35,13 @@ public interface BoardMapper {
 	public int selectBoardListTotalCnt(BoardVO boardVO);
 
 	/**
+	 * 모든 게시판 게시글 총 개수 조회
+	 * 
+	 * @return 목록 총 개수
+	 */
+	public int selectBoardAllPostTotalCnt();
+
+	/**
 	 * 게시판 조회
 	 * 
 	 * @param boardVO

@@ -80,18 +80,6 @@ public class PostServiceImpl implements PostService {
 	}
 
 	/**
-	 * 게시글 목록 총 개수 조회
-	 * 
-	 * @param postVO
-	 *            조회할 정보가 담긴 PostVO
-	 * @return 목록 총 개수
-	 */
-	@Override
-	public int selectPostListTotalCnt(PostVO postVO) {
-		return postDAO.selectPostListTotalCnt(postVO);
-	}
-
-	/**
 	 * 게시글 조회
 	 * 
 	 * @param postVO
