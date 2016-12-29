@@ -5,18 +5,63 @@
 <head>
 <jsp:include page="/WEB-INF/views/include/head.jsp" />
 <script type="text/javascript">
-  $(document).ready(function(){
-    $("input[type='checkbox'], input[type='radio']").prop("disabled", true);
-  });
-  // 목록
-  function cancelClick() {
-    location.href = "/board/boardList.do";
-  }
+$(document).ready(function(){
+	$.ajaxSetup({async:false});
+	
+	loadPostList(1);
+	
+	$(".panel-heading a").click(function(){
+    	
+        $(this).find(".glyphicon").toggleClass("glyphicon-chevron-up");
+        $(this).find(".glyphicon").toggleClass("glyphicon-chevron-down");
+    });
+
+});
+//상세 페이지이동
+function viewPageMove(pg) {
+	$.ajax({
+        type: "GET",
+        url: "/boards/" + "${boardVO.idx != 0 ? boardVO.name:'_ALL_'}" + "/find/idx?pg=" + pg,
+        success:function(result) {
+        	if(result != 0) {
+        		location.href = "/boards/${boardVO.name}/" + result;
+        	}
+        }
+      });
+}
+//게시글 목록 조회
+function loadPostList(pg) {
+	$.ajax({
+        type: "GET",
+        url: "/boards/" + "${boardVO.idx != 0 ? boardVO.name:'_ALL_'}" + "/ajax?pg="+pg,
+        success:function(result) {
+        	var postVOList = result.postVOList;
+        	var postListHtml = "";
+        	$.each(postVOList, function(idx, postVO){
+        		postListHtml += "<tr>";
+        		postListHtml += "<td class=\"text-center hidden-xs\">" + postVO.listNo + "</td>";
+        		postListHtml += "<td><a href=\"/boards/${boardVO.name}/" + postVO.idx + "\">" + postVO.title + "</a>";
+        		postListHtml += "</td>";
+        		postListHtml += "<td class=\"text-center\">" +  postVO.writeDt + "</td>";
+        		postListHtml += "</tr>";
+        	});
+        	if(postListHtml == "") {
+        		postListHtml = "<tr><td class=\"text-center\" colspan=\"3\">게시글이 존재하지 않습니다.</td></tr>";
+        	} else {
+	       		$("ul[name='listPaging']").html(result.listPaging);
+        	}
+       		$("table[name='postListTable'] tbody").html(postListHtml);
+        }
+      });
+}
 </script>
 </head>
 <body>
-  <form name="procForm" method="post">
+  <form name="procForm" method="get">
+    <input type="hidden" name="pg" value="1"/>
+    
     <jsp:include page="/WEB-INF/views/include/top.jsp"/>
+    
     <div class="container">
       <div class="row row-offcanvas row-offcanvas-left">
       <jsp:include page="/WEB-INF/views/include/left.jsp"/>
@@ -25,87 +70,66 @@
             <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
           </p>
           <div class="content-header">
-            <h1 class="page-header">게시판<small>상세</small></h1>
-            <ol class="breadcrumb pull-right">
-              <li><a href="#">HOME</a></li>
-              <li><a href="#">게시판</a></li>
-              <li class="active">게시판</li>
-              </ol>
+            <h3 class="page-header">${boardVO.name} (${boardVO.postCnt})</h3>
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="panel panel-default">
+                  <div class="panel-heading" style="border-bottom:0px">
+                    <a data-toggle="collapse" href="#collapseTbodyList" aria-expanded="false" aria-controls="collapseTbodyList">
+                    <span class="glyphicon glyphicon-chevron-down">목록</span>
+                    </a>
+                  </div>
+                  <div class="box-body table-responsive no-padding collapse" id="collapseTbodyList">
+                    <table class="table table-hover" name="postListTable">
+                    <colgroup>
+                      <col class="hidden-xs" width="10%" />
+                      <col />
+                      <col width="15%" />
+                    </colgroup>
+                    <thead class="hidden-xs" style="border-top:1px solid #ddd">
+                      <tr>
+                      <th class="text-center hidden-xs">#</th>
+                      <th class="text-center"></th>
+                      <th class="text-center">DATE</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                    </table>
+                    <div class="clearfix text-center">
+                      <ul class="pagination pagination-sm no-margin" name="listPaging" />
+                    </div>
+                  </div><!-- /box-body -->
+                </div>
+              </div><!-- /col -->
+            </div><!-- /row -->
           </div><!-- /content-header -->
           <div class="content">
             <div class="row">
               <div class="col-xs-12">
                 <div class="panel panel-default">
                   <div class="panel-heading">
-                    <h3 class="box-title"><b>발송 정보</b></h3>
+                    <h4 style="margin:5px 0px;"><strong><a href="/boards/${postVO.boardName}/${postVO.idx}">${postVO.title}</a></strong><sub style="margin-left:10px;color:#777;">| ${postVO.boardName}</sub></h4>
+                    <div class="text-right" style="font-weight:normal; color:#888;">${postVO.writeDt}</div>
                   </div>
-                  <div class="box-body table-responsive no-padding">
-                    <table class="table table-hover">
-                      <colgroup>
-                        <col width="15%" />
-                        <col />
-                      </colgroup>
-                      <tbody>
-                        <tr>
-                          <th>발송일시</th>
-                          <td>2016-05-31</td>
-                          </tr>
-                        <tr>
-                          <th>OS 타입</th>
-                          <td><i class="fa fa-mobile-phone"></i> 안드로이드</td>
-                          </tr>
-                        <tr>
-                          <th>대상 (사용자ID)</th>
-                          <td>test1234</td>
-                          </tr>
-                        <tr>
-                          <th>메시지 내용</th>
-                          <td>메시지테스트1</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div><!-- /.box-body -->
-                </div><!-- /.pannel -->
-              </div><!-- /.col -->
-            </div><!-- /.row -->
-            <div class="row">
-              <div class="col-xs-12">
-                <div class="panel panel-default">
-                  <div class="panel-heading">
-                    <h3 class="box-title"><b>전송 상태</b></h3>
+                  <div class="panel-body">
+                    ${postVO.content}
+                  </div><!-- /box-body -->
+                  <div class="panel-footer">
+                    <div><strong>Comments</strong> (${postVO.commentCnt})</div>
                   </div>
-                  <div class="box-body table-responsive no-padding">
-                    <table class="table">
-                      <colgroup>
-                        <col width="15%" />
-                        <col width="35%" />
-                        <col width="15%" />
-                        <col width="35%" />
-                      </colgroup>
-                      <tbody>
-                        <tr>
-                          <th>요청상태</th>
-                          <td><span class="label label-success">요청</span><br/>(2016-05-30)</td>
-                          <th>응답상태</th>
-                          <td><span class="label label-primary">응답</span></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div><!-- /.box-body -->
-                </div><!-- /.box -->
-              </div><!-- /.col -->
-            </div><!-- /.row -->
-            <div class="row">
-              <div class="col-xs-12">
-              <ul class="no-margin pull-right">
-                  <a class="btn btn-block btn-default" href="javascript:cancelClick();">
-                    <i class="fa fa-list"></i> 목록
-                  </a>
-                </ul>
-              </div><!-- /.col -->
-            </div><!-- /.row -->
-          </div><!-- /.content -->
-    </div>
+                </div>
+                <div class="clearfix text-center">
+                  <ul class="pagination pagination-sm no-margin">
+                    <c:if test="${postVO != null}">${viewPaging}</c:if>
+                  </ul>
+                </div>
+              </div><!-- /col -->
+            </div><!-- /row -->
+          </div><!-- /content -->
+        </div><!-- /col-xs-12 col-sm-9 -->
+      </div><!-- /row -->
+    </div><!-- /container -->
   </form>
 </body>
 </html>

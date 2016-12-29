@@ -78,10 +78,12 @@ public class CommonAspect {
 	@Around("controllerMethod()")
 	public String menuFunction(ProceedingJoinPoint joinPoint) throws Throwable {
 		ModelMap model = (ModelMap) joinPoint.getArgs()[0];
-		List<BoardVO> boardMenuVOList = boardService.selectBoardList(new BoardVO());
+		BoardVO boardVO = new BoardVO();
+		boardVO.setIsOpen("Y");
+		List<BoardVO> boardMenuVOList = boardService.selectBoardList(boardVO);
 		String requestUri = URLDecoder.decode(request.getRequestURI(), "UTF-8");
 		for (BoardVO boardMenuVO : boardMenuVOList) {
-			if (requestUri.equals("/boards/" + boardMenuVO.getName())) {
+			if (requestUri.equals("/boards/" + boardMenuVO.getName()) || requestUri.indexOf("/boards/" + boardMenuVO.getName() + "/") != -1) {
 				boardMenuVO.setMenuOn(true);
 			}
 		}

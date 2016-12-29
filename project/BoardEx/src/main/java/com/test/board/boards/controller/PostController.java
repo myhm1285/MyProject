@@ -117,7 +117,7 @@ public class PostController {
 	 *            ModelMap
 	 * @param postVO
 	 *            조회할 정보가 담긴 PostVO
-	 * @return "/boards/post_list"
+	 * @return 게시글 목록
 	 */
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/{boardName}/ajax", method = RequestMethod.GET)
@@ -125,15 +125,17 @@ public class PostController {
 	public JSONObject postListAjax(@PathVariable("boardName") String boardName, @ModelAttribute("searchVO") PostVO postVO) {
 
 		JSONObject jsonObj = new JSONObject();
-		
+
 		// 0. 조건 세팅
-		if (boardName != null) {
+		if (boardName != null && !"_ALL_".equals(boardName)) {
 			BoardVO boardVO = this.getBoardInfo(boardName);
 			if (boardVO == null) {
 				return null;
 			}
 			postVO.setBoardIdx(boardVO.getIdx());
 			postVO.setTotalCnt(boardVO.getPostCnt());
+		} else {
+			postVO.setTotalCnt(boardService.selectBoardAllPostTotalCnt());
 		}
 
 		// 1. 목록
@@ -143,6 +145,35 @@ public class PostController {
 		jsonObj.put("listPaging", BoardUtil.getPaging(postVO.getTotalCnt(), postVO.getPg(), postVO.getCntPerPage(), "loadPostList"));
 
 		return jsonObj;
+	}
+
+	/**
+	 * 페이지 번호로 게시글 일련번호 조회 (Ajax)
+	 * 
+	 * @param boardName
+	 *            게시판 이름
+	 * @param model
+	 *            ModelMap
+	 * @param postVO
+	 *            조회할 정보가 담긴 PostVO
+	 * @return 게시글 일련번호
+	 */
+	@RequestMapping(value = "/{boardName}/find/idx", method = RequestMethod.GET)
+	@ResponseBody
+	public int postIdxForPgAjax(@PathVariable("boardName") String boardName, @ModelAttribute("searchVO") PostVO postVO) {
+
+		// 0. 조건 세팅
+		if (boardName != null && !"_ALL_".equals(boardName)) {
+			BoardVO boardVO = this.getBoardInfo(boardName);
+			if (boardVO == null) {
+				return 0;
+			}
+			postVO.setBoardIdx(boardVO.getIdx());
+		} else {
+			return 0;
+		}
+
+		return postService.selectPostIdxForPg(postVO);
 	}
 
 	/**
@@ -162,22 +193,30 @@ public class PostController {
 	public String postView(ModelMap model, @PathVariable("boardName") String boardName, @PathVariable("idx") int idx,
 			@ModelAttribute("searchVO") PostVO postVO) {
 
-		// 1. 게시판
+		// 0. 조건 세팅
 		BoardVO boardVO = this.getBoardInfo(boardName);
 		if (boardVO == null) {
 			return "/common/404";
 		}
-		// 1. 조건 세팅
 		postVO.setBoardIdx(boardVO.getIdx());
+		postVO.setCntPerPage(1);
+		postVO.setTotalCnt(boardVO.getPostCnt());
 
 		// 1. 조회
 		PostVO resultVO = postService.selectPost(postVO);
 		if (resultVO == null) {
 			return "/common/404";
 		}
+		postVO.setPg(resultVO.getPg());
 		model.addAttribute(resultVO);
 
-		return "/boards/board_view";
+		// 2. 페이징
+		model.addAttribute("viewPaging", BoardUtil.getPaging(postVO.getTotalCnt(), postVO.getPg(), postVO.getCntPerPage(), "viewPageMove"));
+
+		// 3. 게시판 정보
+		model.addAttribute(boardVO);
+		
+		return "/boards/post_view";
 	}
 
 	/**

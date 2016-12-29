@@ -41,6 +41,15 @@ public interface PostService {
 	public PostVO selectPost(PostVO postVO);
 
 	/**
+	 * 페이지 번호로 게시글 일련번호 조회
+	 * 
+	 * @param postVO
+	 *            조회할 정보가 담긴 PostVO
+	 * @return 게시글 일련번호
+	 */
+	public int selectPostIdxForPg(PostVO postVO);
+
+	/**
 	 * 게시글 등록
 	 * 
 	 * @param postVO

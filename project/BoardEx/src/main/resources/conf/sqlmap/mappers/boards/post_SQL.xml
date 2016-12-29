@@ -65,24 +65,63 @@
 		<![CDATA[
 		/* post_SQL.selectPost */
 		SELECT
-			P.IDX, P.BOARD_IDX, B.NAME AS BOARD_NAME, P.TITLE, P.CONTENT,
-			P.WRITER_IDX, A.ACC_NAME AS WRITER_NAME, P.COMMENT_CNT, P.IS_DEL, P.NOTE,
-			DATE_FORMAT(P.WRITE_DT, '%Y-%m-%d %H:%i') AS WRITE_DT,
-			DATE_FORMAT(P.MODIFY_DT, '%Y-%m-%d %H:%i') AS MODIFY_DT
+			*
 		FROM
-			POST AS P
-			LEFT OUTER JOIN BOARD AS B
-			ON (P.BOARD_IDX = B.IDX)
-			LEFT OUTER JOIN ACCOUNT AS A
-			ON (P.WRITER_IDX = A.IDX)
+			(
+				SELECT
+					P.IDX, P.BOARD_IDX, B.NAME AS BOARD_NAME, P.TITLE, P.CONTENT,
+					P.WRITER_IDX, A.ACC_NAME AS WRITER_NAME, P.COMMENT_CNT, P.IS_DEL, P.NOTE,
+					DATE_FORMAT(P.WRITE_DT, '%Y-%m-%d %H:%i') AS WRITE_DT,
+					DATE_FORMAT(P.MODIFY_DT, '%Y-%m-%d %H:%i') AS MODIFY_DT,
+					@ROWNUM:=@ROWNUM+1 AS PG
+				FROM
+					POST AS P
+					LEFT OUTER JOIN BOARD AS B
+					ON (P.BOARD_IDX = B.IDX)
+					LEFT OUTER JOIN ACCOUNT AS A
+					ON (P.WRITER_IDX = A.IDX),
+					(SELECT @ROWNUM:=0) AS R
+				WHERE
+					P.BOARD_IDX = #{boardIdx}
+					AND B.IS_DEL = 'N'
+					AND P.IS_DEL = 'N'
+				ORDER BY
+					P.WRITE_DT DESC
+			) AS P
 		WHERE
-			P.BOARD_IDX = #{boardIdx}
-			AND P.IDX = #{idx}
-			AND B.IS_DEL = 'N'
-			AND P.IS_DEL = 'N'
+			P.IDX = #{idx}
 		]]>
 	</select>
-
+	
+	<!-- 페이지 번호로 게시글 일련번호 조회 -->
+	<select id="selectPostIdxForPg" parameterType="PostVO" resultType="int">
+		<![CDATA[
+		/* post_SQL.selectPostIdxForPg */
+		SELECT
+			P.IDX
+		FROM
+			(
+				SELECT
+					@ROWNUM:=@ROWNUM+1 AS PG,
+					P.IDX
+				FROM
+					POST AS P
+					LEFT OUTER JOIN BOARD AS B
+					ON (P.BOARD_IDX = B.IDX),
+					(SELECT @ROWNUM:=0) AS R
+				WHERE
+					P.BOARD_IDX = #{boardIdx}
+					AND B.IS_DEL = 'N'
+					AND P.IS_DEL = 'N'
+				ORDER BY
+					P.WRITE_DT DESC
+			) AS P
+		WHERE
+			P.PG = #{pg}
+		LIMIT 1
+		]]>
+	</select>
+	
 	<!-- 게시글 등록 -->
 	<insert id="insertPost" parameterType="PostVO">
 		<![CDATA[

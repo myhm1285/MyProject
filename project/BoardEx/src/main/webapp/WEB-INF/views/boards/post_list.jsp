@@ -27,7 +27,7 @@ function viewListPageMove(pg) {
 function loadPostList(pg) {
 	$.ajax({
         type: "GET",
-        url: "/boards/" + "${boardVO.idx != 0 ? boardVO.name:''}" + "/ajax?pg="+pg,
+        url: "/boards/" + "${boardVO.idx != 0 ? boardVO.name:'_ALL_'}" + "/ajax?pg="+pg,
         success:function(result) {
         	var postVOList = result.postVOList;
         	var postListHtml = "";
@@ -111,7 +111,7 @@ function loadPostList(pg) {
                     ${postVOView.content}
                   </div><!-- /box-body -->
                   <div class="panel-footer">
-                    <div><strong>comment</strong> (${postVOView.commentCnt})</div>
+                    <div><strong>Comments</strong> (${postVOView.commentCnt})</div>
                   </div>
                 </div>
                 </c:forEach>

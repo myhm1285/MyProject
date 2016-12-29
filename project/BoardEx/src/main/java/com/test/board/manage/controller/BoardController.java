@@ -107,20 +107,21 @@ public class BoardController {
 	 *            조회할 정보가 담긴 BoardVO
 	 * @return 중복이면 Y, 아니면 N
 	 */
-	@SuppressWarnings("unchecked")
 	@ResponseBody
 	@RequestMapping(value = "/find/{name}", method = RequestMethod.GET)
-	public JSONObject boardModify(@PathVariable("name") String name, BoardVO boardVO) {
-
-		JSONObject jsonObj = new JSONObject();
+	public String boardModify(@PathVariable("name") String name, BoardVO boardVO) {
 
 		// 0. 조건 세팅
-		boardVO.setName(name);
+		if (!"_ALL_".equals(name)) {
+			boardVO.setName(name);
+			BoardVO reseultVO = boardService.selectBoardForName(boardVO);
 
-		// 1. 이름으로 게시판 조회
-		jsonObj.put("boardVO", boardService.selectBoardForName(boardVO));
-
-		return jsonObj;
+			// 1. 이름으로 게시판 조회
+			if (reseultVO == null) {
+				return "N";
+			}
+		}
+		return "Y";
 	}
 
 	/**

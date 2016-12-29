@@ -92,6 +92,18 @@ public class PostServiceImpl implements PostService {
 	}
 
 	/**
+	 * 페이지 번호로 게시글 일련번호 조회
+	 * 
+	 * @param postVO
+	 *            조회할 정보가 담긴 PostVO
+	 * @return 게시글 일련번호
+	 */
+	@Override
+	public int selectPostIdxForPg(PostVO postVO) {
+		return postDAO.selectPostIdxForPg(postVO);
+	}
+
+	/**
 	 * 게시글 등록
 	 * 
 	 * @param postVO
