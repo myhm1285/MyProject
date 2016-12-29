@@ -17,6 +17,9 @@ $(document).ready(function(){
     });
     
     $("#confirmModal").on("show.bs.modal", function (event) {
+    	if($(event.relatedTarget).hasClass("disabled")) {
+    		return false;
+    	}
     	$("#modalType").val($(event.relatedTarget).data('type'));
     	// 내용
     	$(this).find(".modal-body").text($(event.relatedTarget).data('content'));

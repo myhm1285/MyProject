@@ -10,6 +10,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
 <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 <title>어반스트리트 매칭 플랫폼</title>
+<link rel="icon" href="/images/common/favicon.ico" type="image/x-icon" />
 <link rel="stylesheet" href="/css/bootstrap.min.css" />
 <link rel="stylesheet" href="/css/ie10-viewport-bug-workaround.css" />
 <link rel="stylesheet" href="/css/login.css" />

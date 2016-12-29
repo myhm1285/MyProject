@@ -5,6 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
 <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 <title>게시판</title>
+<link rel="icon" href="/images/common/favicon.ico" type="image/x-icon" />
 <link rel="stylesheet" href="/css/jquery-ui-1.11.4.css" />
 <link rel="stylesheet" href="/css/bootstrap.min.css" />
 <link rel="stylesheet" href="/css/font-awesome.min.css" />
