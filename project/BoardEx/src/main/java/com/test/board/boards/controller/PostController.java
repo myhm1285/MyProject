@@ -389,6 +389,7 @@ public class PostController {
 	private BoardVO getBoardInfo(String boardName) {
 		BoardVO boardVO = new BoardVO();
 		boardVO.setName(boardName);
+		boardVO.setIsOpen("Y");
 		return boardService.selectBoardForName(boardVO);
 	}
 

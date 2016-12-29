@@ -212,6 +212,10 @@ function init(form) {
 	$(form).find("select[name='isOpen'] option[value='Y']").prop("selected",true);
 }
 
+//이름 입력시
+function nameUpdateEvent(obj) {
+	$(obj).val(($(obj).val()).replace(/ /g,"_"));
+}
 //alert Modal
 function alert(message) {
 	$("#confirmModal").modal("hide");
@@ -290,7 +294,7 @@ function alert(message) {
                       <td>
                         <div class="form-group has-feedback col-lg-8" style="padding:0px;">
                           <div class="input-group">
-                            <input name="name" class="form-control" value="" placeholder="유일한 이름을 입력하세요." required/>
+                            <input name="name" class="form-control" value="" placeholder="유일한 이름을 입력하세요." onkeyup="javascript:nameUpdateEvent(this)" required/>
                             <span class="input-group-btn">
                             <button type="button" class="btn btn-primary">중복체크</button>
                             <input type="hidden" name="isCheckName" value="N" />
@@ -362,7 +366,7 @@ function alert(message) {
                       <td>
                         <div class="col-lg-8" style="padding:0px;">
                           <div class="input-group">
-                            <input name="name" class="form-control" value="" placeholder="유일한 이름을 입력하세요." />
+                            <input name="name" class="form-control" value="" placeholder="유일한 이름을 입력하세요." onkeyup="javascript:nameUpdateEvent(this)" />
                             <span class="input-group-btn">
                             <button type="button" class="btn btn-primary">중복체크</button>
                             <input type="hidden" name="isCheckName" value="N" />

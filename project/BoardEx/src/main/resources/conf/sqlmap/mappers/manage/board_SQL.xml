@@ -57,6 +57,11 @@
 		WHERE
 			B.IS_DEL = 'N'
 		]]>
+		<if test="isOpen != null">
+		<![CDATA[
+			AND B.IS_OPEN = #{isOpen}
+		]]>
+		</if>
 	</select>
 	
 	<!-- 게시판 조회 -->
@@ -73,6 +78,13 @@
 		WHERE
 			B.IDX = #{idx}
 			AND B.IS_DEL = 'N'
+		]]>
+		<if test="isOpen != null">
+		<![CDATA[
+			AND B.IS_OPEN = #{isOpen}
+		]]>
+		</if>
+		<![CDATA[
 		LIMIT 1
 		]]>
 	</select>
@@ -91,6 +103,13 @@
 		WHERE
 			B.NAME = #{name}
 			AND B.IS_DEL = 'N'
+		]]>
+		<if test="isOpen != null">
+		<![CDATA[
+			AND B.IS_OPEN = #{isOpen}
+		]]>
+		</if>
+		<![CDATA[
 		LIMIT 1
 		]]>
 	</select>
