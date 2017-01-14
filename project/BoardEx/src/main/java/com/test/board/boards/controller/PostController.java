@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -215,66 +216,8 @@ public class PostController {
 
 		// 3. 게시판 정보
 		model.addAttribute(boardVO);
-		
+
 		return "/boards/post_view";
-	}
-
-	/**
-	 * 게시글 등록 화면 조회
-	 * 
-	 * @param boardName
-	 *            게시판 이름
-	 * @param model
-	 *            ModelMap
-	 * @param postVO
-	 *            조회할 정보가 담긴 PostVO
-	 * @return "/boards/board_write"
-	 */
-	@RequestMapping(value = "/{boardName}/new", method = RequestMethod.GET)
-	public String postWrite(ModelMap model, @PathVariable("boardName") String boardName, @ModelAttribute("searchVO") PostVO postVO) {
-
-		// 0. 조건 세팅
-		BoardVO boardVO = this.getBoardInfo(boardName);
-		if (boardVO == null) {
-			return "/common/404";
-		}
-		postVO.setBoardIdx(boardVO.getIdx());
-
-		return "/boards/board_write";
-	}
-
-	/**
-	 * 게시글 수정 화면 조회
-	 * 
-	 * @param boardName
-	 *            게시판 이름
-	 * @param idx
-	 *            게시글 일련번호
-	 * @param model
-	 *            ModelMap
-	 * @param postVO
-	 *            조회할 정보가 담긴 PostVO
-	 * @return "/boards/board_write"
-	 */
-	@RequestMapping(value = "/{boardName}/{idx}/modify", method = RequestMethod.GET)
-	public String postModify(ModelMap model, @PathVariable("boardName") String boardName, @PathVariable("idx") int idx,
-			@ModelAttribute("searchVO") PostVO postVO) {
-
-		// 0. 조건 세팅
-		BoardVO boardVO = this.getBoardInfo(boardName);
-		if (boardVO == null) {
-			return "/common/404";
-		}
-		postVO.setBoardIdx(boardVO.getIdx());
-
-		// 1. 조회
-		PostVO resultVO = postService.selectPost(postVO);
-		if (resultVO == null) {
-			return "/common/404";
-		}
-		model.addAttribute(resultVO);
-
-		return "/boards/board_write";
 	}
 
 	/**
@@ -288,7 +231,7 @@ public class PostController {
 	 */
 	@RequestMapping(value = "/{boardName}", method = RequestMethod.POST)
 	@ResponseBody
-	public String postWriteProc(@PathVariable("boardName") String boardName, @ModelAttribute("searchVO") PostVO postVO) throws Exception {
+	public String postWriteProc(@PathVariable("boardName") String boardName, @RequestBody PostVO postVO) throws Exception {
 
 		try {
 			// 0. 조건 세팅
@@ -297,6 +240,7 @@ public class PostController {
 				return "N";
 			}
 			postVO.setBoardIdx(boardVO.getIdx());
+			postVO.setWriterIdx(1);
 
 			// 1. 등록
 			postService.insertPost(postVO);

@@ -27,7 +27,7 @@ public class PostVO extends PostSearchVO {
 	private String content;
 
 	/** 글쓴이IDX */
-	private String writerIdx;
+	private int writerIdx;
 
 	/** 글쓴이 이름 */
 	private String writerName;
@@ -139,7 +139,7 @@ public class PostVO extends PostSearchVO {
 	 * @return the writerIdx
 	 */
 
-	public String getWriterIdx() {
+	public int getWriterIdx() {
 		return writerIdx;
 	}
 
@@ -148,7 +148,7 @@ public class PostVO extends PostSearchVO {
 	 *            the writerIdx to set
 	 */
 
-	public void setWriterIdx(String writerIdx) {
+	public void setWriterIdx(int writerIdx) {
 		this.writerIdx = writerIdx;
 	}
 

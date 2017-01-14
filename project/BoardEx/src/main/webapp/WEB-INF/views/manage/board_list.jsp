@@ -36,7 +36,8 @@ $(document).ready(function(){
        		boardDeleteClick();
        	}
    	});
-    	
+    
+   	// 게시판 목록 조회
 	loadBoardList();
 
 });
