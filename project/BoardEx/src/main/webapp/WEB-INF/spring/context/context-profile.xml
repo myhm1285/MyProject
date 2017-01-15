@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- 로컬 개발환경 -->
+	<beans profile="dev">
+		<bean id="define" class="com.test.board.common.vo.DefinesVO">
+			<property name="configArea" value="dev" />
+			<!-- 서비스 설정들 -->
+			<property name="domain" value="http://localhost:8080" />
+			<property name="serviceIdentityName" value="hmyoo's blog" />
+			<!-- upload 정보 -->
+			<property name="filePath" value="D:\\tmp\\blog\\" />
+			<!-- 관리자 계정 관련 -->
+			<property name="adminInfoId" value="admin" />
+		</bean>
+	</beans>
+	<!-- 로컬 개발 환경 설정 end -->
+
+	<beans profile="real">
+		<bean id="define" class="com.test.board.common.vo.DefinesVO">
+			<property name="configArea" value="real" />
+			<!-- 서비스 설정들 -->
+			<property name="domain" value="http://52.78.146.78" />
+			<property name="serviceIdentityName" value="hmyoo's blog" />
+			<!-- upload 정보 -->
+			<property name="filePathStore" value="/home/hmyoo/blog/" />
+			<!-- 관리자 계정 관련 -->
+			<property name="adminInfoId" value="admin" />
+		</bean>
+	</beans>
+</beans>
