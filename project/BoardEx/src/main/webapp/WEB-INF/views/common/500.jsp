@@ -9,7 +9,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
 <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-<title>어반스트리트 매칭 플랫폼</title>
+<title>-</title>
 <link rel="icon" href="/images/common/favicon.ico" type="image/x-icon" />
 <link rel="stylesheet" href="/css/bootstrap.min.css" />
 <link rel="stylesheet" href="/css/ie10-viewport-bug-workaround.css" />
@@ -27,7 +27,7 @@
 <body>
   <div class="container">
     <div class="cover">
-      <p class="lead"><a href="/index.jsp"><img src="/images/common/logo_UMP.png" alt="UMP" /></a></p>
+      <p class="lead"><a href="/"><i class="glyphicon glyphicon-home"></i></a></p>
       <p class="lead"><b>[500] 시스템 오류가 발생했습니다. 관리자에게 문의하시기 바랍니다.</b></p>
       <p class="lead">
         <a href="javascript:history.back();" class="btn btn-lg btn-default">이전 페이지로 돌아가기</a>

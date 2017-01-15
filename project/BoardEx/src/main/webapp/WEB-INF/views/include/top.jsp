@@ -10,23 +10,17 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">Project name</a>
+      <a class="navbar-brand" href="${definesVO.domain}">${definesVO.serviceIdentityName}</a>
     </div>
     <div id="navbar" class="collapse navbar-collapse">
       <div class="navbar-form navbar-right">
         <c:choose>
         <c:when test="${sessionScope.loginVO == null}">
-        <div class="form-group">
-          <input type="text" placeholder="ID" class="form-control" required>
-        </div>
-        <div class="form-group">
-          <input type="password" placeholder="Password" class="form-control" required>
-        </div>
-        <button type="button" id="loginBtn" class="btn btn-primary" onclick="javascript:loginClick()"><i class="fa fa-sign-in"></i> Login</button>
-        <button type="button" id="joinBtn" class="btn btn-success" onclick="javascript:joinClick()"><i class="fa fa-star"></i> Join</button>
+        <button type="button" id="adminOnBtn" class="btn btn-success" onclick="javascript:adminModeOnClick()"><i class="glyphicon glyphicon-wrench"></i></button>
         </c:when>
         <c:otherwise>
-        <button type="button" id="logoutBtn" class="btn btn-primary" onclick="javascript:joinClick()"><i class="fa fa-sign-out"></i> Logout</button>
+        <b>ADMIN MODE ON</b>
+        <button type="button" id="adminOffBtn" class="btn btn-danger" onclick="javascript:adminModeOffClick()"><i class="glyphicon glyphicon-remove"></i></button>
         </c:otherwise>
         </c:choose>
       </div>

@@ -41,6 +41,9 @@ public class BoardVO extends BaseVO {
 	/** 메모 */
 	private String note;
 
+	/** 모드(VIEW/MANAGER) */
+	private String mode;
+
 	/**
 	 * @return the idx
 	 */
@@ -189,6 +192,21 @@ public class BoardVO extends BaseVO {
 	 */
 	public void setNote(String note) {
 		this.note = note;
+	}
+
+	/**
+	 * @return the mode
+	 */
+	public String getMode() {
+		return mode;
+	}
+
+	/**
+	 * @param mode
+	 *            the mode to set
+	 */
+	public void setMode(String mode) {
+		this.mode = mode;
 	}
 
 }

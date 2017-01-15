@@ -6,7 +6,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 /**
  * 기본 VO
  *
- * @author 컨버전스스퀘어
+ * @author hmyoo
  * @since 2016. 4. 25.
  * @version 1.0
  */

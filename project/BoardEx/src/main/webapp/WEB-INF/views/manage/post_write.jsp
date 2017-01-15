@@ -57,7 +57,7 @@ function postdWriteClick(){
 	};
 	$.ajax({
 		type:"post",
-		url:"/boards/"+$(form).find("select[name='boardIdx'] option:selected").text(),
+		url:"/manage/post/"+$(form).find("select[name='boardIdx'] option:selected").text(),
 		contentType:"application/json; charset=utf-8",
 		data:JSON.stringify(params),
 		success:function(result){

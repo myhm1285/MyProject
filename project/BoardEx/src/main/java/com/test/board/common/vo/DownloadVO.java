@@ -3,7 +3,7 @@ package com.test.board.common.vo;
 /**
  * 다운로드 VO 클래스
  *
- * @author 컨버전스스퀘어
+ * @author hmyoo
  * @since 2015. 9. 22.
  * @version 1.0
  */

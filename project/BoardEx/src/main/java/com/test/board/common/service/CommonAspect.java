@@ -14,8 +14,8 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.servlet.ModelAndView;
 
+import com.test.board.common.vo.DefinesVO;
 import com.test.board.manage.service.BoardService;
 import com.test.board.manage.vo.BoardVO;
 
@@ -35,6 +35,9 @@ public class CommonAspect {
 
 	@Autowired
 	HttpServletRequest request;
+
+	@Autowired
+	DefinesVO defines;
 
 	/** 게시판 Service */
 	@Resource(name = "boardService")
@@ -77,9 +80,15 @@ public class CommonAspect {
 	 */
 	@Around("controllerMethod()")
 	public String menuFunction(ProceedingJoinPoint joinPoint) throws Throwable {
+		// model 객체 get
 		ModelMap model = (ModelMap) joinPoint.getArgs()[0];
+
+		// 서비스 Area 추가
+		model.addAttribute("definesVO", defines);
+
+		// 메뉴에 게시판 불러오기
 		BoardVO boardVO = new BoardVO();
-		boardVO.setIsOpen("Y");
+		boardVO.setMode("VIEW");
 		List<BoardVO> boardMenuVOList = boardService.selectBoardList(boardVO);
 		String requestUri = URLDecoder.decode(request.getRequestURI(), "UTF-8");
 		for (BoardVO boardMenuVO : boardMenuVOList) {
@@ -89,32 +98,6 @@ public class CommonAspect {
 		}
 		model.addAttribute("boardMenuVOList", boardMenuVOList);
 
-		// // 부여된 세션으로 부터 로그인 객체를 얻는다.
-		// LoginInfoVo loginInfo = (LoginInfoVo) this.session.getAttribute("loginInfo");
-		//
-		// // 세션에 정보가 있다면 메뉴와 헤드를 셋팅한다.
-		// if (loginInfo != null) {
-		// /*
-		// * joinPoint를 기점으로 실제컨트롤러의 실행시점을 구분 실행 후 반환되는 ModelAndView를 가로챈다.
-		// */
-		// ModelAndView mav = (ModelAndView) joinPoint.proceed();
-		// List<MenuInfoVo> menus = this.aspectService.selectMenuListByGrant(loginInfo.getUserId());
-		//
-		// // left 셋팅영역
-		// mav.addObject(menus);
-		//
-		// // top 셋팅영역
-		// TopInfoVo top = defines.getAdminTop();
-		// top.setLoginUserName(loginInfo.getUserName());
-		// top.setLogoUrl((String) this.session.getAttribute("opinnigPage"));
-		// mav.addObject(top);
-		// return mav;
-		// }
-		// // 세션정보가 없다면 로그인페이지로 보낸다.
-		// else {
-		// ModelAndView mav = new ModelAndView(defines.getLoginPage());
-		// return mav;
-		// }
 		return (String) joinPoint.proceed();
 	}
 
@@ -127,56 +110,39 @@ public class CommonAspect {
 	 */
 	@Around("adminMenu()")
 	public String adminCheck(ProceedingJoinPoint joinPoint) throws Throwable {
-		// // 부여된 세션으로 부터 로그인 객체를 얻는다.
-		// LoginInfoVo loginInfo = (LoginInfoVo) this.session.getAttribute("loginInfo");
-		//
-		// // 세션에 정보가 있다면 메뉴와 헤드를 셋팅한다.
-		// if (loginInfo != null) {
-		// /*
-		// * joinPoint를 기점으로 실제컨트롤러의 실행시점을 구분 실행 후 반환되는 ModelAndView를 가로챈다.
-		// */
-		// ModelAndView mav = (ModelAndView) joinPoint.proceed();
-		// List<MenuInfoVo> menus = this.aspectService.selectMenuListByGrant(loginInfo.getUserId());
-		//
-		// // left 셋팅영역
-		// mav.addObject(menus);
-		//
-		// // top 셋팅영역
-		// TopInfoVo top = defines.getAdminTop();
-		// top.setLoginUserName(loginInfo.getUserName());
-		// top.setLogoUrl((String) this.session.getAttribute("opinnigPage"));
-		// mav.addObject(top);
-		// return mav;
-		// }
-		// // 세션정보가 없다면 로그인페이지로 보낸다.
-		// else {
-		// ModelAndView mav = new ModelAndView(defines.getLoginPage());
-		// return mav;
-		// }
+		// 운영 및 개발 여부
+		String configArea = defines.getConfigArea();
+
+		// 운영일 때만 세션 체크
+		if (ConfigAreaConstans.REAL.equals(configArea)) {
+			// // 부여된 세션으로 부터 로그인 객체를 얻는다.
+			// LoginInfoVo loginInfo = (LoginInfoVo) this.session.getAttribute("loginInfo");
+			//
+			// // 세션에 정보가 있다면 메뉴와 헤드를 셋팅한다.
+			// if (loginInfo != null) {
+			// /*
+			// * joinPoint를 기점으로 실제컨트롤러의 실행시점을 구분 실행 후 반환되는 ModelAndView를 가로챈다.
+			// */
+			// ModelAndView mav = (ModelAndView) joinPoint.proceed();
+			// List<MenuInfoVo> menus = this.aspectService.selectMenuListByGrant(loginInfo.getUserId());
+			//
+			// // left 셋팅영역
+			// mav.addObject(menus);
+			//
+			// // top 셋팅영역
+			// TopInfoVo top = defines.getAdminTop();
+			// top.setLoginUserName(loginInfo.getUserName());
+			// top.setLogoUrl((String) this.session.getAttribute("opinnigPage"));
+			// mav.addObject(top);
+			// return mav;
+			// }
+			// // 세션정보가 없다면 로그인페이지로 보낸다.
+			// else {
+			// ModelAndView mav = new ModelAndView(defines.getLoginPage());
+			// return mav;
+			// }
+		}
 		return (String) joinPoint.proceed();
-	}
-
-	/*
-	 * 게시판용 컨트롤러를 처리한다.
-	 */
-	// @Around("boardLogic()")
-	public ModelAndView boardProcessing(ProceedingJoinPoint joinPoint) throws Throwable {
-
-		// BaseVO base = (BaseVO) joinPoint.getArgs()[0];
-		// /*
-		// * joinPoint를 기점으로 실제컨트롤러의 실행시점을 구분 실행 후 반환되는 ModelAndView를 가로챈다.
-		// */
-		// ModelAndView mav = (ModelAndView) joinPoint.proceed();
-		//
-		// String uri = request.getRequestURI();
-		//
-		// PagingBean pagingInfo = PagingUtil.setPagingInfo(base.getTotalCnt(), base.getPageNo(), base.getCntPerPage());
-		// pagingInfo.setTargetUri(uri);
-		//
-		// mav.addObject(pagingInfo);
-		//
-		// return mav;
-		return null;
 	}
 
 }

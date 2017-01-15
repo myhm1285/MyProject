@@ -7,13 +7,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.test.board.boards.service.AdminMenu;
 import com.test.board.manage.service.BoardService;
 import com.test.board.manage.vo.BoardVO;
 
@@ -24,6 +24,7 @@ import com.test.board.manage.vo.BoardVO;
  * @since 2016. 6. 17.
  * @version 1.0
  */
+@AdminMenu
 @Controller
 @RequestMapping(value = "/manage/board")
 public class BoardController {
@@ -41,11 +42,11 @@ public class BoardController {
 	 * @param model
 	 *            ModelMap
 	 * @param boardVO
-	 *            조회할 정보가 담긴 BoardVO
+	 *            BoardVO
 	 * @return "/manage/board_list"
 	 */
 	@RequestMapping(value = "", method = RequestMethod.GET)
-	public String boardList(ModelMap model, @ModelAttribute("searchVO") BoardVO boardVO) {
+	public String boardList(ModelMap model, BoardVO boardVO) {
 
 		return "/manage/board_list";
 	}
@@ -54,13 +55,13 @@ public class BoardController {
 	 * 게시판 목록 조회 (Ajax)
 	 * 
 	 * @param boardVO
-	 *            조회할 정보가 담긴 BoardVO
+	 *            BoardVO
 	 * @return jsonObj
 	 */
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/ajax", method = RequestMethod.GET)
 	@ResponseBody
-	public JSONObject boardListAjax(@ModelAttribute("searchVO") BoardVO boardVO) {
+	public JSONObject boardListAjax(BoardVO boardVO) {
 
 		JSONObject jsonObj = new JSONObject();
 
@@ -79,7 +80,7 @@ public class BoardController {
 	 * @param idx
 	 *            게시판 일련번호
 	 * @param boardVO
-	 *            조회할 정보가 담긴 BoardVO
+	 *            BoardVO
 	 * @return jsonObj
 	 */
 	@SuppressWarnings("unchecked")
@@ -104,7 +105,7 @@ public class BoardController {
 	 * @param idx
 	 *            게시판 일련번호
 	 * @param boardVO
-	 *            조회할 정보가 담긴 BoardVO
+	 *            BoardVO
 	 * @return 중복이면 Y, 아니면 N
 	 */
 	@ResponseBody
@@ -114,7 +115,7 @@ public class BoardController {
 		// 0. 조건 세팅
 		if (!"_ALL_".equals(name)) {
 			boardVO.setName(name);
-			BoardVO reseultVO = boardService.selectBoardForName(boardVO);
+			BoardVO reseultVO = boardService.selectBoard(boardVO);
 
 			// 1. 이름으로 게시판 조회
 			if (reseultVO == null) {
@@ -130,7 +131,7 @@ public class BoardController {
 	 * @param model
 	 *            ModelMap
 	 * @param boardVO
-	 *            조회할 정보가 담긴 BoardVO
+	 *            BoardVO
 	 * @return 성공이면 Y, 실패이면 N
 	 */
 	@RequestMapping(value = "", method = RequestMethod.POST)
@@ -157,7 +158,7 @@ public class BoardController {
 	 * @param model
 	 *            ModelMap
 	 * @param boardVO
-	 *            수정할 정보가 담긴 BoardVO
+	 *            BoardVO
 	 * @return 성공이면 Y, 실패이면 N
 	 */
 	@RequestMapping(value = "/{idx}", method = RequestMethod.PUT)
@@ -187,12 +188,12 @@ public class BoardController {
 	 * @param model
 	 *            ModelMap
 	 * @param boardVO
-	 *            삭제할 정보가 담긴 BoardVO
+	 *            BoardVO
 	 * @return 성공이면 Y, 실패이면 N
 	 */
 	@RequestMapping(value = "/{idx}", method = RequestMethod.DELETE)
 	@ResponseBody
-	public String boardDeleteProc(@PathVariable("idx") int idx, ModelMap model, @ModelAttribute("searchVO") BoardVO boardVO) {
+	public String boardDeleteProc(@PathVariable("idx") int idx, ModelMap model, BoardVO boardVO) {
 
 		try {
 			// 0. 조건 세팅

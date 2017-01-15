@@ -30,13 +30,15 @@ public interface BoardService {
 	 * @return 목록 총 개수
 	 */
 	public int selectBoardListTotalCnt(BoardVO boardVO);
-	
+
 	/**
 	 * 모든 게시판 게시글 총 개수 조회
 	 * 
+	 * @param boardVO
+	 *            조회할 정보가 담긴 BoardVO
 	 * @return 목록 총 개수
 	 */
-	public int selectBoardAllPostTotalCnt();
+	public int selectBoardAllPostTotalCnt(BoardVO boardVO);
 
 	/**
 	 * 게시판 조회
@@ -46,15 +48,6 @@ public interface BoardService {
 	 * @return BoardVO
 	 */
 	public BoardVO selectBoard(BoardVO boardVO);
-	
-	/**
-	 * 이름으로 게시판 조회
-	 * 
-	 * @param boardVO
-	 *            조회할 정보가 담긴 BoardVO
-	 * @return BoardVO
-	 */
-	public BoardVO selectBoardForName(BoardVO boardVO);
 
 	/**
 	 * 게시판 등록

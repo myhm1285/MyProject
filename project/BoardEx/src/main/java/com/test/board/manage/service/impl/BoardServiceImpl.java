@@ -65,10 +65,13 @@ public class BoardServiceImpl implements BoardService {
 	/**
 	 * 모든 게시판 게시글 총 개수 조회
 	 * 
+	 * @param boardVO
+	 *            조회할 정보가 담긴 BoardVO
 	 * @return 목록 총 개수
 	 */
-	public int selectBoardAllPostTotalCnt() {
-		return boardDAO.selectBoardAllPostTotalCnt();
+	@Override
+	public int selectBoardAllPostTotalCnt(BoardVO boardVO) {
+		return boardDAO.selectBoardAllPostTotalCnt(boardVO);
 	}
 
 	/**
@@ -81,17 +84,6 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public BoardVO selectBoard(BoardVO boardVO) {
 		return boardDAO.selectBoard(boardVO);
-	}
-
-	/**
-	 * 이름으로 게시판 조회
-	 * 
-	 * @param boardVO
-	 *            조회할 정보가 담긴 BoardVO
-	 * @return BoardVO
-	 */
-	public BoardVO selectBoardForName(BoardVO boardVO) {
-		return boardDAO.selectBoardForName(boardVO);
 	}
 
 	/**

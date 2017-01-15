@@ -47,6 +47,9 @@ public class PostVO extends PostSearchVO {
 	/** 메모 */
 	private String note;
 
+	/** 모드(VIEW/MANAGER) */
+	private String mode;
+
 	/** 댓글 목록 */
 	private List<CommentVO> commentVOList;
 
@@ -252,6 +255,21 @@ public class PostVO extends PostSearchVO {
 
 	public void setNote(String note) {
 		this.note = note;
+	}
+
+	/**
+	 * @return the mode
+	 */
+	public String getMode() {
+		return mode;
+	}
+
+	/**
+	 * @param mode
+	 *            the mode to set
+	 */
+	public void setMode(String mode) {
+		this.mode = mode;
 	}
 
 	/**
